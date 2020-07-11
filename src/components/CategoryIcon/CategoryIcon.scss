@@ -1,0 +1,49 @@
+.cat-icon-base {
+    width: 64px;
+    height: 64px;
+
+    background: linear-gradient(180deg, rgba(41, 121, 255, 0.25) 0%, rgba(41, 121, 255, 0) 100%);
+    border-radius: 50px;
+}
+
+.icon-svg {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+}
+
+.icon-name {
+    margin-top: 10px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
+.base-light-red-color {
+    background: linear-gradient(180deg, rgba(255, 61, 0, 0.25) 0%, rgba(255, 61, 0, 0) 100%);
+}
+
+.base-yellow-color {
+    background: linear-gradient(180deg, rgba(255, 143, 0, 0.25) 0%, rgba(255, 143, 0, 0) 100%);
+}
+
+.base-purple-color {
+    background: linear-gradient(180deg, rgba(101, 31, 255, 0.25) 0%, rgba(101, 31, 255, 0) 100%);
+}
+
+.base-green-color {
+    background: linear-gradient(180deg, rgba(0, 230, 118, 0.25) 0%, rgba(0, 230, 118, 0) 100%);
+}
+
+.base-dark-purple-color {
+    background: linear-gradient(180deg, rgba(0, 188, 212, 0.25) 0%, rgba(0, 188, 212, 0) 100%);
+}
+
+.base-dark-red-color {
+    background: linear-gradient(180deg, rgba(245, 0, 87, 0.25) 0%, rgba(245, 0, 87, 0) 100%);
+}
+
+.base-grey-color {
+    background: linear-gradient(180deg, rgba(93, 64, 55, 0.25) 0%, rgba(93, 64, 55, 0) 100%);
+}
