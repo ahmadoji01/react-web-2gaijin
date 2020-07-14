@@ -3,17 +3,16 @@
     height: 64px;
 
     background: linear-gradient(180deg, rgba(41, 121, 255, 0.25) 0%, rgba(41, 121, 255, 0) 100%);
-    border-radius: 50px;
+    border-radius: 50%;
 }
 
 .icon-svg {
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding: 20px 6px 20px 6px;
     text-align: center;
 }
 
 .icon-name {
-    margin-top: 10px;
+    margin-top: 15px;
     font-weight: 700;
     text-align: center;
     text-decoration: none;

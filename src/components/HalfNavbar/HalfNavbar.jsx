@@ -13,15 +13,16 @@ class HalfNavbar extends Component {
 
     render() {
         return (
-            <Navbar>
-                <NavbarGroup align={Alignment.LEFT}>
-                    <NavbarHeading><img src={GaijinLogo} className="logo" /></NavbarHeading>
-                </NavbarGroup>
-                <NavbarGroup align={Alignment.RIGHT}>
-                    <Button className={Classes.MINIMAL} icon="notifications" />
-                    <Button className={Classes.MINIMAL} icon="envelope" />
-                </NavbarGroup>
-            </Navbar>
+            <nav class="bp3-navbar no-shadow">
+                <div class="bp3-navbar-group bp3-align-left">
+                    <div class="bp3-navbar-heading"><img src={GaijinLogo} className="logo" /></div>
+                </div>
+                <div class="bp3-navbar-group bp3-align-right">
+                    <button class="bp3-button bp3-minimal bp3-icon-truck">Delivery</button>
+                    <button class="bp3-button bp3-minimal bp3-icon-notifications"></button>
+                    <button class="bp3-button bp3-minimal bp3-icon-envelope"></button>
+                </div>
+            </nav>
         )
     }
 

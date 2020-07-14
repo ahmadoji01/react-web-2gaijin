@@ -1,0 +1,29 @@
+.image-container {
+    height: 0;
+    padding-bottom: 100%;
+    background: no-repeat center/cover;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.title-product {
+    line-height: 1.5em;
+    height: 2.75em;
+    overflow: hidden;
+    font-weight: 600;
+}
+
+.card-sold {
+    position: absolute;
+    left: -20px;
+    top: 35px;
+}
+
+.product-card {
+    margin: 10px;
+    position: relative;
+}
+
+.card-text {
+    padding: 10px;
+}

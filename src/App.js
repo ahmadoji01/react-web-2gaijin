@@ -10,6 +10,8 @@ import {
   Link
 } from "react-router-dom";
 import Home from "./pages/Home";
+import ProductDetail from "./pages/ProductDetail";
+import Search from './pages/Search';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/users">
             <Users />
           </Route>
+          <Route path="/search/:searchTerm/:category?" component={Search} />
+          <Route path="/product/:productid" component={ProductDetail} />
           <Route path="/">
             <Homepage />
           </Route>
@@ -41,6 +45,10 @@ function About() {
 
 function Users() {
   return <h2>Users</h2>;
+}
+
+function ProductDetailPage() {
+  return <ProductDetail />;
 }
 
 export default App;

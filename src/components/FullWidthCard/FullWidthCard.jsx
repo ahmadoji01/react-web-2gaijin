@@ -5,7 +5,7 @@ import PinIcon from "../../icons/PinIcon.svg";
 class FullWidthCard extends Component {
     constructor(props) {
         super(props);
-        this.state = { cardWidth: (window.innerWidth/4) - 75, locText: "", cardHeight: (window.innerHeight/4) - 25, currLat: 0.0, currLng: 0.0 };
+        this.state = { cardWidth: (window.innerWidth/4) - 50, locText: "", cardHeight: (window.innerHeight/4) - 25, currLat: 0.0, currLng: 0.0 };
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.calcDistance = this.calcDistance.bind(this);
     }
@@ -20,8 +20,8 @@ class FullWidthCard extends Component {
     }
 
     updateWindowDimensions() {
-        this.setState({ cardWidth: (window.innerWidth/4) - 75 });
-        this.setState({ cardHeight: (window.innerHeight/4) - 25 });
+        this.setState({ cardWidth: (window.innerWidth/this.props.visibleItems) - 75 });
+        this.setState({ cardHeight: (window.innerHeight/this.props.visibleItems) - 25 });
     }
 
     calcDistance() {
@@ -96,8 +96,30 @@ class FullWidthCard extends Component {
                     </div>
                 </a>
             );
+        } else if(typeof(this.props.viewAll) !== "undefined") {
+            return (
+                <a href={this.props.viewAllLink} className="product-card" style={{ marginRight: 20, textDecoration: "none"}} >
+                    <div className="content" style={{borderRadius: 20, border: "1px solid #E0E5EE"}}>
+                        <div className="big-image-container" style={{width: `${this.state.cardWidth}px`, height: `${this.state.cardWidth}px`}}></div>
+                        <h4 style={{ textAlign: "center", marginTop: (-this.state.cardHeight)+30, fontWeight: 700, color: "#EF7132" }}>View All</h4>
+                        <div className="text-full-width" style={{padding: 10}}>
+                            <div className="row" style={{marginBottom: this.state.cardHeight-50, paddingBottom: 0}}>
+                                <div className="column" style={{width: "90%"}}>
+                                    <h4 className="title-product" style={{ textAlign: "center" }}></h4>
+                                </div>
+                            </div>
+                            <div className="row" style={{marginBottom: 0, paddingBottom: 0}}>
+                                <div className="column">
+                                    <p className="location"></p>
+                                </div>
+                            </div>
+                            <div className="row price"></div>
+                        </div>
+                    </div>
+                </a>
+            );
         } else {
-            return '';
+            return "";
         }
     }
 }

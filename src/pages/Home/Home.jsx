@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import HalfNavbar from "../../components/HalfNavbar";
 import {
-    Button,
+    Button
 } from "@blueprintjs/core";
 import "./Home.scss";
 import HomeBg from "../../illustrations/homebg.svg";
@@ -11,6 +11,8 @@ import ScrollContainer from 'react-indiana-drag-scroll';
 import ProductSlider from "../../components/ProductSlider";
 import CategoriesContainer from "../../components/CategoriesContainer";
 import CitiesContainer from "../../components/CitiesContainer";
+import ProductTabs from "../../components/ProductTabs";
+import axios from "axios";
 
 class Home extends Component {
 
@@ -18,6 +20,7 @@ class Home extends Component {
         super(props);
         this.state = {
             data: [],
+            gaijinItems: [],
             windowHeight: window.innerHeight,
             windowWidth: window.innerWidth
         }; 
@@ -47,6 +50,25 @@ class Home extends Component {
         })
         .catch((error) => {
             console.error(error);
+        });
+
+        let config = {
+            headers: { },
+            params: {
+              start: 1,
+              limit: 8,
+              userid: "5da95727697d19f3f01f62b6",
+              status: "available",
+              sortby: "newest"
+            }
+        }
+  
+        axios
+        .get(`https://go.2gaijin.com/search`, config)
+        .then(response => {
+            if(response.data.status == "Success") { 
+                this.setState({ gaijinItems: response.data.data.items });
+            }
         });
     }
 
@@ -108,15 +130,15 @@ class Home extends Component {
                     </div>
                 </div>
                 <div className="row" style={{ marginTop: 50, width: "100%" }}>
-                    <ProductSlider title="2Gaijin's Picks" subtitle="Some items we'd love to share with fellow gaijins" items={this.state.data["featureditems"]} label="Featured" />
+                    <ProductSlider title="2Gaijin's Picks" subtitle="Some items we'd love to share with fellow gaijins" items={this.state.gaijinItems} label="Featured" />
                 </div>
                 <div className="row custom-container" style={{ marginTop: 50, width: "100%" }}>
-                    <div className="col-5">
+                    <div className="col-12">
                         <CategoriesContainer />
                     </div>
-                    <div className="col-7">
-                        <CitiesContainer bannerSize={(this.state.windowWidth/7) - 20} />
-                    </div>
+                </div>
+                <div className="row custom-container" style={{ marginTop: 50, width: "100%" }}>
+                    <ProductTabs />
                 </div>
             </>
         );
