@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import HalfNavbar from "../../components/HalfNavbar";
+import NavigationBar from "../../components/NavigationBar";
 import {
     Button
 } from "@blueprintjs/core";
@@ -22,23 +23,38 @@ class Home extends Component {
             data: [],
             gaijinItems: [],
             windowHeight: window.innerHeight,
-            windowWidth: window.innerWidth
-        }; 
+            windowWidth: window.innerWidth,
+            searchTerm: "",
+            navbarShow: false,
+        };
+        this.searchTermChange = this.searchTermChange.bind(this);
+        this.searchSubmit = this.searchSubmit.bind(this); 
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.onWindowScroll = this.onWindowScroll.bind(this);
     }
 
     componentDidMount() {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
+        window.addEventListener('scroll', this.onWindowScroll);
     }
     
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
+        window.addEventListener('scroll', this.onWindowScroll);
     }
 
     updateWindowDimensions() {
         this.setState({ windowWidth: window.innerWidth });
         this.setState({ windowHeight: window.innerHeight });
+    }
+
+    onWindowScroll() {
+        if(window.scrollY > this.state.windowHeight/2) {
+            this.setState({ navbarShow: true });
+        } else {
+            this.setState({ navbarShow: false });
+        }
     }
 
     componentWillMount() {
@@ -72,9 +88,19 @@ class Home extends Component {
         });
     }
 
+    searchTermChange(e) {
+        this.setState({ searchTerm: e.target.value });
+    }
+
+    searchSubmit(e) {
+        e.preventDefault();
+        window.location = "/search?q=" + this.state.searchTerm;
+    }
+
     render() {
         return (
             <>
+                { this.state.navbarShow && <NavigationBar /> }
                 <div className="row" style={{ height: this.state.windowHeight, width: this.state.windowWidth }}>
                     <div className="col-6" >
                         <div className="row" style={{ marginLeft: 15 }}>
@@ -110,15 +136,14 @@ class Home extends Component {
                             <div className="row" style={{ margin: 0, marginLeft: 15, marginTop: 20, width: "100%" }}>
                                 <div className="bp3-input-group .bp3-large" style={{ width: "85%" }}>
                                     <span className="bp3-icon bp3-icon-search" style={{ fontSize: 24, paddingTop: 5, paddingLeft: 10, color: "#9BACCE" }}></span>
-                                    <input className="bp3-input" type="search" style={{ height: 50, paddingLeft: 50 }} placeholder="Try Fridge, Table" dir="auto" />
-                                    <Button className="large-search-btn" intent="warning">Search</Button>
+                                    <form onSubmit={this.searchSubmit}><input className="bp3-input" onChange={this.searchTermChange} type="search" style={{ height: 50, paddingLeft: 50 }} placeholder="Try Fridge, Table" dir="auto" /></form>
+                                    <Button className="large-search-btn" intent="warning" onClick={this.searchSubmit} >Search</Button>
                                 </div>
                             </div>
                             <div className="row" style={{ margin: 0, marginLeft: 15, marginTop: 20, width: "100%" }}>
-                                <Chip link="/" title="Near You" />
-                                <Chip link="/" title="Washing Machine" />
-                                <Chip link="/" title="Refrigerator" />
-                                <Chip link="/" title="Electronics" />
+                                <Chip link="/search?q=Washing Machine" title="Washing Machine" />
+                                <Chip link="/search?q=Refrigerator" title="Refrigerator" />
+                                <Chip link="/search?category=Electronics" title="Electronics" />
                             </div>
                             <div className="row" style={{ margin: 0, marginLeft: 15, marginTop: 20, width: "100%" }}>
                                 <h4 style={{ fontWeight: 600, textAlign: "left" }}>Have a question about 2Gaijin? <a href="/" style={{ color: "#E75B15" }}>Contact us!</a></h4>

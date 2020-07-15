@@ -12,6 +12,7 @@ import {
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import Search from './pages/Search';
+import SignUp from './pages/SignUp';
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
           <Route path="/users">
             <Users />
           </Route>
-          <Route path="/search/:searchTerm/:category?" component={Search} />
+          <Route path="/search" component={Search} />
+          <Route path="/sign-up" component={SignUp} />
           <Route path="/product/:productid" component={ProductDetail} />
           <Route path="/">
             <Homepage />

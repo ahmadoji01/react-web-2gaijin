@@ -87,7 +87,7 @@ class ProductCard extends Component {
                         }} />
                         <div className="card-text">
                             <p className="title-product">{item.name}</p>
-                            <p className="location">by {item.seller_name}</p>
+                            <p className="seller-name location">by {item.seller_name}</p>
                             <p className="price">¥{item.price}</p>
                             {locColumn}
                         </div>

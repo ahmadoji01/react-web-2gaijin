@@ -40,52 +40,52 @@ class CategoriesContainer extends Component {
                 </div>
                 <div className="row category-row">
                     <div className="content">
-                        <a href="/search/ /Apparels">
+                        <a href="/search?category=Apparels">
                             <CategoryIcon iconname="Apparels" iconcolor="light-red" iconsize={this.state.iconSize}/>
                         </a>
                     </div>
                     <div className="content">
-                        <a href="/search/ /Books">
+                        <a href="/search?category=Books">
                             <CategoryIcon iconname="Books" iconcolor="yellow" iconsize={this.state.iconSize}/>
                         </a>
                     </div>
                     <div className="content">
-                        <a href="/search/ /Electronics">
+                        <a href="/search?category=Electronics">
                             <CategoryIcon iconname="Electronics" iconcolor="purple" iconsize={this.state.iconSize}/>
                         </a>
                     </div>
                     <div className="content">
-                        <a href="/search/ /Footwear">
+                        <a href="/search?category=Footwear">
                             <CategoryIcon iconname="Footwear" iconsize={this.state.iconSize}/>
                         </a>
                     </div>
                     <div className="content">
-                        <a href="/search/ /Furnitures">
+                        <a href="/search?category=Furnitures">
                             <CategoryIcon iconname="Furnitures" iconcolor="green" iconsize={this.state.iconSize}/>
                         </a>
                     </div>
                     <div className="content">
-                        <a href="/search/ /Kitchens">
+                        <a href="/search?category=Kitchens">
                             <CategoryIcon iconname="Kitchens" iconcolor="dark-purple" iconsize={this.state.iconSize}/>
                         </a>
                     </div>
                     <div className="content">
-                        <a href="/search/ /Sports">
+                        <a href="/search?category=Sports">
                             <CategoryIcon iconname="Sports" iconcolor="dark-red" iconsize={this.state.iconSize}/>
                         </a>
                     </div>
                     <div className="content">
-                        <a href="/search/ /Vehicles">
+                        <a href="/search?category=Vehicles">
                             <CategoryIcon iconname="Vehicles" iconcolor="grey" iconsize={this.state.iconSize}/>
                         </a>
                     </div>
                     <div className="content">
-                        <a href="/search/ /White Appliances">
+                        <a href="/search?category=White Appliances">
                             <CategoryIcon iconname="White Appliances" iconcolor="purple" iconsize={this.state.iconSize}/>
                         </a>
                     </div>
                     <div className="content">
-                        <a href="/search/ /Miscellaneous">
+                        <a href="/search?category=Miscellaneous">
                             <CategoryIcon iconname="Miscellaneous" iconcolor="dark-purple" iconsize={this.state.iconSize}/>
                         </a>
                     </div>

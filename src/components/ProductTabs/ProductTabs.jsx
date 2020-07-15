@@ -69,8 +69,8 @@ class ProductTabs extends Component {
                 vertical={false}
                 style={{ borderBottom: "1px solid blue" }}
                 >
-                <Tab id="recentitems" title="Recently Added Items" panel={<ProductPanel items={this.state.recentItems} />} />
-                <Tab id="freeitems" title="Free Items" panel={<ProductPanel items={this.state.freeItems} />} />
+                <Tab id="recentitems" title="Recently Added Items" panel={<ProductPanel items={this.state.recentItems} viewAllLink="/search" />} />
+                <Tab id="freeitems" title="Free Items" panel={<ProductPanel items={this.state.freeItems} viewAllLink="/search?pricemax=0" />} />
             </Tabs>
         )
     }
@@ -86,7 +86,7 @@ const ProductPanel = (props) => (
             );
         })}
         <div className="col-2dot4">
-            <FullWidthCard key={shortid.generate()} visibleItems={5} viewAll viewAllLink="/search/Electronics" />
+            <FullWidthCard key={shortid.generate()} visibleItems={5} viewAll viewAllLink={props.viewAllLink} />
         </div>
     </div>
 );
