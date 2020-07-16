@@ -25,6 +25,7 @@ class AuthService {
                 localStorage.setItem("phone", data.phone);
                 localStorage.setItem("access_token", data.authentication_token);
                 localStorage.setItem("refresh_token", data.refresh_token);
+                localStorage.setItem("avatar_url", data.avatar_url);
                 return data;
             } else {
                 return response.data;
@@ -54,6 +55,7 @@ class AuthService {
                 localStorage.setItem("phone", data.phone);
                 localStorage.setItem("access_token", data.authentication_token);
                 localStorage.setItem("refresh_token", data.refresh_token);
+                localStorage.setItem("avatar_url", data.avatar_url);
                 return data;
             } else {
                 return response.data;
@@ -84,6 +86,7 @@ class AuthService {
                 localStorage.setItem("phone", data.phone);
                 localStorage.setItem("access_token", data.authentication_token);
                 localStorage.setItem("refresh_token", data.refresh_token);
+                localStorage.setItem("avatar_url", data.avatar_url);
                 return data;
             } else {
                 return response.data;
@@ -106,6 +109,7 @@ class AuthService {
             localStorage.removeItem("phone");
             localStorage.removeItem("access_token");
             localStorage.removeItem("refresh_token");
+            localStorage.removeItem("avatar_url");
         });
     }
 
@@ -132,6 +136,7 @@ class AuthService {
                     localStorage.setItem("phone", data.phone);
                     localStorage.setItem("access_token", data.authentication_token);
                     localStorage.setItem("refresh_token", data.refresh_token);
+                    localStorage.setItem("avatar_url", data.avatar_url);
                 }
             }
             return response.data;

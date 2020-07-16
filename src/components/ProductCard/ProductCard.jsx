@@ -73,7 +73,7 @@ class ProductCard extends Component {
             let soldOut;
             if(item.availability != "available") {
                 soldOut = <div className="love-button card-sold">
-                    <img src={SoldOutIcon} style={{ maxWidth: cardWidth/2 }} />
+                    <img src={SoldOutIcon} style={{ maxWidth: cardWidth/2 + 10 }} />
                 </div>;
             }
 

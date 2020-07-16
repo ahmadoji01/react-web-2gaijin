@@ -12,6 +12,9 @@ import {
 
 import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import EmptyIllustration from "../../illustrations/EmptyIllustration.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
             '& > *': {
             marginTop: theme.spacing(2),
         },
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
     },
 }));
 
@@ -60,6 +67,8 @@ class Search extends Component {
         this.onMaxPriceChange = this.onMaxPriceChange.bind(this);
         this.categoryChange = this.categoryChange.bind(this);
         this.onPriceInputBlur = this.onPriceInputBlur.bind(this);
+        this.onSortChange = this.onSortChange.bind(this);
+        this.onStatusChange = this.onStatusChange.bind(this);
     }
 
     componentDidMount() {
@@ -84,8 +93,10 @@ class Search extends Component {
         const pricemax = urlParams.get('pricemax');
 
         let searchTerm = query;
+        let sortby = "relevance";
         if(!query) {
             searchTerm = "";
+            sortby = "newest";
         }
         this.setState({ searchterm: searchTerm });
         this.setState({ searchTitle: searchTerm });
@@ -120,7 +131,7 @@ class Search extends Component {
         searchTerm +
         "&category=" + categorySearch +
         "&status=" + status + 
-        "&sortby=relevance" +
+        "&sortby=" + sortby +
         "&pricemax=" + priceMax + 
         "&start="+ this.state.start + "&limit=" + this.state.limit, {}, {})
         .then(response => {
@@ -173,12 +184,11 @@ class Search extends Component {
         this.state.searchterm +
         "&category=" + this.state.category +
         "&status=" + this.state.status + 
-        "&sortby=relevance" + 
+        "&sortby=" + this.state.sortby + 
         "&pricemin=" + priceMin +
         "&pricemax=" + priceMax +
         "&start="+ start + "&limit=" + limit, {}, {})
         .then(response => {
-            console.log(response.data.message);
             if(response.data.status == "Success") {
                 var fetchData = response.data.data.items;
 
@@ -198,6 +208,17 @@ class Search extends Component {
     handlePageChange(event, value) {
         let self = this;
         this.setState({ currentPage: parseInt(value) }, () => { self.getItems()});
+    }
+
+    onSortChange(e) {
+        let self = this;
+        this.setState({ sortby: e.target.value }, () => { self.getItems()});
+    }
+    
+    onStatusChange(e) {
+        console.log(e.target.value);
+        let self = this;
+        this.setState({ status: e.target.value }, () => { self.getItems()});
     }
 
     onMinPriceChange(e) {
@@ -293,12 +314,47 @@ class Search extends Component {
                                     </p>
                                 </Card> 
                             }
-                            { !this.state.noItemFound && <><div className="col-8">
+                            { !this.state.noItemFound && <><div className="col-6">
                                 <p className="search-title">Showing results of <span className="search-term">"{this.state.searchTitle}"</span> - {this.state.totalItems} item(s)</p>
                             </div>
-                            <div className="col-4">
-                                <p className="search-title">Showing results of <span className="search-term">"{this.state.searchTitle}"</span> - {this.state.totalItems} item(s)</p>
-                            </div></>
+                            <div className="col-3">
+                                <FormControl variant="outlined" className={useStyles.formControl}>
+                                    <InputLabel htmlFor="outlined-status-native-simple">Status</InputLabel>
+                                    <Select
+                                    native
+                                    defaultValue={this.state.status}
+                                    onChange={this.onStatusChange}
+                                    inputProps={{
+                                        name: 'status',
+                                        id: 'outlined-status-native-simple',
+                                    }}
+                                    >
+                                        <option value=" ">Any</option>
+                                        <option value="available">Available</option>
+                                        <option value="sold">Sold Out</option>
+                                    </Select>
+                                </FormControl>
+                            </div>
+                            <div className="col-3">
+                                <FormControl variant="outlined" className={useStyles.formControl}>
+                                    <InputLabel htmlFor="outlined-sort-native-simple">Sort By</InputLabel>
+                                    <Select
+                                    native
+                                    onChange={this.onSortChange}
+                                    inputProps={{
+                                        name: 'sort',
+                                        id: 'outlined-sort-native-simple',
+                                    }}
+                                    >
+                                        <option value="relevance">Relevance</option>
+                                        <option value="highestprice">Price: High to Low</option>
+                                        <option value="lowestprice">Price: Low to High</option>
+                                        <option value="newest">Date Posted: Recent to Old</option>
+                                        <option value="oldest">Date Posted: Old to Recent</option>
+                                    </Select>
+                                </FormControl>
+                            </div>
+                            </>
                             }
                         </div>
                         <div className="row" style={{ padding: 30, paddingTop: 0, marginTop: 0 }}>

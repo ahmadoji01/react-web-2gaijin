@@ -52,7 +52,7 @@ class Toolbar extends Component {
             <Navbar className="toolbar">
                 <div style={{ margin: "0 auto", width: this.state.toolbarWidth }}>
                     <NavbarGroup align={Alignment.LEFT} className="toolbar-group">
-                        <NavbarHeading><a href="/"><img src={avatarURL} className="avatar" style={{ width: 50 }} /></a></NavbarHeading>
+                        <NavbarHeading><a href={`/profile/${this.props.sellerInfo._id}`}><img src={avatarURL} className="avatar" style={{ width: 50 }} /></a></NavbarHeading>
                         <NavbarHeading className="toolbar-text">{sellerName}</NavbarHeading>
                     </NavbarGroup>
                     <NavbarGroup align={Alignment.RIGHT} className="toolbar-group">

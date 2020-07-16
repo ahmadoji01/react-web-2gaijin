@@ -37,10 +37,15 @@ class HalfNavbar extends Component {
         });
     }
 
+    onMyProfileClick(userID) {
+        window.location = "/profile/" + userID;
+    }
+
     render() {
         
         const accountMenu = (
             <Menu>
+                <MenuItem text="My Profile" onClick={() => this.onMyProfileClick(localStorage.getItem("user_id"))} intent={INTENT_WARNING}  />
                 <MenuItem text="Sign Out" onClick={this.onSignOutButtonClick} intent={INTENT_WARNING}  />
             </Menu>
         )
@@ -56,7 +61,7 @@ class HalfNavbar extends Component {
                     <button class="bp3-button bp3-minimal bp3-icon-envelope"></button>
                     { this.state.isLoggedIn && 
                     <Popover content={accountMenu} position={Position.BOTTOM}>
-                        <Button className={Classes.MINIMAL} icon="user" />
+                        <Button className={Classes.MINIMAL} icon={<img src={localStorage.getItem("avatar_url")} className="avatar avatar-navbar" />} />
                     </Popover> }
                     { !this.state.isLoggedIn && 
                     <>

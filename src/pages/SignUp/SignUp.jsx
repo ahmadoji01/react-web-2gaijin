@@ -22,7 +22,12 @@ class SignUp extends Component {
             email: "",
             emailValid: true,
             password: "",
+            confirmPassword: "",
+            firstName: "",
+            lastName: "",
             passwordValid: true,
+            confirmPasswordValid: true,
+            firstNameValid: true,
             redirectTo: "/",
             valid: false,
             message: "",
@@ -32,6 +37,12 @@ class SignUp extends Component {
         this.responseGoogle = this.responseGoogle.bind(this);
         this.responseFacebook = this.responseFacebook.bind(this);
         this.redirect = this.redirect.bind(this);
+        this.handleRegister = this.handleRegister.bind(this);
+        this.onConfirmPasswordChange = this.onConfirmPasswordChange.bind(this);
+        this.onEmailChange = this.onEmailChange.bind(this);
+        this.onFirstNameChange = this.onFirstNameChange.bind(this);
+        this.onLastNameChange = this.onLastNameChange.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
     }
 
     redirect() {
@@ -39,11 +50,18 @@ class SignUp extends Component {
     }
 
     render() {
+
+        let message;
+        if(this.state.message) {
+            console.log(this.state.message);
+            message = <p>{this.state.message}</p>
+        }
+
         return (
             <>
                 <div className="row" style={{ marginTop: 30 }}>
                     <div className="col-12">
-                        <img src={GaijinLogo} style={{ width: 240 }} />
+                        <a href="/"><img src={GaijinLogo} style={{ width: 240 }} /></a>
                     </div>
                 </div>
                 <div className="row" style={{ marginTop: 70 }}>
@@ -67,27 +85,26 @@ class SignUp extends Component {
                                     label={"Email"}
                                     labelFor="email-input"
                                 >
-                                    <InputGroup id="email-input" placeholder="Email Address" intent={INTENT_PRIMARY} />
+                                    <InputGroup id="email-input" value={this.state.email} onChange={this.onEmailChange} placeholder="Email Address" intent={INTENT_PRIMARY} />
                                 </FormGroup>
                             </div>
                             <div className="col-12">
                                 <FormGroup
-                                    helperText={!this.state.passwordValid && "Password is required"}
+                                    helperText={!this.state.firstNameValid && "First Name is required"}
                                     intent={INTENT_PRIMARY}
                                     label={"First Name"}
                                     labelFor="first-name-input"
                                 >
-                                    <InputGroup id="password-input" placeholder="First Name" intent={INTENT_PRIMARY} />
+                                    <InputGroup id="first-name-input" value={this.state.firstName} onChange={this.onFirstNameChange} placeholder="First Name" intent={INTENT_PRIMARY} />
                                 </FormGroup>
                             </div>
                             <div className="col-12">
                                 <FormGroup
-                                    helperText={!this.state.passwordValid && "Password is required"}
                                     intent={INTENT_PRIMARY}
                                     label={"Last Name"}
                                     labelFor="last-name-input"
                                 >
-                                    <InputGroup id="password-input" placeholder="Last Name" intent={INTENT_PRIMARY} />
+                                    <InputGroup id="last-name-input" value={this.state.lastName} onChange={this.onLastNameChange} placeholder="Last Name" intent={INTENT_PRIMARY} />
                                 </FormGroup>
                             </div>
                             <div className="col-12">
@@ -98,21 +115,22 @@ class SignUp extends Component {
                                     labelFor="password-input"
                                     type="password"
                                 >
-                                    <InputGroup id="password-input" placeholder="Password" intent={INTENT_PRIMARY} />
+                                    <InputGroup id="password-input" value={this.state.password} onChange={this.onPasswordChange} placeholder="Password" intent={INTENT_PRIMARY} />
                                 </FormGroup>
                             </div>
                             <div className="col-12">
                                 <FormGroup
-                                    helperText={!this.state.passwordValid && "Password is required"}
+                                    helperText={!this.state.confirmPasswordValid && "Password is not the same"}
                                     intent={INTENT_PRIMARY}
                                     label={"Confirm Password"}
                                     labelFor="confirm-password-input"
                                 >
-                                    <InputGroup id="confirm-password-input" placeholder="Confirm Password" intent={INTENT_PRIMARY} />
+                                    <InputGroup id="confirm-password-input" value={this.state.confirmPassword} onChange={this.onConfirmPasswordChange} placeholder="Confirm Password" intent={INTENT_PRIMARY} />
                                 </FormGroup>
                             </div>
                             <div className="col-12">
-                                <Button onClick={this.handleRegister.bind(this)} style={{ width: "100%" }}>Sign Up</Button>
+                                {message}
+                                <Button onClick={this.handleRegister} style={{ width: "100%" }}>Sign Up</Button>
                             </div>
                         </div>
                         <Divider />
@@ -145,6 +163,10 @@ class SignUp extends Component {
                 </div>
             </>
         );
+    }
+
+    redirect() {
+        window.location = "/";
     }
 
     responseGoogle = (response) => {
@@ -185,6 +207,26 @@ class SignUp extends Component {
         }
     }
 
+    onFirstNameChange(e) {
+        this.setState({ firstName: e.target.value });
+    }
+
+    onLastNameChange(e) {
+        this.setState({ lastName: e.target.value });
+    }
+    
+    onPasswordChange(e) {
+        this.setState({ password: e.target.value });
+    }
+    
+    onConfirmPasswordChange(e) {
+        this.setState({ confirmPassword: e.target.value });
+    }
+
+    onEmailChange(e) {
+        this.setState({ email: e.target.value });
+    }
+
     handleRegister(e) {
         e.preventDefault();
 
@@ -193,8 +235,23 @@ class SignUp extends Component {
             loading: true
         });
 
+        if(this.state.firstName == "") {
+            console.log(this.state.firstName);
+            this.setState({ firstNameValid: false });
+            return;
+        }
+
         if(this.state.password !== this.state.confirmPassword) {
+            console.log(this.state.password);
             this.setState({ message: "Password does not match", loading: false });
+            return;
+        }
+
+
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if ( !re.test(this.state.email) ) {
+            console.log(this.state.password);
+            this.setState({ emailValid: false });
             return;
         }
 
@@ -202,10 +259,11 @@ class SignUp extends Component {
             var self = this;
             AuthService.register(
                 this.state.email,
-                this.state.firstname,
-                this.state.lastname,
+                this.state.firstName,
+                this.state.lastName,
                 this.state.password
             ).then( response => {
+                console.log(response.message);
                 if(localStorage.getItem("access_token")) {
                     this.setState({
                         message: response.message,

@@ -119,6 +119,10 @@
   object-fit: cover;
 }
 
+.avatar-navbar {
+  max-width: 24px;
+}
+
 .col-2dot4 {
   -ms-flex: 0 0 20%;
   flex: 0 0 20%;

@@ -15,7 +15,7 @@ class Banner extends Component {
 
         return(
             <div className="banner" style={{ width: this.props.bannerSize, height: this.props.bannerSize }}>
-                <img className="banner-img" src="https://marketplace.canva.com/EAD7RZBpky0/1/0/400w/canva-blue-and-white-gaming-logo-N-0-xW64Gwc.jpg" />
+                <img className="banner-img" src={this.props.imgURL} />
             </div>
         );
     }

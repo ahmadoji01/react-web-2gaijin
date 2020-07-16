@@ -106,20 +106,18 @@ class Home extends Component {
                         <div className="row" style={{ marginLeft: 15 }}>
                             <div className="col-6 banner-container">
                                 <ScrollContainer vertical className="scroll-container" style={{ height: this.state.windowHeight }}>
-                                    <Banner bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL="https://marketplace.canva.com/EAD7RZBpky0/1/0/400w/canva-blue-and-white-gaming-logo-N-0-xW64Gwc.jpg" bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL="https://media.gettyimages.com/vectors/happy-thanksgiving-day-square-banner-vector-illustration-vector-id860471696" bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL="https://en.pimg.jp/048/726/450/1/48726450.jpg" bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL="https://static.vecteezy.com/system/resources/previews/000/663/703/non_2x/students-learning-together-square-banner-vector.jpg" bannerSize={(this.state.windowWidth/4) - 50} />
                                 </ScrollContainer>
                             </div>
                             <div className="col-6 banner-container">
                                 <ScrollContainer vertical className="scroll-container" style={{ height: this.state.windowHeight }}>
-                                    <Banner bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL="https://media.gettyimages.com/vectors/happy-thanksgiving-day-square-banner-vector-illustration-vector-id860471696" bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL="https://en.pimg.jp/048/726/450/1/48726450.jpg" bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL="https://static.vecteezy.com/system/resources/previews/000/663/703/non_2x/students-learning-together-square-banner-vector.jpg" bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL="https://marketplace.canva.com/EAD7RZBpky0/1/0/400w/canva-blue-and-white-gaming-logo-N-0-xW64Gwc.jpg" bannerSize={(this.state.windowWidth/4) - 50} />
                                 </ScrollContainer>
                             </div>
                         </div>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
     Alignment,
+    AnchorButton,
     Button,
     Classes,
     Navbar,
@@ -73,6 +74,10 @@ class NavigationBar extends Component {
         });
     }
 
+    onMyProfileClick(userID) {
+        window.location = "/profile/" + userID;
+    }
+    
     render() {
         const exampleMenu = (
             <Menu>
@@ -92,6 +97,7 @@ class NavigationBar extends Component {
 
         const accountMenu = (
             <Menu>
+                <MenuItem text="My Profile" onClick={() => this.onMyProfileClick(localStorage.getItem("user_id"))} intent={INTENT_WARNING}  />
                 <MenuItem text="Sign Out" onClick={this.onSignOutButtonClick} intent={INTENT_WARNING}  />
             </Menu>
         )
@@ -124,13 +130,13 @@ class NavigationBar extends Component {
                     <Button className={Classes.MINIMAL} icon="envelope" />
                     { this.state.isLoggedIn && 
                     <Popover content={accountMenu} position={Position.BOTTOM}>
-                        <Button className={Classes.MINIMAL} icon="user" />
+                        <Button className={Classes.MINIMAL} icon={<img src={localStorage.getItem("avatar_url")} className="avatar avatar-navbar" />} />
                     </Popover> }
                     { !this.state.isLoggedIn && 
                     <>
                         <Button className={Classes.MINIMAL} text="Sign In" onClick={() => this.setState({ isSignInDialogOpen: true })} />
                         <Dialog isOpen={this.state.isSignInDialogOpen} onClose={() => this.setState({ isSignInDialogOpen: false })}><SignIn /></Dialog>
-                        <Button className={Classes.MINIMAL} text="Sign Up" href="/sign-up" />
+                        <AnchorButton className={Classes.MINIMAL} text="Sign Up" href="/sign-up" />
                     </> }
                 </NavbarGroup>
             </Navbar>
