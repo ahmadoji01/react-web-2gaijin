@@ -11,7 +11,8 @@ import {
     Divider,
     H3,
     FormGroup, 
-    InputGroup
+    InputGroup,
+    Spinner
 } from "@blueprintjs/core";
 import { INTENT_PRIMARY } from "@blueprintjs/core/lib/esm/common/classes";
 
@@ -33,6 +34,8 @@ class SignIn extends Component {
         this.responseGoogle = this.responseGoogle.bind(this);
         this.responseFacebook = this.responseFacebook.bind(this);
         this.redirect = this.redirect.bind(this);
+        this.onEmailChange = this.onEmailChange.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
     }
 
     componentWillMount() {
@@ -46,6 +49,17 @@ class SignIn extends Component {
     }
 
     render() {
+
+        let message;
+        if(this.state.message) {
+            message = <p>{this.state.message}</p>
+        }
+
+        let spinner;
+        if(this.state.loading) {
+            spinner = <Spinner intent="warning" size={24} style={{ marginBottom: 10 }} />;
+        }
+
         return (
             <div className={Classes.DIALOG_BODY}>
                 <div className="row" style={{ marginBottom: 20 }}>
@@ -59,7 +73,7 @@ class SignIn extends Component {
                             label={"Email"}
                             labelFor="email-input"
                         >
-                            <InputGroup id="email-input" placeholder="Email Address" intent={INTENT_PRIMARY} />
+                            <InputGroup id="email-input" onChange={this.onEmailChange} placeholder="Email Address" intent={INTENT_PRIMARY} />
                         </FormGroup>
                     </div>
                     <div className="col-12">
@@ -70,10 +84,12 @@ class SignIn extends Component {
                             labelFor="password-input"
                             type="password"
                         >
-                            <InputGroup id="password-input" placeholder="Password" intent={INTENT_PRIMARY} />
+                            <InputGroup type="password" id="password-input" onChange={this.onPasswordChange} placeholder="Password" intent={INTENT_PRIMARY} />
                         </FormGroup>
                     </div>
                     <div className="col-12">
+                        {message}
+                        {spinner}
                         <Button onClick={this.handleLogin.bind(this)} style={{ width: "100%" }}>Sign In</Button>
                     </div>
                 </div>
@@ -104,6 +120,14 @@ class SignIn extends Component {
                 </div>
             </div>
         );
+    }
+
+    onEmailChange(e) {
+        this.setState({ email: e.target.value });
+    }
+    
+    onPasswordChange(e) {
+        this.setState({ password: e.target.value });
     }
 
     responseGoogle = (response) => {
@@ -152,20 +176,28 @@ class SignIn extends Component {
             loading: true
         });
 
-        if(this.state.valid) {
-            var self = this;
-            AuthService.login(this.state.email, this.state.password).then(
-            response => {
-                if(!localStorage.getItem("access_token")) {
-                    this.setState({
-                        loading: false,
-                        message: response.message
-                    });
-                } else {
-                    self.redirect();
-                }
-            });
+        if(this.state.email === "") {
+            this.setState({ message: "Email is empty", loading: false });
+            return;
         }
+        
+        if(this.state.password === "") {
+            this.setState({ message: "Password is empty", loading: false });
+            return;
+        }
+
+        var self = this;
+        AuthService.login(this.state.email, this.state.password).then(
+        response => {
+            if(!localStorage.getItem("access_token")) {
+                this.setState({
+                    loading: false,
+                    message: response.message
+                });
+            } else {
+                self.redirect();
+            }
+        });
     }
 
 }

@@ -6,9 +6,10 @@ import GoldCoin from "../../illustrations/GoldCoin.svg";
 import SilverCoin from "../../illustrations/SilverCoin.svg";
 import ProductCard from "../../components/ProductCard";
 import {
-    Tabs, Tab
+    Button, Tabs, Tab
 } from "@blueprintjs/core";
 import shortid from "shortid";
+import axios from "axios";
 
 class Profile extends Component {
 
@@ -18,6 +19,8 @@ class Profile extends Component {
             profile: [],
             items: [],
             isError: false,
+            allowEditProfile: false,
+            editProfile: [],
             cardWidth: (window.innerWidth/6) - 50, 
             cardHeight: (window.innerHeight/5) - 50,
         }
@@ -44,7 +47,6 @@ class Profile extends Component {
         fetch('https://go.2gaijin.com/profile_visitor?user_id=' + userid)
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson);
             if(responseJson.status == "Error") {
                 this.setState({ isError: true });
                 return;
@@ -56,6 +58,23 @@ class Profile extends Component {
         })
         .catch((error) => {
             console.error(error);
+        });
+
+        if(!localStorage.getItem("access_token")) { return; }
+
+        let self = this;
+        return axios.post(`https://go.2gaijin.com/get_profile_info`, {}, {
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": localStorage.getItem("access_token")
+            }
+        }).then(response => {
+            if(response.data.status === "Success") {
+                if(response.data.data.profile._id === userid) {
+                    self.setState({ allowEditProfile: true });
+                    self.setState({ editProfile: response.data.data.profile });
+                }
+            }
         });
     }
 
@@ -90,6 +109,9 @@ class Profile extends Component {
                         </div>
                         <div className="row short-bio">
                             <p>{shortBio}</p>
+                        </div>
+                        <div className="row short-bio">
+                            { this.state.allowEditProfile && <div className="col-6" style={{ paddingLeft: 0 }}><Button disabled={this.state.loading} style={{ width: "100%" }}>Edit Profile</Button></div> }
                         </div>
                     </div>
                 </div>

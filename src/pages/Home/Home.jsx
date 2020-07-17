@@ -14,6 +14,8 @@ import CategoriesContainer from "../../components/CategoriesContainer";
 import CitiesContainer from "../../components/CitiesContainer";
 import ProductTabs from "../../components/ProductTabs";
 import axios from "axios";
+import Footer from "../../components/Footer";
+import AuthService from "../../services/auth.service";
 
 class Home extends Component {
 
@@ -78,6 +80,8 @@ class Home extends Component {
               sortby: "newest"
             }
         }
+
+        AuthService.refreshToken();
   
         axios
         .get(`https://go.2gaijin.com/search`, config)
@@ -163,6 +167,7 @@ class Home extends Component {
                 <div className="row custom-container" style={{ marginTop: 50, width: "100%" }}>
                     <ProductTabs />
                 </div>
+                <Footer />
             </>
         );
     }

@@ -9,9 +9,10 @@ import {
     Card, H3, Classes, Button,
     Divider,
     FormGroup, 
-    InputGroup
+    InputGroup,
+    Spinner
 } from "@blueprintjs/core";
-import { INTENT_PRIMARY } from "@blueprintjs/core/lib/esm/common/classes";
+import { INTENT_PRIMARY, INTENT_WARNING } from "@blueprintjs/core/lib/esm/common/classes";
 import AuthService from "../../services/auth.service";
 
 class SignUp extends Component {
@@ -53,8 +54,12 @@ class SignUp extends Component {
 
         let message;
         if(this.state.message) {
-            console.log(this.state.message);
             message = <p>{this.state.message}</p>
+        }
+
+        let spinner;
+        if(this.state.loading) {
+            spinner = <Spinner intent="warning" size={24} style={{ marginBottom: 10 }} />;
         }
 
         return (
@@ -115,7 +120,7 @@ class SignUp extends Component {
                                     labelFor="password-input"
                                     type="password"
                                 >
-                                    <InputGroup id="password-input" value={this.state.password} onChange={this.onPasswordChange} placeholder="Password" intent={INTENT_PRIMARY} />
+                                    <InputGroup type="password" id="password-input" value={this.state.password} onChange={this.onPasswordChange} placeholder="Password" intent={INTENT_PRIMARY} />
                                 </FormGroup>
                             </div>
                             <div className="col-12">
@@ -124,13 +129,15 @@ class SignUp extends Component {
                                     intent={INTENT_PRIMARY}
                                     label={"Confirm Password"}
                                     labelFor="confirm-password-input"
+                                    type="password"
                                 >
-                                    <InputGroup id="confirm-password-input" value={this.state.confirmPassword} onChange={this.onConfirmPasswordChange} placeholder="Confirm Password" intent={INTENT_PRIMARY} />
+                                    <InputGroup type="password" id="confirm-password-input" value={this.state.confirmPassword} onChange={this.onConfirmPasswordChange} placeholder="Confirm Password" intent={INTENT_PRIMARY} />
                                 </FormGroup>
                             </div>
                             <div className="col-12">
+                                {spinner}
                                 {message}
-                                <Button onClick={this.handleRegister} style={{ width: "100%" }}>Sign Up</Button>
+                                <Button onClick={this.handleRegister} disabled={this.state.loading} style={{ width: "100%" }}>Sign Up</Button>
                             </div>
                         </div>
                         <Divider />
@@ -139,7 +146,7 @@ class SignUp extends Component {
                                 <GoogleLogin
                                     clientId="880692175404-smp8q2u85pehekh59lk2pj2n4t39u7ha.apps.googleusercontent.com"
                                     render={renderProps => (
-                                        <Button icon={<GoogleIcon style={{ maxWidth: 24, maxHeight: 24 }} />} onClick={renderProps.onClick} style={{ width: "100%" }}>Sign In with Google</Button>
+                                        <Button icon={<GoogleIcon style={{ maxWidth: 24, maxHeight: 24 }} />} onClick={renderProps.onClick} style={{ width: "100%" }}>Sign Up with Google</Button>
                                     )}
                                     onSuccess={this.responseGoogle}
                                     onFailure={this.responseGoogle}
@@ -152,7 +159,7 @@ class SignUp extends Component {
                                     autoLoad
                                     fields="name,first_name,last_name,email,picture"
                                     render={renderProps => (
-                                        <Button icon={<FacebookIcon style={{ maxWidth: 24, maxHeight: 24 }} />} onClick={renderProps.onClick} style={{ width: "100%" }}>Sign In with Facebook</Button>
+                                        <Button icon={<FacebookIcon style={{ maxWidth: 24, maxHeight: 24 }} />} onClick={renderProps.onClick} style={{ width: "100%" }}>Sign Up with Facebook</Button>
                                     )}
                                     callback={() => this.responseFacebook} 
                                 />
@@ -230,19 +237,30 @@ class SignUp extends Component {
     handleRegister(e) {
         e.preventDefault();
 
+        console.log(this.state.email);
+        console.log(this.state.firstName);
+        console.log(this.state.lastName);
+        console.log(this.state.password);
+        console.log(this.state.confirmPassword);
+
         this.setState({
             message: "",
-            loading: true
+            loading: true,
+            firstNameValid: true,
+            passwordValid: true
         });
 
         if(this.state.firstName == "") {
-            console.log(this.state.firstName);
             this.setState({ firstNameValid: false });
             return;
         }
 
+        if(this.state.password == "") {
+            this.setState({ passwordValid: false });
+            return;
+        }
+
         if(this.state.password !== this.state.confirmPassword) {
-            console.log(this.state.password);
             this.setState({ message: "Password does not match", loading: false });
             return;
         }
@@ -254,30 +272,27 @@ class SignUp extends Component {
             this.setState({ emailValid: false });
             return;
         }
-
-        if(this.state.valid) {
-            var self = this;
-            AuthService.register(
-                this.state.email,
-                this.state.firstName,
-                this.state.lastName,
-                this.state.password
-            ).then( response => {
-                console.log(response.message);
-                if(localStorage.getItem("access_token")) {
-                    this.setState({
-                        message: response.message,
-                        loading: false
-                    });
-                    self.redirect();
-                } else {
-                    this.setState({
-                        message: response.message,
-                        loading: false
-                    });
-                }
-            });
-        }
+        
+        var self = this;
+        AuthService.register(
+            this.state.email,
+            this.state.firstName,
+            this.state.lastName,
+            this.state.password
+        ).then( response => {
+            if(localStorage.getItem("access_token")) {
+                this.setState({
+                    message: response.message,
+                    loading: false
+                });
+                self.redirect();
+            } else {
+                this.setState({
+                    message: response.message,
+                    loading: false
+                });
+            }
+        });
     }
 
 }
