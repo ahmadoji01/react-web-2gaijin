@@ -6,10 +6,12 @@ import GoldCoin from "../../illustrations/GoldCoin.svg";
 import SilverCoin from "../../illustrations/SilverCoin.svg";
 import ProductCard from "../../components/ProductCard";
 import {
-    Button, Tabs, Tab
+    Button, Tabs, Tab, Dialog
 } from "@blueprintjs/core";
 import shortid from "shortid";
 import axios from "axios";
+import EditProfile from "../../dialogs/EditProfile/EditProfile";
+import AuthService from "../../services/auth.service";
 
 class Profile extends Component {
 
@@ -19,8 +21,11 @@ class Profile extends Component {
             profile: [],
             items: [],
             isError: false,
+            isEditProfileDialogOpen: false,
             allowEditProfile: false,
             editProfile: [],
+            isEmailConfirmed: false,
+            isPhoneConfirmed: false,
             cardWidth: (window.innerWidth/6) - 50, 
             cardHeight: (window.innerHeight/5) - 50,
         }
@@ -30,6 +35,25 @@ class Profile extends Component {
     componentDidMount() {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
+        
+        var userid = this.props.match.params.userid;
+        if(!localStorage.getItem("access_token")) { return; }
+        let self = this;
+        return axios.post(`https://go.2gaijin.com/get_profile_info`, {}, {
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": localStorage.getItem("access_token")
+            }
+        }).then(response => {
+            if(response.data.status === "Success") {
+                if(response.data.data.profile._id === userid) {
+                    self.setState({ allowEditProfile: true });
+                    self.setState({ editProfile: response.data.data.profile });
+                    self.setState({ isEmailConfirmed: response.data.data.profile.email_confirmed });
+                    self.setState({ isPhoneConfirmed: response.data.data.profile.phone_confirmed });
+                }
+            }
+        });
     }
     
     componentWillUnmount() {
@@ -60,22 +84,7 @@ class Profile extends Component {
             console.error(error);
         });
 
-        if(!localStorage.getItem("access_token")) { return; }
-
-        let self = this;
-        return axios.post(`https://go.2gaijin.com/get_profile_info`, {}, {
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": localStorage.getItem("access_token")
-            }
-        }).then(response => {
-            if(response.data.status === "Success") {
-                if(response.data.data.profile._id === userid) {
-                    self.setState({ allowEditProfile: true });
-                    self.setState({ editProfile: response.data.data.profile });
-                }
-            }
-        });
+        AuthService.refreshToken();
     }
 
     render() {
@@ -111,7 +120,22 @@ class Profile extends Component {
                             <p>{shortBio}</p>
                         </div>
                         <div className="row short-bio">
-                            { this.state.allowEditProfile && <div className="col-6" style={{ paddingLeft: 0 }}><Button disabled={this.state.loading} style={{ width: "100%" }}>Edit Profile</Button></div> }
+                            { this.state.allowEditProfile &&
+                                <>
+                                    <Dialog isOpen={this.state.isEditProfileDialogOpen} onClose={() => this.setState({ isEditProfileDialogOpen: false })}><EditProfile editProfile={this.state.editProfile} /></Dialog> 
+                                    <div className="col-12" style={{ paddingLeft: 0 }}>
+                                        <Button style={{ width: "50%" }} onClick={() => this.setState({ isEditProfileDialogOpen: true })}>Edit Profile</Button>
+                                    </div>
+
+                                    <div className="row" style={{ paddingLeft: 0, marginTop: 20 }}>
+                                        {!this.state.isEmailConfirmed && <div className="col-6">
+                                            <Button style={{ width: "100%" }} onClick={() => this.setState({ isEditProfileDialogOpen: true })}>Confirm My Email</Button>
+                                        </div>}
+                                        {!this.state.isPhoneConfirmed && <div className="col-6">
+                                            <Button style={{ width: "100%" }} onClick={() => this.setState({ isEditProfileDialogOpen: true })}>Confirm My Phone</Button>
+                                        </div>}
+                                    </div>
+                                </> }
                         </div>
                     </div>
                 </div>

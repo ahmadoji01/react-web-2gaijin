@@ -144,6 +144,10 @@ class AuthService {
     }
 
     refreshToken() {
+        if(!localStorage.getItem("refresh_token")) {
+            return;
+        }
+
         return axios.post(`https://go.2gaijin.com/refresh_token`, {}, {
             headers: {
                 "Authorization": localStorage.getItem("refresh_token")

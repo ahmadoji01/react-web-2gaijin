@@ -16,6 +16,17 @@ import AuthService from "../../services/auth.service";
 import SignIn from "../../dialogs/SignIn";
 import { INTENT_WARNING } from "@blueprintjs/core/lib/esm/common/classes";
 
+import { ReactComponent as ApparelsIcon} from "../../icons/ApparelsIcon.svg";
+import { ReactComponent as BooksIcon} from "../../icons/BooksIcon.svg";
+import { ReactComponent as ElectronicsIcon} from "../../icons/ElectronicsIcon.svg";
+import { ReactComponent as FootwearIcon} from "../../icons/FootwearIcon.svg";
+import { ReactComponent as FurnituresIcon} from "../../icons/FurnituresIcon.svg";
+import { ReactComponent as KitchensIcon} from "../../icons/KitchensIcon.svg";
+import { ReactComponent as MiscellaneousIcon} from "../../icons/MiscellaneousIcon.svg";
+import { ReactComponent as SportsIcon} from "../../icons/SportsIcon.svg";
+import { ReactComponent as VehiclesIcon} from "../../icons/VehiclesIcon.svg";
+import { ReactComponent as WhiteAppliancesIcon} from "../../icons/WhiteAppliancesIcon.svg";
+
 class NavigationBar extends Component {
 
     constructor(props) {
@@ -81,17 +92,16 @@ class NavigationBar extends Component {
     render() {
         const exampleMenu = (
             <Menu>
-                <MenuItem icon="graph" text="Apparels" />
-                <MenuItem icon="map" text="Books" />
-                <MenuItem icon="map" text="Electronics" />
-                <MenuItem icon="map" text="Footwear" />
-                <MenuItem icon="map" text="Furnitures" />
-                <MenuItem icon="map" text="Kitchens" />
-                <MenuItem icon="map" text="Sports" />
-                <MenuItem icon="map" text="Vehicles" />
-                <MenuItem icon="map" text="White Appliances" />
-                <MenuItem icon="map" text="Miscellaneous" />
-                <MenuItem icon="th" text="Table" shouldDismissPopover={false} />
+                <MenuItem href="/search?category=Apparels" icon={<ApparelsIcon />} text="Apparels" />
+                <MenuItem href="/search?category=Books" icon={<BooksIcon />} text="Books" />
+                <MenuItem href="/search?category=Electronics" icon={<ElectronicsIcon />} text="Electronics" />
+                <MenuItem href="/search?category=Footwear" icon={<FootwearIcon />} text="Footwear" />
+                <MenuItem href="/search?category=Furnitures" icon={<FurnituresIcon />} text="Furnitures" />
+                <MenuItem href="/search?category=Kitchens" icon={<KitchensIcon />} text="Kitchens" />
+                <MenuItem href="/search?category=Sports" icon={<SportsIcon />} text="Sports" />
+                <MenuItem href="/search?category=Vehicles" icon={<VehiclesIcon />} text="Vehicles" />
+                <MenuItem href="/search?category=White Appliances" icon={<WhiteAppliancesIcon />} text="White Appliances" />
+                <MenuItem href="/search?category=Miscellaneous" icon={<MiscellaneousIcon />} text="Miscellaneous" />
             </Menu>
         )
 
@@ -114,7 +124,7 @@ class NavigationBar extends Component {
                 <NavbarGroup align={Alignment.LEFT}>
                     <NavbarHeading><a href="/"><img src={GaijinLogo} className="logo" /></a></NavbarHeading>
                     <NavbarDivider />
-                    <Popover content={exampleMenu} position={Position.BOTTOM}>
+                    <Popover content={exampleMenu} position={Position.BOTTOM} style={{ zIndex: 12039181 }}>
                         <Button className={Classes.MINIMAL} text="Categories" />
                     </Popover>
                     <NavbarDivider />
