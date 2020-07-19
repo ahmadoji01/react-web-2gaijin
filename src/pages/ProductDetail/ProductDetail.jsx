@@ -5,10 +5,18 @@ import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/scss/image-gallery.scss";
 import parse from 'html-react-parser';
 import {
+    Classes,
+    Dialog,
     Icon
 } from "@blueprintjs/core";
 import ProductSlider from "../../components/ProductSlider";
 import "./ProductDetail.scss";
+
+import BankIcon from "../../icons/bankicon.png";
+import CODIcon from "../../icons/codicon.png";
+import PaypalIcon from "../../icons/paypalicon.png";
+import WeChatIcon from "../../icons/wechaticon.png";
+import Footer from "../../components/Footer";
 
 const images = [
     {
@@ -32,6 +40,7 @@ class ProductDetail extends Component {
         this.state = {
             data: [],
             images: [],
+            paymentMethod: [],
             windowWidth: 350,
             isLoading: false,
             activeIndex: 0,
@@ -56,6 +65,7 @@ class ProductDetail extends Component {
             const jsonData = responseJson.data;
             this.populatePhotos(jsonData.item.images);
             this.setState({ data: jsonData});
+            this.setState({ paymentMethod: jsonData.payment_method });
         })
         .catch((error) => {
             console.error(error);
@@ -131,18 +141,26 @@ class ProductDetail extends Component {
                         <div className="available-payment">
                             <h6>This seller accepts following payment method</h6>
                             <div className="row">
-                                <div className="col-3 payment-icon-container">
-                                    <img className="payment-icon" src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/250_Paypal_logo-512.png" />
+                                { this.state.paymentMethod.paypal && <><div className="col-3 payment-icon-container">
+                                    <a href="#" onClick={() => this.setState({ isPaypalDialogOpen: true })}><img className="payment-icon" src={PaypalIcon} /></a>
                                 </div>
-                                <div className="col-3 payment-icon-container">
-                                    <img className="payment-icon" src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/250_Paypal_logo-512.png" />
+                                <Dialog isOpen={this.state.isPaypalDialogOpen} onClose={() => this.setState({ isPaypalDialogOpen: false })} icon="info-sign" title="Payment with Paypal"><div className={Classes.DIALOG_BODY}><p><strong>{this.state.paymentMethod.paypal}</strong></p></div></Dialog>
+                                </> }
+                                { this.state.paymentMethod.wechat && <><div className="col-3 payment-icon-container">
+                                    <a href="#" onClick={() => this.setState({ isWeChatDialogOpen: true })}><img className="payment-icon" src={WeChatIcon} /></a>
                                 </div>
-                                <div className="col-3 payment-icon-container">
-                                    <img className="payment-icon" src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/250_Paypal_logo-512.png" />
+                                <Dialog isOpen={this.state.isWeChatDialogOpen} onClose={() => this.setState({ isWeChatDialogOpen: false })} icon="info-sign" title="Payment with Wechat"><div className={Classes.DIALOG_BODY}><p><strong>WeChat ID: {this.state.paymentMethod.wechat}</strong></p></div></Dialog>
+                                </> }
+                                { this.state.paymentMethod.bank_account_number && <><div className="col-3 payment-icon-container">
+                                    <a href="#" onClick={() => this.setState({ isBankDialogOpen: true })}><img className="payment-icon" src={BankIcon} /></a>
                                 </div>
-                                <div className="col-3 payment-icon-container">
-                                    <img className="payment-icon" src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/250_Paypal_logo-512.png" />
+                                <Dialog isOpen={this.state.isBankDialogOpen} onClose={() => this.setState({ isBankDialogOpen: false })} icon="info-sign" title="Payment with Bank Account"><div className={Classes.DIALOG_BODY}><p><strong>Bank Account Number: <br />{this.state.paymentMethod.bank_account_number}<br />Bank Account Holder's Name: <br />{this.state.paymentMethod.bank_account_name}<br />Bank Name: <br />{this.state.paymentMethod.bank_name}</strong></p></div></Dialog>
+                                </> }
+                                { this.state.paymentMethod.cod && <><div className="col-3 payment-icon-container">
+                                    <a href="#" onClick={() => this.setState({ isCODDialogOpen: true })}><img className="payment-icon" src={CODIcon} /></a>
                                 </div>
+                                <Dialog isOpen={this.state.isCODDialogOpen} onClose={() => this.setState({ isCODDialogOpen: false })} icon="info-sign" title="Cash on Delivery"><div className={Classes.DIALOG_BODY}><p><strong>This seller accepts Cash on Delivery</strong></p></div></Dialog>
+                                </> }
                             </div>
                         </div>
                     </div>  
@@ -153,6 +171,7 @@ class ProductDetail extends Component {
                 <div className="row" style={{ marginTop: 30, marginBottom: 90 }}>
                     <ProductSlider title="Other items you might like" subtitle="Some items we'd love to share with fellow gaijins" items={this.state.data.relateditems} label="Featured" />
                 </div>
+                <Footer />
             </>
         );
     }

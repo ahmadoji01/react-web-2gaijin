@@ -6,12 +6,13 @@ import GoldCoin from "../../illustrations/GoldCoin.svg";
 import SilverCoin from "../../illustrations/SilverCoin.svg";
 import ProductCard from "../../components/ProductCard";
 import {
-    Button, Tabs, Tab, Dialog
+    Button, Tabs, Tab, Dialog, FormGroup
 } from "@blueprintjs/core";
 import shortid from "shortid";
 import axios from "axios";
 import EditProfile from "../../dialogs/EditProfile/EditProfile";
 import AuthService from "../../services/auth.service";
+import Footer from "../../components/Footer";
 
 class Profile extends Component {
 
@@ -151,6 +152,7 @@ class Profile extends Component {
                         <Tab id="collections" title="Collections" panel={<CollectionPanel items={this.state.items} cardWidth={this.state.cardWidth} cardHeight={this.state.cardHeight} /> } />
                     </Tabs>
                 </div>
+                <Footer />
             </>
         );
     }
