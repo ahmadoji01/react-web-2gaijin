@@ -1,0 +1,60 @@
+.coin-card {
+    margin: 0 auto; 
+    width: 150px;
+    height: 150px;
+    position: relative; 
+    background-color: lightgray;
+    border-radius: 10px
+}
+
+.active-gold {
+    border: 5px solid #1B479E;
+    background-color: #FFF9D9;
+}
+
+.active-silver {
+    border: 5px solid #1B479E;
+    background-color: #EEF0F2;
+}
+
+.ok-indicator {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.coin-image {
+    margin: 0;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 84px;
+    height: 76px;
+}
+
+.coin-text {
+    width: 100%;
+    margin: 0;
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.coin-valid-text {
+    width: 100%;
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+}

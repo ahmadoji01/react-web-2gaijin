@@ -114,8 +114,8 @@ class Profile extends Component {
                     <div className="col-8 profile-info">
                         <h3>{fullName}</h3>
                         <div className="row coin-info">
-                            <img src={GoldCoin} className="coin" /><p className="coin-text">{goldCoins} Gold(s)</p> 
-                            <img src={SilverCoin} className="coin" /><p className="coin-text">{silverCoins} Silver(s)</p>
+                            <img src={GoldCoin} className="coin" /><p className="coin-info-text">{goldCoins} Gold(s)</p> 
+                            <img src={SilverCoin} className="coin" /><p className="coin-info-text">{silverCoins} Silver(s)</p>
                         </div>
                         <div className="row short-bio">
                             <p>{shortBio}</p>

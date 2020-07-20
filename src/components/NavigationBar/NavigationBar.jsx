@@ -27,6 +27,8 @@ import { ReactComponent as SportsIcon} from "../../icons/SportsIcon.svg";
 import { ReactComponent as VehiclesIcon} from "../../icons/VehiclesIcon.svg";
 import { ReactComponent as WhiteAppliancesIcon} from "../../icons/WhiteAppliancesIcon.svg";
 
+import Notifications from "../../dialogs/Notifications";
+
 class NavigationBar extends Component {
 
     constructor(props) {
@@ -38,6 +40,7 @@ class NavigationBar extends Component {
             searchTerm: "",
             isLoggedIn: false,
             isSignInDialogOpen: false,
+            isNotificationOpen: false,
         }; 
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.searchTermChange = this.searchTermChange.bind(this);
@@ -120,23 +123,23 @@ class NavigationBar extends Component {
         }
 
         return (
-            <Navbar className="full-navbar">
-                <NavbarGroup align={Alignment.LEFT}>
-                    <NavbarHeading><a href="/"><img src={GaijinLogo} className="logo" /></a></NavbarHeading>
-                    <NavbarDivider />
+            <nav class="bp3-navbar full-navbar">
+                <div class="bp3-navbar-group bp3-align-left">
+                    <div class="bp3-navbar-heading"><a href="/"><img src={GaijinLogo} className="logo" /></a></div>
+                    <span class="bp3-navbar-divider"></span>
                     <Popover content={exampleMenu} position={Position.BOTTOM} style={{ zIndex: 12039181 }}>
                         <Button className={Classes.MINIMAL} text="Categories" />
                     </Popover>
-                    <NavbarDivider />
+                    <span class="bp3-navbar-divider"></span>
                     <div className="bp3-input-group .bp3-large" style={{ width: searchBarWidth }}>
                         <span className="bp3-icon bp3-icon-search" style={{ fontSize: 18, paddingTop: 5, paddingLeft: 10, color: "#9BACCE" }}></span>
                         <form onSubmit={this.searchSubmit}><input value={this.state.searchTerm} onChange={this.searchTermChange} className="bp3-input" type="search" style={{ height: 40, paddingLeft: 50 }} placeholder="Try Fridge, Table" dir="auto" /></form>
                         <Button className="nav-search-btn" intent="warning" onClick={this.searchSubmit}>Search</Button>
                     </div>
-                </NavbarGroup>
-                <NavbarGroup align={Alignment.RIGHT}>
+                </div>
+                <div class="bp3-navbar-group bp3-align-right">
                     <Button className={Classes.MINIMAL} rightIcon="truck" text="Delivery" />
-                    <Button className={Classes.MINIMAL} icon="notifications" />
+                    <Notifications />
                     <Button className={Classes.MINIMAL} icon="envelope" />
                     { this.state.isLoggedIn && 
                     <Popover content={accountMenu} position={Position.BOTTOM}>
@@ -148,8 +151,8 @@ class NavigationBar extends Component {
                         <Dialog isOpen={this.state.isSignInDialogOpen} onClose={() => this.setState({ isSignInDialogOpen: false })}><SignIn /></Dialog>
                         <AnchorButton className={Classes.MINIMAL} text="Sign Up" href="/sign-up" />
                     </> }
-                </NavbarGroup>
-            </Navbar>
+                </div>
+            </nav>
         )
     }
 }

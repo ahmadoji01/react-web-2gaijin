@@ -123,6 +123,10 @@
   max-width: 24px;
 }
 
+.avatar-notif {
+  max-width: 50px;
+}
+
 .col-2dot4 {
   -ms-flex: 0 0 20%;
   flex: 0 0 20%;
@@ -144,3 +148,61 @@
 .no-shadow {
   box-shadow: none !important;
 }
+
+.notif-img-container {
+  border-radius: 50%;
+  height: 0;
+  padding-bottom: 10%;
+  background: no-repeat center/cover;
+}
+
+.bp3-transition-container {
+  z-index: 9999999999;
+}
+
+.notif-row {
+  padding: 2px 20px 2px 20px;
+  margin-bottom: 5px;
+}
+
+.notif-row-header {
+  width: 100%;
+}
+
+.divider-space-content {
+  margin: 2px 10px 2px 10px;
+  border: 1px solid #E0E5EE;
+}
+
+.general-btn {
+	background-color: #EF7132 !important;
+  font-weight: 700;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+}
+
+.general-washout-btn {
+	background-color: #CDCDCD !important;
+  font-weight: 700;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+}
+
+.general-disabled-btn {
+	background-color: #FFD4BE !important;
+  font-weight: 700;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+}
+
+.general-reject-btn {
+	background-color: #B71C1C !important;
+  font-weight: 700;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+}
+

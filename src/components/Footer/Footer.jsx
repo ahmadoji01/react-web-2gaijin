@@ -43,19 +43,21 @@ class Footer extends Component {
                     </div>
                 </nav>
                 <div className="row footer-content">
-                    <div className="col-4">
+                    <div className="col-1"></div>
+                    <div className="col-3">
                         <img src={GaijinLogo} style={{ width: 240, marginBottom: 20 }} />
                         <p style={{ textAlign: "left" }}>2Gaijin.com is a service that helps you delivery stuffs in front of your door</p>
                     </div>
-                    <div className="col-4">
+                    <div className="col-3">
                         <h3>Contact</h3>
-                        <p style={{ textAlign: "left", paddingLeft: 10 }}><Icon icon="add" iconSize={20} /> Sapporo-shi, Hokkaido, Japan</p>
+                        <p style={{ textAlign: "left", paddingLeft: 10 }}><Icon icon="add" iconSize={20} /> Sapporo, Hokkaido, Japan</p>
                         <p style={{ textAlign: "left", paddingLeft: 10 }}><Icon icon="phone" iconSize={20} /> Phone: (+81)80-8293-4266</p>
                         <p style={{ textAlign: "left", paddingLeft: 10 }}><Icon icon="envelope" iconSize={20} /> Email: <a href="mailto:2gaijin@kitalabs.com">2gaijin@kitalabs.com</a></p>
                     </div>
-                    <div className="col-4">
+                    <div className="col-3">
                         
                     </div>
+                    <div className="col-1"></div>
                 </div>
             </>
         );
