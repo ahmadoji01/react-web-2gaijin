@@ -132,7 +132,7 @@ class ProductDetail extends Component {
                             <h6>DESCRIPTION</h6>
                             <p className="desc-content">{parse(itemInfo.description)}</p> 
                         </div>
-                        <iframe style={{width: "100%", height: 200, borderRadius: 16, marginTop: 10}}
+                        <iframe style={{width: "100%", height: 200, marginTop: 10}}
                             frameborder="0" 
                             scrolling="no" 
                             src={mapSrc}

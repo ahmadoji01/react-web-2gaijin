@@ -139,7 +139,10 @@ class NavigationBar extends Component {
                 </div>
                 <div class="bp3-navbar-group bp3-align-right">
                     <Button className={Classes.MINIMAL} rightIcon="truck" text="Delivery" />
-                    <Notifications />
+                    { this.state.isLoggedIn && 
+                        <Notifications />
+                    }
+                    { !this.state.isLoggedIn && <Button className={Classes.MINIMAL} icon="notifications" onClick={() => this.setState({ isSignInDialogOpen: true })}  /> }
                     <Button className={Classes.MINIMAL} icon="envelope" />
                     { this.state.isLoggedIn && 
                     <Popover content={accountMenu} position={Position.BOTTOM}>

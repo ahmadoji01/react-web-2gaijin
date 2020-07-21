@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './AppointmentBar.scss';
 import { geolocated } from 'react-geolocated';
-import { Button, Link, Sheet, PageContent, Col, Preloader } from "framework7-react";
 import ProductCardHorizontal from '../ProductCardHorizontal';
 import Moment from 'react-moment';
 import axios from 'axios';
+import { Button, Dialog, Spinner, Switch } from "@blueprintjs/core";
 
 class AppointmentBar extends Component {
     
@@ -163,23 +163,6 @@ class AppointmentBar extends Component {
         this.setState({ meetingTime: this.props.item.meeting_time });
         var self = this;
         var today = new Date();
-        var calendarRef = "#demo-calendar-date-time-" + this.props.item._id;
-        var calendarDateTime = this.$f7.calendar.create({
-            inputEl: calendarRef,
-            openIn: 'customModal',
-            value: [new Date(this.props.item.meeting_time)],
-            footer: true,
-            timePicker: true,
-            dateFormat: { month: 'numeric', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' },
-            disabled: {
-                to: today
-            },
-            on: {
-                closed: function () {
-                  self.setState({ sheetOpened: true });
-                }
-            }
-        });
     }
 
     render() {
@@ -198,10 +181,10 @@ class AppointmentBar extends Component {
                 if(this.props.type == "seller") {
                     if(this.state.status == "accepted") {
                         notifButton = <div className="row" style={{paddingBottom: 0, marginBottom: 0}}>
-                            <div className="col-50">
+                            <div className="col-6">
                                 <Button className="general-washout-btn" onClick={() => {this.setState({sheetOpened: true})}} style={{color: "#000", marginTop: 5}} raised fill round>Reschedule</Button>
                             </div>
-                            <div className="col-50">
+                            <div className="col-6">
                                 <Button className="general-btn" style={{color: "#fff", marginTop: 5}} onClick={() => this.finishAppointment(item._id)} raised fill round>Finish Transaction</Button>
                             </div>
                         </div>
@@ -211,10 +194,10 @@ class AppointmentBar extends Component {
                         </div>
                     } else if(this.state.status == "pending") {
                         notifButton = <div className="row" style={{paddingBottom: 0, marginBottom: 0}}>
-                            <div className="col-50">
+                            <div className="col-6">
                                 <Button className="general-btn" style={{color: "#fff", marginTop: 5}} onClick={() => this.acceptAppointment(item._id)} color="orange" raised fill round>Accept</Button>
                             </div>
-                            <div className="col-50">
+                            <div className="col-6">
                                 <Button className="general-reject-btn" style={{color: "#fff", marginTop: 5}} onClick={() => this.rejectAppointment(item._id)} color="orange" raised fill round>Reject</Button>
                             </div>
                         </div>
@@ -226,7 +209,7 @@ class AppointmentBar extends Component {
                 } else if(this.props.type == "buyer") {
                     if(this.state.status == "accepted") {
                         notifButton = <div className="row" style={{paddingBottom: 0, marginBottom: 0}}>
-                            <div className="col-50">
+                            <div className="col-6">
                                 <Button className="general-washout-btn" style={{color: "#000", marginTop: 5}} onClick={() => this.handleChat(appointmentUserID)} raised fill round>Chat with Seller</Button>
                             </div>
                         </div>
@@ -236,10 +219,10 @@ class AppointmentBar extends Component {
                         </div>
                     } else if(this.state.status == "pending") {
                         notifButton = <div className="row" style={{paddingBottom: 0, marginBottom: 0}}>
-                            <div className="col-50">
+                            <div className="col-6">
                                 <Button className="general-washout-btn" style={{color: "#000", marginTop: 5}} onClick={() => this.handleChat(appointmentUserID)} raised fill round>Chat with Seller</Button>
                             </div>
-                            <div className="col-50">
+                            <div className="col-6">
                                 <Button className="general-disabled-btn" style={{color: "#EF7132", marginTop: 5}} raised fill round>In Review...</Button>
                             </div>
                         </div>
@@ -257,15 +240,15 @@ class AppointmentBar extends Component {
 
                 let loading;
                 if(this.state.isLoading) {
-                    loading = <Col style={{ width: "100%" }}>
-                        <Preloader color="orange"></Preloader>
-                    </Col>;
+                    loading = <div className="row" style={{ width: "100%" }}>
+                        <Spinner color="orange"></Spinner>
+                    </div>;
                 }
 
                 let rescheduleSheet;
                 if(this.state.status == "accepted") {
                     var calendarID = "demo-calendar-date-time-" + item._id;
-                    rescheduleSheet = <Sheet
+                    rescheduleSheet = <Dialog
                     position="bottom"
                     className={`reschedule-sheet-${item._id}`}
                     style={{height: 'auto', backgroundColor: "white"}}
@@ -273,7 +256,6 @@ class AppointmentBar extends Component {
                     opened={this.state.sheetOpened}
                     onSheetClosed={() => this.setState({isDateUpdate: false, sheetOpened: false})}
                     >
-                        <PageContent>
                             <div className="list no-hairlines-md">
                                 <ul>
                                     <li>
@@ -292,23 +274,22 @@ class AppointmentBar extends Component {
                                 {loading}
                                 <Button className="general-btn" style={{color: '#fff'}} disabled={this.state.isLoading} onClick={() => this.rescheduleAppointment(item._id, document.getElementById(calendarID))} raised fill round>Reschedule Appointment</Button>
                             </div>
-                        </PageContent>
-                    </Sheet>
+                    </Dialog>
                 }
 
                 return(
                     <React.Fragment>
                         <div className="content">
                             <div className="row" style={{paddingBottom: 0, marginBottom: 10}}>
-                                <a href={`/profile/${appointmentUserID}`} className="col-10 notif-img-container" style={{backgroundImage: `url("${avatarURL}")`, width: '10%'}}></a>
-                                <div className="col-90">
+                                <a href={`/profile/${appointmentUserID}`} className="col-2 notif-img-container" style={{backgroundImage: `url("${avatarURL}")`, width: '10%'}}></a>
+                                <div className="col-10">
                                     <div className="row" style={{paddingBottom: 0, marginBottom: 0}}>
-                                        <div className="col-80">
+                                        <div className="col-10">
                                             <div className="text">
-                                                <Link href={`/profile/${appointmentUserID}`}><h6>{item.appointment_user.first_name}</h6></Link>
+                                                <a href={`/profile/${appointmentUserID}`}><h6>{item.appointment_user.first_name}</h6></a>
                                             </div>
                                         </div>
-                                        <div className="col-20">
+                                        <div className="col-2">
                                             <div className="text">
                                                 <h6>{this.state.locText}</h6>
                                             </div>
@@ -321,7 +302,6 @@ class AppointmentBar extends Component {
                             </div>
                             {notifButton}
                         </div>
-                        <div className="divider-space-content"></div>
                         {rescheduleSheet}
                     </React.Fragment>
                 );

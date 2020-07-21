@@ -13,6 +13,7 @@ import axios from "axios";
 import EditProfile from "../../dialogs/EditProfile/EditProfile";
 import AuthService from "../../services/auth.service";
 import Footer from "../../components/Footer";
+import AppointmentContainer from "../../components/AppointmentContainer";
 
 class Profile extends Component {
 
@@ -29,8 +30,15 @@ class Profile extends Component {
             isPhoneConfirmed: false,
             cardWidth: (window.innerWidth/6) - 50, 
             cardHeight: (window.innerHeight/5) - 50,
+            pendingSeller: [],
+            finishedSeller: [],
+            acceptedSeller: [],
+            pendingBuyer: [],
+            finishedBuyer: [],
+            acceptedBuyer: []
         }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.loadAppointments = this.loadAppointments.bind(this);
     }
 
     componentDidMount() {
@@ -86,6 +94,43 @@ class Profile extends Component {
         });
 
         AuthService.refreshToken();
+        this.loadAppointments();
+    }
+
+    loadAppointments() {
+        let config = {
+            headers: {'Authorization': localStorage.getItem("access_token") }
+        } 
+        
+        axios
+        .get(`https://go.2gaijin.com/get_seller_appointments`, config)
+        .then(response => {
+            if(response.data.data) {
+                var appointmentData = response.data.data.appointments;
+                var pending = appointmentData.filter(appointment => appointment.status === "pending");
+                var finished = appointmentData.filter(appointment => appointment.status === "finished");
+                var accepted = appointmentData.filter(appointment => appointment.status === "accepted");
+                this.setState({ pendingSeller: pending });
+                this.setState({ finishedSeller: finished });
+                this.setState({ acceptedSeller: accepted });
+                this.setState({ isLoading1: false });
+            }
+        });
+        
+        axios
+        .get(`https://go.2gaijin.com/get_buyer_appointments`, config)
+        .then(response => {
+            if(response.data.data) {
+                var appointmentData = response.data.data.appointments;
+                var pending = appointmentData.filter(appointment => appointment.status === "pending");
+                var finished = appointmentData.filter(appointment => appointment.status === "finished");
+                var accepted = appointmentData.filter(appointment => appointment.status === "accepted");
+                this.setState({ pendingBuyer: pending });
+                this.setState({ finishedBuyer: finished });
+                this.setState({ acceptedBuyer: accepted });
+                this.setState({ isLoading2: false });
+            }
+        });
     }
 
     render() {
@@ -128,11 +173,11 @@ class Profile extends Component {
                                         <Button style={{ width: "50%" }} onClick={() => this.setState({ isEditProfileDialogOpen: true })}>Edit Profile</Button>
                                     </div>
 
-                                    <div className="row" style={{ paddingLeft: 0, marginTop: 20 }}>
-                                        {!this.state.isEmailConfirmed && <div className="col-6">
+                                    <div className="row" style={{ paddingLeft: 0, marginTop: 20, width: "100%" }}>
+                                        {!this.state.isEmailConfirmed && <div className="col-3">
                                             <Button style={{ width: "100%" }} onClick={() => this.setState({ isEditProfileDialogOpen: true })}>Confirm My Email</Button>
                                         </div>}
-                                        {!this.state.isPhoneConfirmed && <div className="col-6">
+                                        {!this.state.isPhoneConfirmed && <div className="col-3">
                                             <Button style={{ width: "100%" }} onClick={() => this.setState({ isEditProfileDialogOpen: true })}>Confirm My Phone</Button>
                                         </div>}
                                     </div>
@@ -150,6 +195,7 @@ class Profile extends Component {
                     style={{ borderBottom: "1px solid blue" }}
                     >
                         <Tab id="collections" title="Collections" panel={<CollectionPanel items={this.state.items} cardWidth={this.state.cardWidth} cardHeight={this.state.cardHeight} /> } />
+                        { this.state.allowEditProfile && <Tab id="appointments" title="Appointments" panel={<AppointmentPanel pendingSeller={this.state.pendingSeller} finishedSeller={this.state.finishedSeller} acceptedSeller={this.state.acceptedSeller} pendingBuyer={this.state.pendingBuyer} finishedBuyer={this.state.finishedBuyer} acceptedBuyer={this.state.acceptedBuyer} /> } />}
                     </Tabs>
                 </div>
                 <Footer />
@@ -167,6 +213,35 @@ const CollectionPanel = (props) => (
                 </div>
             );
         })}
+    </div>
+);
+
+const AppointmentPanel = (props) => (
+    <div className="row" style={{ width: "100%" }}>
+        <div className="col-6" style={{ textAlign: "left", align: "left" }}>
+            <h5>Transaction as Seller</h5>
+            <h6>Accepted Transaction</h6>
+            { props.acceptedSeller.length == 0 && <p>You have no accepted transactions as seller</p> }
+            <AppointmentContainer items={props.acceptedSeller} />
+            <h6>Pending Approval</h6>
+            { props.pendingSeller.length == 0 && <p>You have no pending transactions as seller</p> }
+            <AppointmentContainer items={props.pendingSeller} />
+            <h6>Finished Transaction</h6>
+            { props.finishedSeller.length == 0 && <p>You have no finished transactions as seller</p> }
+            <AppointmentContainer items={props.finishedSeller} />
+        </div>
+        <div className="col-6"  style={{ textAlign: "left", align: "left" }}>
+            <h5>Transaction as Buyer</h5>
+            <h6>Accepted Transaction</h6>
+            { props.acceptedBuyer.length == 0 && <p>You have no accepted transactions as buyer</p> }
+            <AppointmentContainer items={props.acceptedBuyer} />
+            <h6>Pending Approval</h6>
+            { props.pendingBuyer.length == 0 && <p>You have no pending transactions as buyer</p> }
+            <AppointmentContainer items={props.pendingBuyer} />
+            <h6>Finished Transaction</h6>
+            { props.finishedBuyer.length == 0 && <p>You have no finished transactions as buyer</p> }
+            <AppointmentContainer items={props.finishedBuyer} />
+        </div>
     </div>
 );
 
