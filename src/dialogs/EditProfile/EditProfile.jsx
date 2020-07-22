@@ -146,7 +146,6 @@ class EditProfile extends Component {
                     </div>
                     <div className="col-12">
                         <FormGroup
-                            helperText={!this.state.emailValid && "Email is required"}
                             intent={INTENT_PRIMARY}
                             label={"Birthday"}
                             labelFor="birthday-input"

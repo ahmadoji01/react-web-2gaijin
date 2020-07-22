@@ -100,10 +100,10 @@ class FullWidthCard extends Component {
             return (
                 <a href={this.props.viewAllLink} className="product-card" style={{ marginRight: 20, textDecoration: "none"}} >
                     <div className="content" style={{borderRadius: 20, border: "1px solid #E0E5EE"}}>
-                        <div className="big-image-container" style={{width: `${this.state.cardWidth}px`, height: `${this.state.cardWidth}px`}}></div>
-                        <h4 style={{ textAlign: "center", marginTop: (-this.state.cardHeight)+30, fontWeight: 700, color: "#EF7132" }}>View All</h4>
+                        <div className="big-image-container" style={{width: `${this.state.cardWidth}px`}}></div>
+                        <h4 style={{ textAlign: "center", fontWeight: 700, color: "#EF7132" }}>View All</h4>
                         <div className="text-full-width" style={{padding: 10}}>
-                            <div className="row" style={{marginBottom: this.state.cardHeight-50, paddingBottom: 0}}>
+                            <div className="row" style={{ paddingBottom: 0}}>
                                 <div className="column" style={{width: "90%"}}>
                                     <h4 className="title-product" style={{ textAlign: "center" }}></h4>
                                 </div>

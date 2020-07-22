@@ -115,7 +115,7 @@ class ProductDetail extends Component {
         return (
             <>
                 <NavigationBar />
-                <Toolbar price={this.state.data.item.price} sellerInfo={this.state.data.seller} />
+                <Toolbar price={this.state.data.item.price} sellerInfo={this.state.data.seller} productID={this.state.data.item._id} />
                 <div className="row product-detail-container custom-container" style={{ marginTop: 80 }}>
                     <div className="col-6">
                         <ImageGallery showBullets={true} showPlayButton={false} items={this.state.images} />

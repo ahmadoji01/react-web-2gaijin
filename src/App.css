@@ -206,3 +206,7 @@
   line-height: 40px;
 }
 
+.bp3-overlay-scroll-container {
+  z-index: 99999999999 !important;
+}
+
