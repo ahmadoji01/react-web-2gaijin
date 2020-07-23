@@ -192,7 +192,6 @@ class Delivery extends Component {
         }
 
         var deliveryTime = new Date(this.state.time).getTime();
-        var status = "pending";
         var payload = {
             "destination": this.state.destination,
             "name": this.state.name,

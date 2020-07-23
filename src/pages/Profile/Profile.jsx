@@ -45,24 +45,7 @@ class Profile extends Component {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
         
-        var userid = this.props.match.params.userid;
-        if(!localStorage.getItem("access_token")) { return; }
-        let self = this;
-        return axios.post(`https://go.2gaijin.com/get_profile_info`, {}, {
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": localStorage.getItem("access_token")
-            }
-        }).then(response => {
-            if(response.data.status === "Success") {
-                if(response.data.data.profile._id === userid) {
-                    self.setState({ allowEditProfile: true });
-                    self.setState({ editProfile: response.data.data.profile });
-                    self.setState({ isEmailConfirmed: response.data.data.profile.email_confirmed });
-                    self.setState({ isPhoneConfirmed: response.data.data.profile.phone_confirmed });
-                }
-            }
-        });
+        
     }
     
     componentWillUnmount() {
@@ -94,7 +77,24 @@ class Profile extends Component {
         });
 
         AuthService.refreshToken();
-        this.loadAppointments();
+        if(!localStorage.getItem("access_token")) { return; }
+        let self = this;
+        return axios.post(`https://go.2gaijin.com/get_profile_info`, {}, {
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": localStorage.getItem("access_token")
+            }
+        }).then(response => {
+            if(response.data.status === "Success") {
+                if(response.data.data.profile._id === userid) {
+                    self.setState({ allowEditProfile: true });
+                    self.setState({ editProfile: response.data.data.profile });
+                    self.setState({ isEmailConfirmed: response.data.data.profile.email_confirmed });
+                    self.setState({ isPhoneConfirmed: response.data.data.profile.phone_confirmed });
+                    self.loadAppointments();
+                }
+            }
+        });
     }
 
     loadAppointments() {
@@ -222,25 +222,25 @@ const AppointmentPanel = (props) => (
             <h5>Transaction as Seller</h5>
             <h6>Accepted Transaction</h6>
             { props.acceptedSeller.length == 0 && <p>You have no accepted transactions as seller</p> }
-            <AppointmentContainer items={props.acceptedSeller} />
+            <AppointmentContainer type="seller" items={props.acceptedSeller} />
             <h6>Pending Approval</h6>
             { props.pendingSeller.length == 0 && <p>You have no pending transactions as seller</p> }
-            <AppointmentContainer items={props.pendingSeller} />
+            <AppointmentContainer type="seller" items={props.pendingSeller} />
             <h6>Finished Transaction</h6>
             { props.finishedSeller.length == 0 && <p>You have no finished transactions as seller</p> }
-            <AppointmentContainer items={props.finishedSeller} />
+            <AppointmentContainer type="seller" items={props.finishedSeller} />
         </div>
         <div className="col-6"  style={{ textAlign: "left", align: "left" }}>
             <h5>Transaction as Buyer</h5>
             <h6>Accepted Transaction</h6>
             { props.acceptedBuyer.length == 0 && <p>You have no accepted transactions as buyer</p> }
-            <AppointmentContainer items={props.acceptedBuyer} />
+            <AppointmentContainer type="buyer" items={props.acceptedBuyer} />
             <h6>Pending Approval</h6>
             { props.pendingBuyer.length == 0 && <p>You have no pending transactions as buyer</p> }
-            <AppointmentContainer items={props.pendingBuyer} />
+            <AppointmentContainer type="buyer" items={props.pendingBuyer} />
             <h6>Finished Transaction</h6>
             { props.finishedBuyer.length == 0 && <p>You have no finished transactions as buyer</p> }
-            <AppointmentContainer items={props.finishedBuyer} />
+            <AppointmentContainer type="buyer" items={props.finishedBuyer} />
         </div>
     </div>
 );

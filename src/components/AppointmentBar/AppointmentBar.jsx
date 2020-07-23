@@ -5,6 +5,7 @@ import ProductCardHorizontal from '../ProductCardHorizontal';
 import Moment from 'react-moment';
 import axios from 'axios';
 import { Button, Dialog, Spinner, Switch } from "@blueprintjs/core";
+import AvatarPlaceholder from "../../illustrations/avatar-placeholder.png";
 
 class AppointmentBar extends Component {
     
@@ -171,7 +172,7 @@ class AppointmentBar extends Component {
             var appointmentUserID = this.props.item.appointment_user._id;
             if(this.props.item.status != "rejected") {
                 var item = this.props.item;
-                var avatarURL = "images/avatar-placeholder.png";
+                var avatarURL = AvatarPlaceholder;
 
                 if(item.appointment_user.avatar_url != "") {
                     avatarURL = item.appointment_user.avatar_url;
@@ -281,7 +282,7 @@ class AppointmentBar extends Component {
                     <React.Fragment>
                         <div className="content">
                             <div className="row" style={{paddingBottom: 0, marginBottom: 10}}>
-                                <a href={`/profile/${appointmentUserID}`} className="col-2 notif-img-container" style={{backgroundImage: `url("${avatarURL}")`, width: '10%'}}></a>
+                                <a href={`/profile/${appointmentUserID}`} className="col-2 notif-img-container"><img src={avatarURL} className="avatar avatar-navbar" /></a>
                                 <div className="col-10">
                                     <div className="row" style={{paddingBottom: 0, marginBottom: 0}}>
                                         <div className="col-10">
