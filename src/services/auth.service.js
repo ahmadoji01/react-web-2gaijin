@@ -157,6 +157,7 @@ class AuthService {
                 var jsonData = response.data.data;
                 localStorage.setItem("access_token", jsonData.token["auth_token"]); 
             }
+            return;
         });
     }
 

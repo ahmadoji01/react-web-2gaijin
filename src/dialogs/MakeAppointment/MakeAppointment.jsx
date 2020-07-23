@@ -72,7 +72,7 @@ class MakeAppointment extends Component {
                     <div className="col-12">
                         {message}
                         {spinner}
-                        <Button onClick={this.submitAppointment} style={{ width: "100%" }}>Submit Request</Button>
+                        <Button onClick={this.submitAppointment} disabled={this.state.loading} style={{ width: "100%" }}>Submit Request</Button>
                     </div>
                 </div>
             </div>
@@ -80,7 +80,6 @@ class MakeAppointment extends Component {
     }
 
     submitAppointment() {
-        console.log(this.state.time);
         if(!this.state.time) {
             this.setState({ timeValid: false });
             return;
@@ -99,7 +98,7 @@ class MakeAppointment extends Component {
             
             var self = this;
             AuthService.refreshToken().then(() => {
-                self.setState({ message: "", loading: true });
+                self.setState({ message: "", loading: true, timeValid: true });
                 return axios
                 .post(`https://go.2gaijin.com/insert_appointment`, payload, { 
                     headers: {

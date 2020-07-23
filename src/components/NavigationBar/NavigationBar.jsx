@@ -28,6 +28,7 @@ import { ReactComponent as VehiclesIcon} from "../../icons/VehiclesIcon.svg";
 import { ReactComponent as WhiteAppliancesIcon} from "../../icons/WhiteAppliancesIcon.svg";
 
 import Notifications from "../../dialogs/Notifications";
+import Delivery from "../../dialogs/Delivery/Delivery";
 
 class NavigationBar extends Component {
 
@@ -40,6 +41,7 @@ class NavigationBar extends Component {
             searchTerm: "",
             isLoggedIn: false,
             isSignInDialogOpen: false,
+            isDeliveryDialogOpen: false,
             isNotificationOpen: false,
         }; 
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -138,22 +140,26 @@ class NavigationBar extends Component {
                     </div>
                 </div>
                 <div class="bp3-navbar-group bp3-align-right">
-                    <Button className={Classes.MINIMAL} rightIcon="truck" text="Delivery" />
                     { this.state.isLoggedIn && 
-                        <Notifications />
+                        <>
+                            <Button className={Classes.MINIMAL} onClick={() => this.setState({ isDeliveryDialogOpen: true })} rightIcon="truck" text="Delivery" />
+                            <Dialog isOpen={this.state.isDeliveryDialogOpen} onClose={() => this.setState({ isDeliveryDialogOpen: false })}><Delivery /></Dialog>
+                            <Notifications />
+                            <Button className={Classes.MINIMAL} icon="envelope" />
+                            <Popover content={accountMenu} position={Position.BOTTOM}>
+                                <Button className={Classes.MINIMAL} icon={<img src={localStorage.getItem("avatar_url")} className="avatar avatar-navbar" />} />
+                            </Popover>
+                        </>
                     }
-                    { !this.state.isLoggedIn && <Button className={Classes.MINIMAL} icon="notifications" onClick={() => this.setState({ isSignInDialogOpen: true })}  /> }
-                    <Button className={Classes.MINIMAL} icon="envelope" />
-                    { this.state.isLoggedIn && 
-                    <Popover content={accountMenu} position={Position.BOTTOM}>
-                        <Button className={Classes.MINIMAL} icon={<img src={localStorage.getItem("avatar_url")} className="avatar avatar-navbar" />} />
-                    </Popover> }
                     { !this.state.isLoggedIn && 
-                    <>
-                        <Button className={Classes.MINIMAL} text="Sign In" onClick={() => this.setState({ isSignInDialogOpen: true })} />
-                        <Dialog isOpen={this.state.isSignInDialogOpen} onClose={() => this.setState({ isSignInDialogOpen: false })}><SignIn /></Dialog>
-                        <AnchorButton className={Classes.MINIMAL} text="Sign Up" href="/sign-up" />
-                    </> }
+                        <>
+                            <Button className={Classes.MINIMAL} rightIcon="truck" text="Delivery" onClick={() => this.setState({ isSignInDialogOpen: true })} />
+                            <Button className={Classes.MINIMAL} icon="notifications" onClick={() => this.setState({ isSignInDialogOpen: true })}  /> 
+                            <Button className={Classes.MINIMAL} text="Sign In" onClick={() => this.setState({ isSignInDialogOpen: true })} />
+                            <Dialog isOpen={this.state.isSignInDialogOpen} onClose={() => this.setState({ isSignInDialogOpen: false })}><SignIn /></Dialog>
+                            <AnchorButton className={Classes.MINIMAL} text="Sign Up" href="/sign-up" />
+                        </> 
+                    }
                 </div>
             </nav>
         )

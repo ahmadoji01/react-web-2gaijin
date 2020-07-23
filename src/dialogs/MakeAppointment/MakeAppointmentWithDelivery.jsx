@@ -155,7 +155,7 @@ class MakeAppointmentWithDelivery extends Component {
                     <div className="col-12">
                         {message}
                         {spinner}
-                        <Button onClick={this.submitAppointment} style={{ width: "100%" }}>Submit Request</Button>
+                        <Button onClick={this.submitAppointment} disabled={this.state.loading} style={{ width: "100%" }}>Submit Request</Button>
                     </div>
                 </div>
             </div>
@@ -212,7 +212,7 @@ class MakeAppointmentWithDelivery extends Component {
             
             var self = this;
             AuthService.refreshToken().then(() => {
-                self.setState({ message: "", loading: true });
+                self.setState({ message: "", loading: true, emailValid: true, phoneValid: true, nameValid: true, timeValid: true, destinationValid: true  });
                 return axios
                 .post(`https://go.2gaijin.com/insert_appointment_with_delivery`, payload, { 
                     headers: {
