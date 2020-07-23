@@ -16,6 +16,7 @@ class TrustCoinNotif extends Component {
         selectedCoin: "",
         isTrustCoinDialogOpen: false,
         isSuccessfulSendDialogOpen: false,
+        isLoading: false,
     }
 
     constructor(props) {
@@ -41,14 +42,15 @@ class TrustCoinNotif extends Component {
             "receiver_id": receiverID,
         }
 
+        this.setState({ isLoading: true });
         return axios.post(`https://go.2gaijin.com/insert_trust_coin`, payload, {
             headers: {
                 "Authorization": localStorage.getItem("access_token")
             }
         }).then(response => {
+            this.setState({ isLoading: false });
             if(response.data["status"] == "Success") {
                 var jsonData = response.data.data;
-                console.log(jsonData);
                 this.setState({ status: "finished" });
                 this.setState({ isSuccessfulSendDialogOpen: true });
                 this.setState({ isTrustCoinDialogOpen: false });
@@ -147,7 +149,7 @@ class TrustCoinNotif extends Component {
                                         </div>
                                         <div className="row notif-row" style={{ padding: "0 20px 0 20px" }}>
                                             {checkValid}
-                                            <Button onClick={() => this.giveTrustCoin(notifItem.appointment_id, notifItem.notifier_id)} className="general-btn" style={{color: "#fff", marginTop: 30, width: "100%"}} raised fill round>Send Trust Coin</Button>
+                                            <Button disabled={this.state.isLoading} onClick={() => this.giveTrustCoin(notifItem.appointment_id, notifItem.notifier_id)} className="general-btn" style={{color: "#fff", marginTop: 30, width: "100%"}} raised fill round>Send Trust Coin</Button>
                                         </div>
                                     </div>
                                 </div>

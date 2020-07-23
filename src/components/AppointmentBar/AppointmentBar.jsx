@@ -4,21 +4,24 @@ import { geolocated } from 'react-geolocated';
 import ProductCardHorizontal from '../ProductCardHorizontal';
 import Moment from 'react-moment';
 import axios from 'axios';
-import { Button, Dialog, Spinner, Switch } from "@blueprintjs/core";
+import { Button, Classes, FormGroup, Dialog, Spinner, Switch } from "@blueprintjs/core";
 import AvatarPlaceholder from "../../illustrations/avatar-placeholder.png";
+import { DatePicker } from "@blueprintjs/datetime";
+import { INTENT_PRIMARY } from "@blueprintjs/core/lib/esm/common/classes";
 
 class AppointmentBar extends Component {
     
 
     constructor(props) {
         super(props);
-        this.state = { currLat: 0.0, currLng: 0.0, status: this.props.item.status, meetingTime: "", locText: "", isDateChanged: false, isLoading: false, sheetOpened: false };
+        this.state = { appMessage: "", appLoading: false, currLat: 0.0, currLng: 0.0, time: new Date(), status: this.props.item.status, meetingTime: "", locText: "", isDateChanged: false, isLoading: false, isRescheduleDialogOpen: false };
         this.findCoordinates = this.findCoordinates.bind(this);
         this.finishAppointment = this.finishAppointment.bind(this);
         this.rescheduleAppointment = this.rescheduleAppointment.bind(this);
         this.handleChat = this.handleChat.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.calcDistance = this.calcDistance.bind(this);
+        this.onTimeChange = this.onTimeChange.bind(this);
     }
 
     findCoordinates = () => {
@@ -28,6 +31,10 @@ class AppointmentBar extends Component {
                 this.calcDistance();
             });
         });
+    }
+
+    onTimeChange(e) {
+        this.setState({ time: e });
     }
 
     acceptAppointment(appointmentID) {
@@ -104,18 +111,20 @@ class AppointmentBar extends Component {
         });
     }
 
-    rescheduleAppointment(id, calendarPickerID) {
-        console.log(new Date(this.timeInput.value).getTime());
+    rescheduleAppointment(id) {
+        this.setState({ appLoading: true, appMessage: "" });
         var payload = {
             "_id": id,
-            "meeting_time": new Date(this.timeInput.value).getTime()
+            "meeting_time": new Date(this.state.time).getTime()
         }
+        console.log(payload);
 
         return axios.post(`https://go.2gaijin.com/reschedule_appointment`, payload, {
             headers: {
                 "Authorization": localStorage.getItem("access_token")
             }
         }).then(response => {
+            this.setState({ appLoading: false, appMessage: response.data.message });
             if(response.data["status"] == "Success") {
                 var jsonData = response.data.data;
                 this.setState({ isDateChanged: true });
@@ -183,7 +192,7 @@ class AppointmentBar extends Component {
                     if(this.state.status == "accepted") {
                         notifButton = <div className="row" style={{paddingBottom: 0, marginBottom: 0}}>
                             <div className="col-6">
-                                <Button className="general-washout-btn" onClick={() => {this.setState({sheetOpened: true})}} style={{color: "#000", marginTop: 5}} raised fill round>Reschedule</Button>
+                                <Button className="general-washout-btn" onClick={() => {this.setState({isRescheduleDialogOpen: true})}} style={{color: "#000", marginTop: 5}} raised fill round>Reschedule</Button>
                             </div>
                             <div className="col-6">
                                 <Button className="general-btn" style={{color: "#fff", marginTop: 5}} onClick={() => this.finishAppointment(item._id)} raised fill round>Finish Transaction</Button>
@@ -234,48 +243,52 @@ class AppointmentBar extends Component {
                     }
                 }
 
-                let updateValidation; 
-                if(this.state.isDateChanged) {
-                    updateValidation = <p>Appointment has been rescheduled</p>;
-                }
-
-                let loading;
-                if(this.state.isLoading) {
-                    loading = <div className="row" style={{ width: "100%" }}>
-                        <Spinner color="orange"></Spinner>
-                    </div>;
-                }
-
                 let rescheduleSheet;
                 if(this.state.status == "accepted") {
-                    var calendarID = "demo-calendar-date-time-" + item._id;
+                    let message;
+                    if(this.state.appMessage) {
+                        message = <p>{this.state.appMessage}</p>
+                    }
+
+                    let spinner;
+                    if(this.state.appLoading) {
+                        spinner = <Spinner intent="warning" size={24} style={{ marginBottom: 10 }} />;
+                    }
+
                     rescheduleSheet = <Dialog
-                    position="bottom"
-                    className={`reschedule-sheet-${item._id}`}
-                    style={{height: 'auto', backgroundColor: "white"}}
-                    backdrop
-                    opened={this.state.sheetOpened}
-                    onSheetClosed={() => this.setState({isDateUpdate: false, sheetOpened: false})}
-                    >
-                            <div className="list no-hairlines-md">
-                                <ul>
-                                    <li>
-                                    <div className="item-content item-input item-input-outline">
-                                        <div className="item-inner">
-                                            <div className="item-input-wrap">
-                                                <input type="text" placeholder="Select date and time" readOnly id={calendarID} ref={ timeInput => (this.timeInput = timeInput)} />
-                                            </div>
+                        position="bottom"
+                        style={{height: 'auto', backgroundColor: "white"}}
+                        backdrop
+                        isOpen={this.state.isRescheduleDialogOpen}
+                        onClose={() => this.setState({isDateUpdate: false, isRescheduleDialogOpen: false})}
+                        title="Pick a new time to meet with buyer"
+                        >
+                               <div className={Classes.DIALOG_BODY}>
+                                    <div className="row" style={{ marginBottom: 20 }}>
+                                        <div className="col-12">
+                                            <FormGroup
+                                                helperText={!this.state.timeValid && "You have to pick the requested time"}
+                                                intent={INTENT_PRIMARY}
+                                                label={"Requested Time"}
+                                                labelFor="time-input"
+                                            >
+                                                <DatePicker
+                                                    onChange={(newDate) => this.onTimeChange(newDate)}
+                                                    minDate={new Date()}
+                                                    value={this.state.time}
+                                                    shortcuts={true}
+                                                    timePrecision={"minute"}
+                                                />
+                                            </FormGroup>
+                                        </div>
+                                        <div className="col-12">
+                                            {message}
+                                            {spinner}
+                                            <Button onClick={() => this.rescheduleAppointment(item._id)} disabled={this.state.appLoading} style={{ width: "100%" }}>Reschedule Appointment</Button>
                                         </div>
                                     </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div style={{ padding: 10 }}>
-                                {updateValidation}
-                                {loading}
-                                <Button className="general-btn" style={{color: '#fff'}} disabled={this.state.isLoading} onClick={() => this.rescheduleAppointment(item._id, document.getElementById(calendarID))} raised fill round>Reschedule Appointment</Button>
-                            </div>
-                    </Dialog>
+                                </div> 
+                        </Dialog>
                 }
 
                 return(
