@@ -149,6 +149,13 @@
   box-shadow: none !important;
 }
 
+.fab-container {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  z-index: 999999999999;
+}
+
 .notif-img-container {
   border-radius: 50%;
   height: 0;

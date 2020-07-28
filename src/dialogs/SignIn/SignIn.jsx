@@ -45,7 +45,7 @@ class SignIn extends Component {
     }
 
     redirect() {
-        window.location = this.state.redirectTo;
+        window.location.reload();
     }
 
     render() {

@@ -17,6 +17,13 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import EmptyIllustration from "../../illustrations/EmptyIllustration.png";
 import Footer from "../../components/Footer";
+import AuthService from "../../services/auth.service";
+import SignIn from "../../dialogs/SignIn";
+
+import Fab from '@material-ui/core/Fab';
+import { ReactComponent as PeaceOutline} from "../../icons/PeaceOutline.svg";
+import AddProduct from "../../dialogs/AddProduct";
+import { Modal } from 'antd';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,6 +42,7 @@ class Search extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoggedIn: false,
             data: [],
             categories: [],
             searchterm: "",
@@ -88,6 +96,10 @@ class Search extends Component {
     }
     
     componentWillMount() {
+        if(AuthService.getCurrentUser()) {
+            this.setState({ isLoggedIn: true });
+        }
+        
         const urlParams = new URLSearchParams(this.props.location.search);
         const query = urlParams.get('q');
         const category = urlParams.get('category');
@@ -285,8 +297,38 @@ class Search extends Component {
             });
         }
 
+        const classes = useStyles;
+
         return(
             <>
+                { this.state.isLoggedIn && <div className="fab-container">
+                    <Fab variant="extended" size="large" color="secondary" onClick={() => this.setState({ isAddProductOpen: true })}>
+                        <PeaceOutline className={classes.extendedIcon} />
+                        Start Selling
+                    </Fab>
+                    <Modal
+                    title="Add Your Product"
+                    visible={this.state.isAddProductOpen}
+                    onOk={this.handleOk}
+                    onCancel={() => this.setState({ isAddProductOpen: false })}
+                    >
+                        <AddProduct />
+                    </Modal>
+                </div>}
+                { !this.state.isLoggedIn && <div className="fab-container">
+                    <Fab variant="extended" size="large" color="secondary" onClick={() => this.setState({ isAddProductOpen: true })}>
+                        <PeaceOutline className={classes.extendedIcon} />
+                        Start Selling
+                    </Fab>
+                    <Modal
+                    title="Sign In"
+                    visible={this.state.isAddProductOpen}
+                    onOk={this.handleOk}
+                    onCancel={() => this.setState({ isAddProductOpen: false })}
+                    >
+                        <SignIn />
+                    </Modal>
+                </div>}
                 <NavigationBar term={this.state.searchterm} />
                 <div className="row search-container">
                     <div className="col-3" style={{ backgroundColor: "#F6FAFF", border: "1px solid #E0E5EE", paddingRight: 0 }}>

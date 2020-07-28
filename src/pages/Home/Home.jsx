@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import HalfNavbar from "../../components/HalfNavbar";
 import NavigationBar from "../../components/NavigationBar";
 import {
-    Button
+    Button,
+    Classes,
+    Dialog,
 } from "@blueprintjs/core";
 import "./Home.scss";
 import HomeBg from "../../illustrations/homebg.svg";
@@ -17,6 +19,25 @@ import axios from "axios";
 import Footer from "../../components/Footer";
 import AuthService from "../../services/auth.service";
 
+import { makeStyles } from '@material-ui/core/styles';
+import Fab from '@material-ui/core/Fab';
+import { ReactComponent as PeaceOutline} from "../../icons/PeaceOutline.svg";
+import AddProduct from "../../dialogs/AddProduct";
+import { Modal } from 'antd';
+import SignIn from "../../dialogs/SignIn";
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        backgroundColor: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    extendedIcon: {
+        marginRight: theme.spacing(1),
+    },
+}));
+
 class Home extends Component {
 
     constructor(props) {
@@ -28,6 +49,8 @@ class Home extends Component {
             windowWidth: window.innerWidth,
             searchTerm: "",
             navbarShow: false,
+            isAddProductOpen: false,
+            isLoggedIn: false
         };
         this.searchTermChange = this.searchTermChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this); 
@@ -60,6 +83,10 @@ class Home extends Component {
     }
 
     componentWillMount() {
+        if(AuthService.getCurrentUser()) {
+            this.setState({ isLoggedIn: true });
+        }
+
         fetch('https://go.2gaijin.com/')
         .then((response) => response.json())
         .then((responseJson) => {
@@ -102,8 +129,38 @@ class Home extends Component {
     }
 
     render() {
+        const classes = useStyles;
+
         return (
             <>
+                { this.state.isLoggedIn && <div className="fab-container">
+                    <Fab variant="extended" size="large" color="secondary" onClick={() => this.setState({ isAddProductOpen: true })}>
+                        <PeaceOutline className={classes.extendedIcon} />
+                        Start Selling
+                    </Fab>
+                    <Modal
+                    title="Add Your Product"
+                    visible={this.state.isAddProductOpen}
+                    onOk={this.handleOk}
+                    onCancel={() => this.setState({ isAddProductOpen: false })}
+                    >
+                        <AddProduct />
+                    </Modal>
+                </div>}
+                { !this.state.isLoggedIn && <div className="fab-container">
+                    <Fab variant="extended" size="large" color="secondary" onClick={() => this.setState({ isAddProductOpen: true })}>
+                        <PeaceOutline className={classes.extendedIcon} />
+                        Start Selling
+                    </Fab>
+                    <Modal
+                    title="Sign In"
+                    visible={this.state.isAddProductOpen}
+                    onOk={this.handleOk}
+                    onCancel={() => this.setState({ isAddProductOpen: false })}
+                    >
+                        <SignIn />
+                    </Modal>
+                </div>}
                 { this.state.navbarShow && <NavigationBar /> }
                 <div className="row" style={{ height: this.state.windowHeight, width: this.state.windowWidth }}>
                     <div className="col-6" >
