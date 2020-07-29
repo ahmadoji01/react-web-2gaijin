@@ -1,0 +1,18 @@
+.lobby-container {
+    overflow-y: auto;
+    text-align: left;
+}
+
+.chat-container {
+    overflow-y: auto;
+}
+
+.chat-input-container {
+    position: fixed;
+    bottom: 10px;
+    width: 74%;
+}
+
+.rce-citem-body--top {
+    font-weight: 700;
+}

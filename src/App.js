@@ -7,13 +7,15 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  withRouter
 } from "react-router-dom";
 import Home from "./pages/Home";
 import ProductDetail from "./pages/ProductDetail";
 import Search from './pages/Search';
 import SignUp from './pages/SignUp';
 import Profile from './pages/Profile';
+import Messages from './pages/Messages';
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
           <Route path="/search" component={Search} />
           <Route path="/sign-up" component={SignUp} />
           <Route path="/product/:productid" component={ProductDetail} />
+          <Route path="/m/:roomID?" component={Messages} />
           <Route path="/profile/:userid" component={Profile} />
           <Route path="/">
             <Homepage />
