@@ -109,6 +109,11 @@ class Messages extends Component {
                     this.setState({ isLoading: false });
                     if(response.data.data){
                         this.setState({lobbies: response.data.data.chat_lobby});
+                        if(response.data.data.chat_lobby[0]) {
+                            if(!this.props.match.params.roomID) {
+                                window.location = "/m/" + response.data.data.chat_lobby[0]._id;
+                            }
+                        }
                     }
                 });
 
@@ -132,7 +137,6 @@ class Messages extends Component {
         axios
         .get(`https://go.2gaijin.com/chat_users`, config)
         .then(response => {
-            console.log(response);
             var usersData = response.data.data.users;
             var usersTmp = [];
             let currUser;

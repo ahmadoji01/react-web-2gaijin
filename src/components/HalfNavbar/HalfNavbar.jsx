@@ -64,7 +64,7 @@ class HalfNavbar extends Component {
                             <Button className={Classes.MINIMAL} onClick={() => this.setState({ isDeliveryDialogOpen: true })} rightIcon="truck" text="Delivery" />
                             <Dialog isOpen={this.state.isDeliveryDialogOpen} onClose={() => this.setState({ isDeliveryDialogOpen: false })}><Delivery /></Dialog>
                             <Notifications />
-                            <Button className={Classes.MINIMAL} icon="envelope" />
+                            <Button onClick={() => window.location="/m"} className={Classes.MINIMAL} icon="envelope" />
                             <Popover content={accountMenu} position={Position.BOTTOM}>
                                 <Button className={Classes.MINIMAL} icon={<img src={localStorage.getItem("avatar_url")} className="avatar avatar-navbar" />} />
                             </Popover>
