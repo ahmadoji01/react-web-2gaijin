@@ -9,6 +9,9 @@ import Moment from 'react-moment';
 import moment from 'moment';
 import "./Notifications.scss";
 
+import Badge from '@material-ui/core/Badge';
+import NotificationIcon from "../../icons/NotificationIcon.svg";
+
 class Notifications extends Component {
 
     constructor(props) {
@@ -17,6 +20,7 @@ class Notifications extends Component {
             notifications: [],
             isNotificationOpen: false,
             isLoading: true,
+            isNotifRead: this.props.isNotifRead,
         };
     }
 
@@ -94,7 +98,7 @@ class Notifications extends Component {
                     position={Position.BOTTOM}
                     onClose={ () => this.setState({ isNotificationOpen: false }) }
                 >  
-                    <Button className={Classes.MINIMAL} onClick={ () => this.setState({ isNotificationOpen: true }) } icon="notifications" />
+                    <Button className={Classes.MINIMAL} onClick={ () => this.setState({ isNotificationOpen: true, isNotifRead: true }) }><Badge color="secondary" variant="dot" invisible={this.state.isNotifRead}><img src={NotificationIcon} style={{ maxWidth: 24 }} /></Badge></Button>
                 </Popover>
             </>
         );

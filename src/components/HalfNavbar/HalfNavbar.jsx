@@ -16,6 +16,11 @@ import { INTENT_WARNING } from "@blueprintjs/core/lib/esm/common/classes";
 import Delivery from "../../dialogs/Delivery";
 import Notifications from "../../dialogs/Notifications";
 
+import Badge from '@material-ui/core/Badge';
+import MessageIcon from "../../icons/MessageIcon.svg";
+
+import axios from "axios";
+
 class HalfNavbar extends Component {
 
     constructor(props) {
@@ -24,6 +29,8 @@ class HalfNavbar extends Component {
             isLoggedIn: false,
             isSignInDialogOpen: false,
             isDeliveryDialogOpen: false,
+            notifRead: true,
+            messageRead: true
         };
         this.onSignOutButtonClick = this.onSignOutButtonClick.bind(this);
     }
@@ -31,6 +38,19 @@ class HalfNavbar extends Component {
     componentWillMount() {
         if(AuthService.getCurrentUser()) {
             this.setState({ isLoggedIn: true });
+            
+            let config = {
+                headers: {'Authorization': localStorage.getItem("access_token") },
+            };
+
+            axios
+            .get(`https://go.2gaijin.com/check_notif_read`, config)
+            .then(res => {
+                if(res.data){
+                    this.setState({ notifRead: res.data.data.notif_read });
+                    this.setState({ messageRead: res.data.data.message_read });
+                }
+            });  
         }
     }
 
@@ -63,8 +83,8 @@ class HalfNavbar extends Component {
                         <>
                             <Button className={Classes.MINIMAL} onClick={() => this.setState({ isDeliveryDialogOpen: true })} rightIcon="truck" text="Delivery" />
                             <Dialog isOpen={this.state.isDeliveryDialogOpen} onClose={() => this.setState({ isDeliveryDialogOpen: false })}><Delivery /></Dialog>
-                            <Notifications />
-                            <Button onClick={() => window.location="/m"} className={Classes.MINIMAL} icon="envelope" />
+                            <Notifications isNotifRead={this.state.notifRead} />
+                            <Button className={Classes.MINIMAL} onClick={() => window.location="/m"} ><Badge color="secondary" variant="dot" invisible={this.state.messageRead}><img src={MessageIcon} style={{ maxWidth: 24 }}/></Badge></Button>
                             <Popover content={accountMenu} position={Position.BOTTOM}>
                                 <Button className={Classes.MINIMAL} icon={<img src={localStorage.getItem("avatar_url")} className="avatar avatar-navbar" />} />
                             </Popover>

@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import 'react-chat-elements/dist/main.css';
-import { Button, ChatItem, Input, MessageBox } from 'react-chat-elements';
+import { ChatItem, Input, MessageBox } from 'react-chat-elements';
 import AuthService from "../../services/auth.service";
 import axios from "axios";
 import AvatarPlaceholder from "../../illustrations/avatar-placeholder.png";
+import ArrowIcon from "../../icons/ArrowIcon.svg";
 import CameraIcon from "../../icons/CameraIcon.svg";
 import SendIcon from "../../icons/SendIcon.svg";
 import "./Messages.scss";
 import { getCroppedImg, resizeImg } from '../../services/imageprocessing';
 import { animateScroll } from "react-scroll";
+import { Button, Classes } from "@blueprintjs/core";
 
 class Messages extends Component {
 
@@ -45,6 +47,7 @@ class Messages extends Component {
             <div className="row">
                 <div className="col-3 lobby-container" style={{ height: window.innerHeight - 30 }}>
                 <div className="lobby-header-container">
+                    <Button className={`${Classes.MINIMAL} back-arrow`} onClick={() => {window.location = "/"}}><img src={ArrowIcon} style={{ width: 30 }} /></Button>
                     <h3 className="lobby-title">Chats</h3>
                 </div>
                 {
@@ -80,11 +83,18 @@ class Messages extends Component {
                 <div id="msg-container" className="col-9 chat-container" style={{ height: window.innerHeight - 30 }}>
                     <div className="chat-header-container">
                         <div className="row">
-                            <div className="col-4" style={{ textAlign: "right" }}>
-                                <img src={activeIcon} className="avatar" style={{ maxHeight: 50 }} />
+                            <div className="col-6" style={{ textAlign: "left" }}>
+                                <div className="row">
+                                    <div className="col-2">
+                                        <img src={activeIcon} className="avatar" style={{ maxHeight: 50 }} />
+                                    </div>
+                                    <div className="col-10 active-chat-name" style={{ textAlign: "left" }}>
+                                        {activeName}
+                                    </div>
+                                </div>
                             </div>
-                            <div className="col-8 active-chat-name" style={{ textAlign: "left" }}>
-                                {activeName}
+                            <div className="col-6 active-chat-name">
+                                
                             </div>
                         </div>
                     </div>
@@ -130,7 +140,6 @@ class Messages extends Component {
                                     <label for="file-input">
                                         <img src={CameraIcon} style={{ maxHeight: 37 }} />
                                     </label>
-
                                     <input id="file-input" type="file" ref={ this.picInput } className="chat-img-input" onChange={this.onFileChange()}  />
                                 </div>
                             }
