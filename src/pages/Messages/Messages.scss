@@ -8,11 +8,89 @@
 }
 
 .chat-input-container {
-    position: fixed;
-    bottom: 10px;
-    width: 74%;
+    position: sticky;
+    bottom: 0px;
+    width: 100%;
+    -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.45);
+    -moz-box-shadow: 0px 0px 5px rgba(0,0,0,0.45);
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.45);
+}
+
+.chat-header-container {
+    padding: 10px;
+    position: sticky;
+    top: 0px;
+    width: 100%;
+    background: white;
+    box-shadow: grey;
+    margin-bottom: 10px;
+    z-index: 9999999999;
+    -webkit-box-shadow: 0px 7px 5px 0px rgba(0,0,0,0.45);
+    -moz-box-shadow: 0px 7px 5px 0px rgba(0,0,0,0.45);
+    box-shadow: 0px 7px 5px 0px rgba(0,0,0,0.45);
+}
+
+.lobby-header-container {
+    padding: 10px;
+    position: sticky;
+    top: 0px;
+    width: 100%;
+    background: white;
+    box-shadow: grey;
+    margin-bottom: 10px;
+    z-index: 9999999999;
+    -webkit-box-shadow: 0px 7px 5px 0px rgba(0,0,0,0.45);
+    -moz-box-shadow: 0px 7px 5px 0px rgba(0,0,0,0.45);
+    box-shadow: 0px 7px 5px 0px rgba(0,0,0,0.45);
+    text-align: center;
+}
+
+.lobby-title {
+    color: black;
+    font-weight: 700;
+}
+
+.active-chat-name {
+    font-weight: 800;
 }
 
 .rce-citem-body--top {
     font-weight: 700;
+}
+
+.rce-container-input {
+    padding-top: 10px;
+}
+
+.rce-citem {
+    background: none;
+}
+
+.active-room {
+    background-color: #EDEDED;
+}
+
+.chat-img-input {
+    display: none;
+}
+
+.rce-citem-body--bottom-status span {
+    background: orange;
+}
+
+.rce-mbox-right {
+    background: orange;
+    color: white;
+}
+
+.rce-mbox-right-notch {
+    fill: orange;
+}
+
+.rce-mbox-right .rce-mbox-time {
+    color: (0, 0, 0, 0.5);
+}
+
+.rce-mbox-right .rce-mbox-time-block {
+    color: white;
 }

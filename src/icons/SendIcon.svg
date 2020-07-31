@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="SendIcon.svg"
+   xml:space="preserve"
+   style="enable-background:new 0 0 96 96;"
+   viewBox="0 0 96 96"
+   y="0px"
+   x="0px"
+   id="Layer_1"
+   version="1.1"><metadata
+   id="metadata11"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs9" /><sodipodi:namedview
+   inkscape:current-layer="Layer_1"
+   inkscape:window-maximized="1"
+   inkscape:window-y="-9"
+   inkscape:window-x="-9"
+   inkscape:cy="54.121275"
+   inkscape:cx="34.580713"
+   inkscape:zoom="6.1135274"
+   showgrid="false"
+   id="namedview7"
+   inkscape:window-height="1001"
+   inkscape:window-width="1920"
+   inkscape:pageshadow="2"
+   inkscape:pageopacity="0"
+   guidetolerance="10"
+   gridtolerance="10"
+   objecttolerance="10"
+   borderopacity="1"
+   bordercolor="#666666"
+   pagecolor="#ffffff" />
+<style
+   id="style2"
+   type="text/css">
+	.st0{fill:#333333;}
+</style>
+<g
+   style="fill:#ffa500;fill-opacity:1"
+   transform="matrix(1.7184092,0,0,1.7184092,-34.505492,-34.447723)"
+   id="XMLID_2_">
+	<path
+   style="fill:#ffa500;fill-opacity:1"
+   d="m 74.6,20.8 c 0.7,0.5 1,1.1 0.8,2 l -7.9,47.1 c -0.1,0.6 -0.4,1.1 -1,1.4 -0.3,0.2 -0.6,0.2 -1,0.2 -0.2,0 -0.5,-0.1 -0.7,-0.2 L 51,65.7 43.6,74.8 c -0.4,0.5 -0.9,0.7 -1.5,0.7 -0.3,0 -0.5,0 -0.7,-0.1 C 41,75.3 40.7,75 40.5,74.7 40.3,74.4 40.1,74 40.1,73.6 V 62.8 L 66.6,30.3 33.9,58.7 21.8,53.7 C 21,53.4 20.6,52.9 20.6,52 c 0,-0.8 0.3,-1.4 1,-1.8 L 72.7,20.7 c 0.3,-0.2 0.6,-0.3 1,-0.3 0.2,0.1 0.6,0.2 0.9,0.4 z"
+   class="st0"
+   id="XMLID_4_" />
+</g>
+</svg>

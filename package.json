@@ -23,6 +23,7 @@
     "rc-tree-select": "^4.1.0",
     "react": "^16.13.1",
     "react-chat-elements": "^10.9.3",
+    "react-device-detect": "^1.13.1",
     "react-dom": "^16.13.1",
     "react-facebook-login": "^4.1.1",
     "react-geolocated": "^3.0.1",
@@ -33,6 +34,7 @@
     "react-multi-carousel": "^2.5.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-scroll": "^1.8.0",
     "react-simple-tree-menu": "^1.1.17",
     "shortid": "^2.2.15",
     "url-search-params-polyfill": "^8.1.0"
