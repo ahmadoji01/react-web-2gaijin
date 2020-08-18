@@ -10,6 +10,7 @@ import {
 } from "@blueprintjs/core";
 import { INTENT_PRIMARY } from "@blueprintjs/core/lib/esm/common/classes";
 import AuthService from "../../services/auth.service";
+import Subscription from "../Subscription";
 import axios from "axios";
 
 import { InputNumber, TreeSelect, Upload } from 'antd';
@@ -32,6 +33,7 @@ class AddProduct extends Component {
             submitted: false,
             itemID: "",
             sellerID: "",
+            isSubscribed: true,
             isDelivery: true,
             validateInput: 0,
             loading: false,
@@ -53,6 +55,7 @@ class AddProduct extends Component {
             imageValid: true,
             descValid: true,
             time: new Date(),
+            isError: false,
         };
         this.submitItem = this.submitItem.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
@@ -74,6 +77,12 @@ class AddProduct extends Component {
         let spinner;
         if(this.state.loading) {
             spinner = <Spinner intent="warning" size={24} style={{ marginBottom: 10 }} />;
+        }
+
+        if(!this.state.isSubscribed) {
+            return (
+                <Subscription />
+            );
         }
 
         return (
@@ -307,6 +316,21 @@ class AddProduct extends Component {
     };
 
     componentWillMount() {
+        let config = {
+            headers: {'Authorization': localStorage.getItem("access_token") },
+        }
+
+        axios
+        .get(`https://go.2gaijin.com/get_subscription_status`, config)
+        .then(response => {
+            if(response.data.status == "Success") {
+                var isSubscribed = response.data.data.is_subscribed;
+                this.setState({ isSubscribed: isSubscribed });
+            } else {
+                this.setState({ isError: true });
+            }
+        });
+
         return axios
         .get(`https://go.2gaijin.com/get_categories`, {}, {})
         .then(response => {

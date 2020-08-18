@@ -143,6 +143,7 @@ class Home extends Component {
                     visible={this.state.isAddProductOpen}
                     onOk={this.handleOk}
                     onCancel={() => this.setState({ isAddProductOpen: false })}
+                    footer={null}
                     >
                         <AddProduct />
                     </Modal>

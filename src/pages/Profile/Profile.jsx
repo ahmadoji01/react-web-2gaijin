@@ -39,6 +39,8 @@ class Profile extends Component {
         }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.loadAppointments = this.loadAppointments.bind(this);
+        this.sendEmailConfirmation = this.sendEmailConfirmation.bind(this);
+        this.sendPhoneConfirmation = this.sendPhoneConfirmation.bind(this);
     }
 
     componentDidMount() {
@@ -95,6 +97,14 @@ class Profile extends Component {
                 }
             }
         });
+    }
+
+    sendEmailConfirmation() {
+
+    }
+
+    sendPhoneConfirmation() {
+
     }
 
     loadAppointments() {

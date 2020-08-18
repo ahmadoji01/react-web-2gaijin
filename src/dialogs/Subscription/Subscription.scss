@@ -1,0 +1,27 @@
+.pricing-list-item {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 10px 20px 10px 20px;
+    border: 1px solid #E0E5EE;
+}
+
+.pricing-first {
+    border-radius: 8px 8px 0 0;
+}
+
+.pricing-last {
+    border-radius: 0 0 8px 8px;
+}
+
+.pricing-selected {
+    background-color: #EF7132;
+    color: white;
+}
+
+.pricing-item-inner {
+    padding-bottom: 0;
+}
+
+.ios .radio input[type=radio]:checked~.icon-radio {
+    background-color: white;
+}

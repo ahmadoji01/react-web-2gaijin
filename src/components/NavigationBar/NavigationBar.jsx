@@ -34,6 +34,7 @@ import Badge from '@material-ui/core/Badge';
 import MessageIcon from "../../icons/MessageIcon.svg";
 
 import axios from "axios";
+import AvatarPlaceholder from "../../illustrations/avatar-placeholder.png";
 class NavigationBar extends Component {
 
     constructor(props) {
@@ -143,6 +144,13 @@ class NavigationBar extends Component {
             searchBarWidth = this.state.searchBarWidth
         }
 
+        let avatarURL;
+        if(localStorage.getItem("avatar_url")) {
+            avatarURL = localStorage.getItem("avatar_url");
+        } else {
+            avatarURL = AvatarPlaceholder;
+        }
+
         return (
             <nav class="bp3-navbar full-navbar">
                 <div class="bp3-navbar-group bp3-align-left">
@@ -166,7 +174,7 @@ class NavigationBar extends Component {
                             <Notifications isNotifRead={this.state.notifRead} />
                             <Button className={Classes.MINIMAL} onClick={() => window.location="/m"} ><Badge color="secondary" variant="dot" invisible={this.state.messageRead}><img src={MessageIcon} style={{ maxWidth: 24 }} /></Badge></Button>
                             <Popover content={accountMenu} position={Position.BOTTOM}>
-                                <Button className={Classes.MINIMAL} icon={<img src={localStorage.getItem("avatar_url")} className="avatar avatar-navbar" />} />
+                                <Button className={Classes.MINIMAL} icon={<img src={avatarURL} className="avatar avatar-navbar" />} />
                             </Popover>
                         </>
                     }
