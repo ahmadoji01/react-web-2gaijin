@@ -30,6 +30,7 @@ class MakeAppointment extends Component {
             loading: false,
             timeValid: true,
             time: new Date(),
+            isSubmitted: false,
         };
         this.submitAppointment = this.submitAppointment.bind(this);
         this.onTimeChange = this.onTimeChange.bind(this);
@@ -72,7 +73,7 @@ class MakeAppointment extends Component {
                     <div className="col-12">
                         {message}
                         {spinner}
-                        <Button onClick={this.submitAppointment} disabled={this.state.loading} style={{ width: "100%" }}>Submit Request</Button>
+                        <Button onClick={this.submitAppointment} disabled={this.state.loading || this.state.isSubmitted} style={{ width: "100%" }}>Submit Request</Button>
                     </div>
                 </div>
             </div>
@@ -111,6 +112,7 @@ class MakeAppointment extends Component {
                         self.setState({ message: "Request sent to seller. You can continue your activity with us again while seller is notified", loading: false });
                         self.setState({submitted: true});
                         self.setState({ validateInput: 0 });
+                        self.setState({ isSubmitted: true });
                     } else {
                         self.setState({ message: "Oops.... Something went wrong. Try again", loading: false });
                     }

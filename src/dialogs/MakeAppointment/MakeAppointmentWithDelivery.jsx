@@ -12,6 +12,7 @@ import { INTENT_PRIMARY } from "@blueprintjs/core/lib/esm/common/classes";
 import AuthService from "../../services/auth.service";
 import axios from "axios";
 import { DatePicker } from "@blueprintjs/datetime";
+import { tuple } from "antd/lib/_util/type";
 
 class MakeAppointmentWithDelivery extends Component {
 
@@ -40,6 +41,7 @@ class MakeAppointmentWithDelivery extends Component {
             destinationValid: true,
             nameValid: true,
             time: new Date(),
+            isSubmitted: false,
         };
         this.submitAppointment = this.submitAppointment.bind(this);
         this.onDestinationChange = this.onDestinationChange.bind(this);
@@ -155,7 +157,7 @@ class MakeAppointmentWithDelivery extends Component {
                     <div className="col-12">
                         {message}
                         {spinner}
-                        <Button onClick={this.submitAppointment} disabled={this.state.loading} style={{ width: "100%" }}>Submit Request</Button>
+                        <Button onClick={this.submitAppointment} disabled={this.state.loading || this.state.isSubmitted} style={{ width: "100%" }}>Submit Request</Button>
                     </div>
                 </div>
             </div>
@@ -225,6 +227,7 @@ class MakeAppointmentWithDelivery extends Component {
                         self.setState({ message: "Request sent to seller and delivery partner. You can continue your activity with us again while seller and our delivery partners are notified", loading: false });
                         self.setState({ submitted: true });
                         self.setState({ validateInput: 0 });
+                        self.setState({ isSubmitted: true });
                     } else {
                         self.setState({ message: response.data.message, loading: false });
                     }

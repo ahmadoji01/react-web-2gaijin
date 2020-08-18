@@ -41,6 +41,7 @@ class Delivery extends Component {
             nameValid: true,
             notesValid: true,
             time: new Date(),
+            isSubmitted: false,
         };
         this.submitDelivery = this.submitDelivery.bind(this);
         this.onDestinationChange = this.onDestinationChange.bind(this);
@@ -153,7 +154,7 @@ class Delivery extends Component {
                     <div className="col-12">
                         {message}
                         {spinner}
-                        <Button onClick={this.submitDelivery} disabled={this.state.loading} style={{ width: "100%" }}>Submit Delivery Request</Button>
+                        <Button onClick={this.submitDelivery} disabled={this.state.loading || this.state.isSubmitted} style={{ width: "100%" }}>Submit Delivery Request</Button>
                     </div>
                 </div>
             </div>
@@ -218,6 +219,7 @@ class Delivery extends Component {
                     self.setState({ message: "Request sent to our delivery partner. Our delivery partner will notify you based on the contact info you provided", loading: false });
                     self.setState({ submitted: true });
                     self.setState({ validateInput: 0 });
+                    self.setState({ isSubmitted: true });
                 } else {
                     self.setState({ message: response.data.message, loading: false });
                 }

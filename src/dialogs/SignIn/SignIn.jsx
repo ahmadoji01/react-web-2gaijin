@@ -8,6 +8,7 @@ import "./SignIn.scss";
 import {
     Button,
     Classes,
+    Dialog,
     Divider,
     H3,
     FormGroup, 
@@ -15,6 +16,8 @@ import {
     Spinner
 } from "@blueprintjs/core";
 import { INTENT_PRIMARY } from "@blueprintjs/core/lib/esm/common/classes";
+import { Modal } from 'antd';
+import ResetPassword from "../ResetPassword";
 
 class SignIn extends Component {
 
@@ -29,6 +32,7 @@ class SignIn extends Component {
             valid: false,
             message: "",
             loading: false,
+            isForgotPasswordOpen: false,
         };
 
         this.responseGoogle = this.responseGoogle.bind(this);
@@ -92,6 +96,10 @@ class SignIn extends Component {
                         {spinner}
                         <Button onClick={this.handleLogin.bind(this)} style={{ width: "100%" }}>Sign In</Button>
                     </div>
+                </div>
+                <div className="row" style={{ marginBottom: 20 }}>
+                    <div className="col-12"><a href="#" onClick={() => this.setState({ isForgotPasswordOpen: true })}><h5>Forgot Password?</h5></a></div>
+                    <Dialog title="Forgot Password" isOpen={this.state.isForgotPasswordOpen} onClose={() => this.setState({ isForgotPasswordOpen: false })}><ResetPassword /></Dialog>
                 </div>
                 <Divider />
                 <div className="row" style={{ marginTop: 15 }}>

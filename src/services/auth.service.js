@@ -164,7 +164,7 @@ class AuthService {
     resetPassword(email) {
         var payload = {
             "email": email,
-            "source": "mobile_web_app"
+            "source": "desktop_web_app"
         }
 
         return axios.post(`https://go.2gaijin.com/reset_password`, payload, {

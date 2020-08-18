@@ -11,6 +11,7 @@ import "./Messages.scss";
 import { getCroppedImg, resizeImg } from '../../services/imageprocessing';
 import { animateScroll } from "react-scroll";
 import { Button, Classes } from "@blueprintjs/core";
+import parse from 'html-react-parser';
 
 class Messages extends Component {
 
@@ -108,7 +109,7 @@ class Messages extends Component {
                                 return <MessageBox
                                     position={position}
                                     type={'text'}
-                                    text={message.message}
+                                    text={parse(message.message)}
                                     date={new Date(message.created_at)}
                                     />;
                             } else if(message.image) {

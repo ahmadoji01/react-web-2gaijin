@@ -25,6 +25,7 @@ import { ReactComponent as PeaceOutline} from "../../icons/PeaceOutline.svg";
 import AddProduct from "../../dialogs/AddProduct";
 import { Modal } from 'antd';
 import SignIn from "../../dialogs/SignIn";
+import UpdatePassword from "../../dialogs/UpdatePassword";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,15 +51,33 @@ class Home extends Component {
             searchTerm: "",
             navbarShow: false,
             isAddProductOpen: false,
-            isLoggedIn: false
+            isLoggedIn: false,
+            isUpdatePassOpen: false,
+            email: "",
+            resetToken: "",
         };
         this.searchTermChange = this.searchTermChange.bind(this);
         this.searchSubmit = this.searchSubmit.bind(this); 
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.onWindowScroll = this.onWindowScroll.bind(this);
+        this.showUpdatePassword = this.showUpdatePassword.bind(this);
+    }
+
+    showUpdatePassword() {
+        var field = 'email';
+        var field2 = 'reset_password_token';
+        var url = window.location.href;
+        if(url.indexOf('?' + field + '=') != -1 || url.indexOf('&' + field + '=') != -1) {
+            if(url.indexOf('?' + field2 + '=') != -1 || url.indexOf('&' + field2 + '=') != -1) {
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                this.setState({ isUpdatePassOpen: true, email: urlParams.get("email"), resetToken: urlParams.get("reset_password_token") });
+            }
+        }
     }
 
     componentDidMount() {
+        this.showUpdatePassword();
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
         window.addEventListener('scroll', this.onWindowScroll);
@@ -133,6 +152,12 @@ class Home extends Component {
 
         return (
             <>
+                <Dialog 
+                    isOpen={this.state.isUpdatePassOpen} 
+                    onClose={() => this.setState({isUpdatePassOpen: false})}
+                    title="Update your password">
+                        <UpdatePassword email={this.state.email} resetToken={this.state.resetToken} />
+                </Dialog>
                 { this.state.isLoggedIn && <div className="fab-container">
                     <Fab variant="extended" size="large" color="secondary" onClick={() => this.setState({ isAddProductOpen: true })}>
                         <PeaceOutline className={classes.extendedIcon} />
