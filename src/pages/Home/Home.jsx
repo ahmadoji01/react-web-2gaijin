@@ -5,6 +5,7 @@ import {
     Button,
     Classes,
     Dialog,
+    H5
 } from "@blueprintjs/core";
 import "./Home.scss";
 import HomeBg from "../../illustrations/homebg.svg";
@@ -53,6 +54,8 @@ class Home extends Component {
             isAddProductOpen: false,
             isLoggedIn: false,
             isUpdatePassOpen: false,
+            isEmailConfirmSuccessOpen: false, 
+            isEmailConfirmFailOpen: false, 
             email: "",
             resetToken: "",
         };
@@ -78,6 +81,16 @@ class Home extends Component {
 
     componentDidMount() {
         this.showUpdatePassword();
+
+        var url = window.location.href;
+        var getUrl = new URL(url);
+        var emailConfirmSuccess = getUrl.searchParams.get("email_confirm_success");
+        if(emailConfirmSuccess === "true") {
+            this.setState({ isEmailConfirmSuccessOpen: true });
+        } else if(emailConfirmSuccess === "false")  {
+            this.setState({ isEmailConfirmFailOpen: true });
+        }
+
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
         window.addEventListener('scroll', this.onWindowScroll);
@@ -152,6 +165,18 @@ class Home extends Component {
 
         return (
             <>
+                <Dialog 
+                    isOpen={this.state.isEmailConfirmSuccessOpen} 
+                    onClose={() => this.setState({isEmailConfirmSuccessOpen: false})}
+                    title="Email Confirmation Successful">
+                        <div className={Classes.DIALOG_BODY}><H5>Your email has successfully been confirmed!</H5></div>
+                </Dialog>
+                <Dialog 
+                    isOpen={this.state.isEmailConfirmFailOpen} 
+                    onClose={() => this.setState({isEmailConfirmFailOpen: false})}
+                    title="Email Confirmation Failed">
+                        <div className={Classes.DIALOG_BODY}><H5>Whoops. Something went wrong when confirming your email</H5></div>
+                </Dialog>
                 <Dialog 
                     isOpen={this.state.isUpdatePassOpen} 
                     onClose={() => this.setState({isUpdatePassOpen: false})}
