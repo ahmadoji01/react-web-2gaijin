@@ -6,14 +6,17 @@ import { ReactComponent as FacebookIcon  } from "../../icons/FacebookIcon.svg";
 import { ReactComponent as GoogleIcon } from "../../icons/GoogleIcon.svg";
 import ConfirmedIllustration from "../../illustrations/ConfirmedIllustration.png";
 import {
-    Card, H3, Classes, Button,
+    Card, H3, Classes, Button, Checkbox,
     Divider,
     FormGroup, 
     InputGroup,
-    Spinner
+    Spinner,
+    Dialog
 } from "@blueprintjs/core";
+import { handleBooleanChange } from "@blueprintjs/docs-theme";
 import { INTENT_PRIMARY, INTENT_WARNING } from "@blueprintjs/core/lib/esm/common/classes";
 import AuthService from "../../services/auth.service";
+import TermsAndConditions from "../../dialogs/TermsAndConditions/TermsAndConditions";
 
 class SignUp extends Component {
 
@@ -33,6 +36,8 @@ class SignUp extends Component {
             valid: false,
             message: "",
             loading: false,
+            isTermsAgreed: false,
+            isTermsDialogOpen: false,
         };
 
         this.responseGoogle = this.responseGoogle.bind(this);
@@ -44,6 +49,7 @@ class SignUp extends Component {
         this.onFirstNameChange = this.onFirstNameChange.bind(this);
         this.onLastNameChange = this.onLastNameChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
+        this.handleTermsAgreementChange = handleBooleanChange(isTermsAgreed => this.setState({ isTermsAgreed }));
     }
 
     redirect() {
@@ -133,6 +139,14 @@ class SignUp extends Component {
                                 >
                                     <InputGroup type="password" id="confirm-password-input" value={this.state.confirmPassword} onChange={this.onConfirmPasswordChange} placeholder="Confirm Password" intent={INTENT_PRIMARY} />
                                 </FormGroup>
+                            </div>
+                            <div className="col-12">
+                                <Checkbox checked={this.state.isTermsAgreed} onChange={this.handleTermsAgreementChange}>
+                                    I agree with the <a onClick={() => this.setState({ isTermsDialogOpen: true })}><strong>Terms and Condition</strong></a> in using 2Gaijin.com
+                                </Checkbox>
+                                <Dialog isOpen={this.state.isTermsDialogOpen} onClose={() => this.setState({ isTermsDialogOpen: false })} >
+                                    <TermsAndConditions />
+                                </Dialog>
                             </div>
                             <div className="col-12">
                                 {spinner}
@@ -237,12 +251,6 @@ class SignUp extends Component {
     handleRegister(e) {
         e.preventDefault();
 
-        console.log(this.state.email);
-        console.log(this.state.firstName);
-        console.log(this.state.lastName);
-        console.log(this.state.password);
-        console.log(this.state.confirmPassword);
-
         this.setState({
             message: "",
             loading: true,
@@ -250,13 +258,17 @@ class SignUp extends Component {
             passwordValid: true
         });
 
+        if(!this.state.isTermsAgreed) {
+            this.setState({ message: "You have to agree with the terms and condition of 2Gaijin.com", loading: false });
+        }
+
         if(this.state.firstName == "") {
-            this.setState({ firstNameValid: false });
+            this.setState({ firstNameValid: false, loading: false });
             return;
         }
 
         if(this.state.password == "") {
-            this.setState({ passwordValid: false });
+            this.setState({ passwordValid: false, loading: false });
             return;
         }
 

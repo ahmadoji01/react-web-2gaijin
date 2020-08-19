@@ -29,6 +29,7 @@ class Messages extends Component {
             ws: null,
             isLoading: false,
         };
+        this.inputRef = React.createRef();
         this.picInput = React.createRef();
         this.textInput = React.createRef();
         this.loadChatRoomInfo = this.loadChatRoomInfo.bind(this);
@@ -152,6 +153,16 @@ class Messages extends Component {
             </div>
         );
     }
+    
+    componentDidMount() {
+        this.connect();
+        var self = this;
+        this.textInput.current.input.addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                self.sendMessage();
+            }
+        });
+    }
 
     componentDidUpdate() {
         this.scrollToBottom();
@@ -200,7 +211,6 @@ class Messages extends Component {
 
     onTextInputChange(e) {
         if(e.target.value === "\n") {
-            console.log(e.target.value);
         }
     }
 
@@ -268,10 +278,6 @@ class Messages extends Component {
                 });
             };
         }
-    }
-
-    componentDidMount() {
-        this.connect();
     }
 
     loadChatRoomInfo() {
@@ -342,7 +348,9 @@ class Messages extends Component {
 
     sendMessage() {
         const self = this;
-        const text = self.textInput.current.input.value.replace(/\n/g, '<br>').trim();
+        const regex = /(<([^>]+)>)/ig;
+        const text = self.textInput.current.input.value.replace(regex, '');
+        //const text = self.textInput.current.input.value.replace(/\n/g, '<br>').trim();
         var messageToSend = {};
         if (text.trim().length) {
             messageToSend = {
@@ -366,7 +374,6 @@ class Messages extends Component {
         axios
         .post(`https://go.2gaijin.com/insert_message`, messageToSend, config)
         .then(response => {
-            console.log(response);
             if(response.data.status == "Success") {
                 var roomMsg = response.data.data.room_message;      
                 self.sendMsgWs(JSON.stringify(roomMsg));

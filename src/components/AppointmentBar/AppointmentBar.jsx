@@ -86,7 +86,7 @@ class AppointmentBar extends Component {
         return axios
         .get(`https://go.2gaijin.com/initiate_chat`, config)
         .then(response => {
-            this.$f7.view.main.router.navigate("/chatroom/" + response.data.data.room._id);
+            window.location.href = "/m/" + response.data.data.room._id;
         });
     }
 

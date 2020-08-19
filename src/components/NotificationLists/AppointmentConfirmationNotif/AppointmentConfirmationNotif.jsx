@@ -18,6 +18,10 @@ class AppointmentConfirmationNotif extends Component {
         this.acceptAppointment = this.acceptAppointment.bind(this);
     }
 
+    onGoToAppointmentClick(userID) {
+        window.location = "/profile/" + userID + "?appointment=1";
+    }
+
     acceptAppointment(appointmentID) {
         var payload = {
             "_id": appointmentID,
@@ -79,7 +83,7 @@ class AppointmentConfirmationNotif extends Component {
             if(this.state.status == "accepted") {
                 notifButton = <div className="row notif-btn" style={{padding: 0, margin: 0}}>
                     <div className="col-6">
-                        <Button className="general-btn" style={{color: "#fff", marginTop: 5}} color="orange" raised fill round>Go To Appointment</Button>
+                        <Button className="general-btn" style={{color: "#fff", marginTop: 5}} onClick={() => this.onGoToAppointmentClick(localStorage.getItem("user_id"))} color="orange" raised fill round>Go To Appointment</Button>
                     </div>
                     <div className="col-6">
                         <Button className="general-disabled-btn" style={{color: "#EF7132", marginTop: 5}} color="orange" raised fill round>Accepted</Button>

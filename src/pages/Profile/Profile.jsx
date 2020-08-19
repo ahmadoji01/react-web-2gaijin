@@ -35,19 +35,27 @@ class Profile extends Component {
             acceptedSeller: [],
             pendingBuyer: [],
             finishedBuyer: [],
-            acceptedBuyer: []
+            acceptedBuyer: [],
+            defaultActiveTab: "collections"
         }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.loadAppointments = this.loadAppointments.bind(this);
         this.sendEmailConfirmation = this.sendEmailConfirmation.bind(this);
         this.sendPhoneConfirmation = this.sendPhoneConfirmation.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
+    }
+
+    componentWillMount() {
+        
     }
 
     componentDidMount() {
         this.updateWindowDimensions();
+        var url = window.location.href;
+        if(url.indexOf('?' + "appointment" + '=') != -1 || url.indexOf('&' + "appointment" + '=') != -1) {
+            this.setState({ defaultActiveTab: "appointments" });
+        }
         window.addEventListener('resize', this.updateWindowDimensions);
-        
-        
     }
     
     componentWillUnmount() {
@@ -143,6 +151,10 @@ class Profile extends Component {
         });
     }
 
+    handleTabChange(newTabId) {
+        this.setState({ defaultActiveTab: newTabId });
+    }
+
     render() {
         
         if(this.state.profile.length == 0) {
@@ -198,9 +210,11 @@ class Profile extends Component {
                 <div className="row product-detail-container custom-container" style={{ marginTop: 50, paddingLeft: this.state.cardWidth, paddingRight: this.state.cardWidth }}>
                     <Tabs
                     animate={true}
+                    onChange={this.handleTabChange}
                     id="TabsExample"
                     key={"horizontal"}
                     renderActiveTabPanelOnly={true}
+                    selectedTabId={this.state.defaultActiveTab}
                     vertical={false}
                     style={{ borderBottom: "1px solid blue" }}
                     >
