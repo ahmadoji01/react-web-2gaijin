@@ -16,6 +16,8 @@ import Search from './pages/Search';
 import SignUp from './pages/SignUp';
 import Profile from './pages/Profile';
 import Messages from './pages/Messages';
+import ConfirmEmail from './pages/ConfirmEmail';
+import ConfirmPhone from './pages/ConfirmPhone';
 
 function App() {
   return (
@@ -32,6 +34,9 @@ function App() {
           <Route path="/sign-up" component={SignUp} />
           <Route path="/product/:productid" component={ProductDetail} />
           <Route path="/m/:roomID?" component={Messages} />
+          <Route path="/profile/:userid" component={Profile} />
+          <Route path="/confirm_email" component={ConfirmEmail} />
+          <Route path="/confirm_phone" component={ConfirmPhone} />
           <Route path="/profile/:userid" component={Profile} />
           <Route path="/">
             <Homepage />

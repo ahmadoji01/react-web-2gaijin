@@ -6,7 +6,7 @@ import GoldCoin from "../../illustrations/GoldCoin.svg";
 import SilverCoin from "../../illustrations/SilverCoin.svg";
 import ProductCard from "../../components/ProductCard";
 import {
-    Button, Tabs, Tab, Dialog, FormGroup
+    Button, Classes, Tabs, Tab, Dialog, FormGroup, Spinner, H5
 } from "@blueprintjs/core";
 import shortid from "shortid";
 import axios from "axios";
@@ -28,6 +28,12 @@ class Profile extends Component {
             editProfile: [],
             isEmailConfirmed: false,
             isPhoneConfirmed: false,
+            emailLoading: false,
+            emailConfirmSuccess: false,
+            emailConfirmFail: false,
+            phoneLoading: false,
+            phoneConfirmSuccess: false,
+            phoneConfirmFail: false,
             cardWidth: (window.innerWidth/6) - 50, 
             cardHeight: (window.innerHeight/5) - 50,
             pendingSeller: [],
@@ -108,11 +114,50 @@ class Profile extends Component {
     }
 
     sendEmailConfirmation() {
-
+        var payload = {
+            "email": localStorage.getItem("email"),
+            "confirm_source": "desktop_web_app"
+        }
+        
+        this.setState({ emailLoading: true });
+        this.setState({ confirmEmailStatus: "" });
+        return axios.post(`https://go.2gaijin.com/confirm_identity`, payload, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            if(response.data["status"] == "Success") {
+                this.setState({ emailLoading: false });
+                this.setState({ emailConfirmSuccess: true });
+            } else {
+                this.setState({ emailLoading: false });
+                this.setState({ emailConfirmFail: true });
+            }
+        });
     }
 
     sendPhoneConfirmation() {
+        var payload = {
+            "phone": localStorage.getItem("phone"),
+        }
 
+        if(!this.state.phoneNumber) { this.setState({ phoneConfirmFail: true }); return; }
+        
+        this.setState({ phoneLoading: true });
+        return axios.post(`https://go.2gaijin.com/generate_phone_confirm_code`, payload, {
+            headers: {
+                "Authorization": localStorage.getItem("access_token"),
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            if(response.data["status"] == "Success") {
+                this.setState({ phoneLoading: false });
+                this.setState({ phoneConfirmSuccess: true });
+            } else {
+                this.setState({ phoneLoading: false });
+                this.setState({ phoneConfirmFail: true });
+            }
+        });
     }
 
     loadAppointments() {
@@ -171,6 +216,16 @@ class Profile extends Component {
         let silverCoins = this.state.profile.silver_coin;
         let shortBio = this.state.profile.short_bio;
 
+        let emailSpinner;
+        if(this.state.emailLoading) {
+            emailSpinner = <Spinner intent="warning" size={24} style={{ marginBottom: 10 }} />;
+        }
+
+        let phoneSpinner;
+        if(this.state.phoneLoading) {
+            phoneSpinner = <Spinner intent="warning" size={24} style={{ marginBottom: 10 }} />;
+        }
+
         return(
             <>
                 <NavigationBar />
@@ -197,11 +252,11 @@ class Profile extends Component {
 
                                     <div className="row" style={{ paddingLeft: 0, marginTop: 20, width: "100%" }}>
                                         {!this.state.isEmailConfirmed && <div className="col-3">
-                                            <Button style={{ width: "100%" }} onClick={() => this.setState({ isEditProfileDialogOpen: true })}>Confirm My Email</Button>
+                                            {emailSpinner}<Button style={{ width: "100%" }} disabled={this.state.emailLoading} onClick={this.sendEmailConfirmation}>Confirm My Email</Button>
+                                            <Dialog isOpen={this.state.emailConfirmSuccess} onClose={() => this.setState({ emailConfirmSuccess: false })}><div className={Classes.DIALOG_BODY}><H5>A confirmation link is sent to your email! Check your email to confirm your identity</H5></div></Dialog>
+                                            <Dialog isOpen={this.state.emailConfirmFail} onClose={() => this.setState({ emailConfirmFail: false })}><div className={Classes.DIALOG_BODY}><H5>Whoops. Something went wrong. Try again</H5></div></Dialog>
                                         </div>}
-                                        {!this.state.isPhoneConfirmed && <div className="col-3">
-                                            <Button style={{ width: "100%" }} onClick={() => this.setState({ isEditProfileDialogOpen: true })}>Confirm My Phone</Button>
-                                        </div>}
+                                        
                                     </div>
                                 </> }
                         </div>
