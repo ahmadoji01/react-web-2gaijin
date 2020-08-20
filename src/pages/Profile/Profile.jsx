@@ -15,6 +15,7 @@ import AuthService from "../../services/auth.service";
 import Footer from "../../components/Footer";
 import AppointmentContainer from "../../components/AppointmentContainer";
 import Moment from 'react-moment';
+import { geolocated } from 'react-geolocated';
 
 class Profile extends Component {
 
@@ -45,17 +46,22 @@ class Profile extends Component {
             pendingBuyer: [],
             finishedBuyer: [],
             acceptedBuyer: [],
+            currLat: 0.0, currLng: 0.0,
             defaultActiveTab: "collections"
         }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.loadAppointments = this.loadAppointments.bind(this);
         this.sendEmailConfirmation = this.sendEmailConfirmation.bind(this);
         this.sendPhoneConfirmation = this.sendPhoneConfirmation.bind(this);
+        this.findCoordinates = this.findCoordinates.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
     }
 
-    componentWillMount() {
-        
+    findCoordinates = () => {
+        navigator.geolocation.getCurrentPosition(position => {
+            const location = JSON.stringify(position);
+            this.setState({ currLat: position.coords.latitude, currLng: position.coords.longitude });
+        });
     }
 
     componentDidMount() {
@@ -78,6 +84,7 @@ class Profile extends Component {
     }
 
     componentWillMount() {
+        this.findCoordinates();
         var userid = this.props.match.params.userid;
         fetch('https://go.2gaijin.com/profile_visitor?user_id=' + userid)
         .then((response) => response.json())
@@ -239,6 +246,8 @@ class Profile extends Component {
             phoneSpinner = <Spinner intent="warning" size={24} style={{ marginBottom: 10 }} />;
         }
 
+        let currLat = this.state.currLat, currLng = this.state.currLng;
+
         return(
             <>
                 <NavigationBar />
@@ -291,7 +300,7 @@ class Profile extends Component {
                     vertical={false}
                     style={{ borderBottom: "1px solid blue" }}
                     >
-                        <Tab id="collections" title="Collections" panel={<CollectionPanel items={this.state.items} cardWidth={this.state.cardWidth} cardHeight={this.state.cardHeight} /> } />
+                        <Tab id="collections" title="Collections" panel={<CollectionPanel items={this.state.items} cardWidth={this.state.cardWidth} lat={currLat} lng={currLng} cardHeight={this.state.cardHeight} /> } />
                         { this.state.allowEditProfile && <Tab id="appointments" title="Appointments" panel={<AppointmentPanel pendingSeller={this.state.pendingSeller} finishedSeller={this.state.finishedSeller} acceptedSeller={this.state.acceptedSeller} pendingBuyer={this.state.pendingBuyer} finishedBuyer={this.state.finishedBuyer} acceptedBuyer={this.state.acceptedBuyer} /> } />}
                     </Tabs>
                 </div>
@@ -306,7 +315,7 @@ const CollectionPanel = (props) => (
         { props.items.map(function (item, i) {
             return (
                 <div className="col-2dot4">
-                    <ProductCard key={shortid.generate()} item={item} cardWidth={props.cardWidth} cardHeight={props.cardHeight} />
+                    <ProductCard key={shortid.generate()} item={item} lat={props.lat} lng={props.lng} cardWidth={props.cardWidth} cardHeight={props.cardHeight} />
                 </div>
             );
         })}
@@ -342,4 +351,9 @@ const AppointmentPanel = (props) => (
     </div>
 );
 
-export default Profile;
+export default geolocated({
+    positionOptions: {
+        enableHighAccuracy: true,
+    },
+    userDecisionTimeout: 5000,
+  })(Profile);

@@ -24,6 +24,7 @@ import Fab from '@material-ui/core/Fab';
 import { ReactComponent as PeaceOutline} from "../../icons/PeaceOutline.svg";
 import AddProduct from "../../dialogs/AddProduct";
 import { Modal } from 'antd';
+import { geolocated } from 'react-geolocated';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -78,6 +79,14 @@ class Search extends Component {
         this.onPriceInputBlur = this.onPriceInputBlur.bind(this);
         this.onSortChange = this.onSortChange.bind(this);
         this.onStatusChange = this.onStatusChange.bind(this);
+        this.findCoordinates = this.findCoordinates.bind(this);
+    }
+
+    findCoordinates = () => {
+        navigator.geolocation.getCurrentPosition(position => {
+            const location = JSON.stringify(position);
+            this.setState({ currLat: position.coords.latitude, currLng: position.coords.longitude });
+        });
     }
 
     componentDidMount() {
@@ -96,6 +105,7 @@ class Search extends Component {
     }
     
     componentWillMount() {
+        this.findCoordinates();
         if(AuthService.getCurrentUser()) {
             this.setState({ isLoggedIn: true });
         }
@@ -288,12 +298,14 @@ class Search extends Component {
             cardClassName = "col-2dot4";
         }
 
+        let currLat = this.state.currLat, currLng = this.state.currLng;
+
         let items;
         if(this.state.data.length > 0) {
             let cardWidth = this.state.cardWidth;
             let cardHeight = this.state.cardHeight;
             items = this.state.data.map(function(item, i) {
-                return <div className={cardClassName}><ProductCard key={shortid.generate()} item={item} cardWidth={cardWidth} cardHeight={cardHeight} /></div>
+                return <div className={cardClassName}><ProductCard key={shortid.generate()} lat={currLat} lng={currLng} item={item} cardWidth={cardWidth} cardHeight={cardHeight} /></div>
             });
         }
 
@@ -415,4 +427,9 @@ class Search extends Component {
     
 }
 
-export default Search;
+export default geolocated({
+    positionOptions: {
+        enableHighAccuracy: true,
+    },
+    userDecisionTimeout: 5000,
+  })(Search);

@@ -67,6 +67,8 @@ class ProductCard extends Component {
             let locColumn;
             if(this.state.locText != "") {
                 locColumn = <p className="location" style={{ display: "inline" }}><img src={PinIcon} style={{ width: 20, height: 20, float: "left" }} />{this.state.locText}</p>
+            } else {
+                locColumn = <p className="location" style={{ display: "inline" }}><img src={PinIcon} style={{ width: 20, height: 20, float: "left" }} />No Location Data</p>
             }
 
             let cardWidth = this.props.cardWidth;
