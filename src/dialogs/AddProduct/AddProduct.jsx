@@ -272,7 +272,6 @@ class AddProduct extends Component {
             let content = { "thumb_data": thumbImageData, "image_data": imageData };
             imagesArray.push(content);
         }
-        console.log(imagesArray);
 
         var payload = {
             "product": {
@@ -359,7 +358,7 @@ class AddProduct extends Component {
     }
 
     onDescriptionChange = ( event, editor ) => {
-        //this.setState({ description: editorState });
+        this.setState({ description: editor.getData() });
     }
 
     onPriceChange = value => {

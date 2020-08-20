@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { Alignment, Classes, Button, Navbar, NavbarHeading, NavbarDivider, NavbarGroup, Icon } from "@blueprintjs/core";
+import { Alignment, Classes, Button, Dialog, Navbar, NavbarHeading, NavbarDivider, NavbarGroup, Icon } from "@blueprintjs/core";
 import "./Footer.scss";
 import GaijinLogo from "../../illustrations/gaijinlogo.svg";
+import AboutUs from "../../dialogs/AboutUs";
+import ContactUs from "../../dialogs/ContactUs";
 
 class Footer extends Component {
 
@@ -9,7 +11,9 @@ class Footer extends Component {
         super(props);
         this.state = {
             windowWidth: window.innerWidth,
-            windowHeight: window.innerHeight
+            windowHeight: window.innerHeight,
+            isAboutUsDialogOpen: false,
+            isContactUsDialogOpen: false
         }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
@@ -37,10 +41,16 @@ class Footer extends Component {
                     <div style={{margin: "0 auto", width: this.state.windowWidth - 100}}>
                         <div class="bp3-navbar-group bp3-align-right">
                             <button class="bp3-button bp3-minimal">Home</button>
-                            <button class="bp3-button bp3-minimal">About Us</button>
-                            <button class="bp3-button bp3-minimal">Contact Us</button>
+                            <button class="bp3-button bp3-minimal" onClick={() => this.setState({ isAboutUsDialogOpen: true })}>About Us</button>
+                            <button class="bp3-button bp3-minimal" onClick={() => this.setState({ isContactUsDialogOpen: true })}>Contact Us</button>
                         </div>
                     </div>
+                    <Dialog isOpen={this.state.isAboutUsDialogOpen} onClose={() => this.setState({ isAboutUsDialogOpen: false })}>
+                        <AboutUs />
+                    </Dialog>
+                    <Dialog isOpen={this.state.isContactUsDialogOpen} onClose={() => this.setState({ isContactUsDialogOpen: false })}>
+                        <ContactUs />
+                    </Dialog>
                 </nav>
                 <div className="row footer-content">
                     <div className="col-1"></div>

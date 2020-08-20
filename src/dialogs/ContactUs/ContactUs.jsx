@@ -12,10 +12,51 @@ import { INTENT_PRIMARY } from "@blueprintjs/core/lib/esm/common/classes";
 import AuthService from "../../services/auth.service";
 import axios from "axios";
 import { DatePicker } from "@blueprintjs/datetime";
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 class ContactUs extends Component {
     
+    constructor(props) {
+        super(props);
+        this.state = {
+            isSubmitted: false,
+            loading: false,
+            name: "",
+            email: "",
+            message: "",
+            submitMsg: "",
+            nameValid: true,
+            emailValid: true,
+            msgValid: true,
+        };
+        this.submitTicket = this.submitTicket.bind(this);
+        this.onNameChange = this.onNameChange.bind(this);
+        this.onEmailChange = this.onEmailChange.bind(this);
+        this.onMessageChange = this.onMessageChange.bind(this);
+    }
+
+    componentWillMount() {
+        if(localStorage.getItem("first_name")) {
+            this.setState({ name: localStorage.getItem("first_name") + " " + localStorage.getItem("last_name") });
+        }
+        if(localStorage.getItem("email")) {
+            this.setState({ email: localStorage.getItem("email")});
+        }
+    }
+
     render() {
+
+        let submitMsg;
+        if(this.state.submitMsg) {
+            submitMsg = <p>{this.state.submitMsg}</p>
+        }
+
+        let spinner;
+        if(this.state.loading) {
+            spinner = <Spinner intent="warning" size={24} style={{ marginBottom: 10 }} />;
+        }
+
         return(
             <div className={`${Classes.DIALOG_BODY} appointment-dialog`}>
                 <div className="row" style={{ marginBottom: 20 }}>
@@ -31,6 +72,7 @@ class ContactUs extends Component {
                     </div>
                     <div className="col-12">
                         <FormGroup
+                            helperText={!this.state.emailValid && "Email is required"}
                             intent={INTENT_PRIMARY}
                             label={"Email Address"}
                             labelFor="email-input"
@@ -40,40 +82,76 @@ class ContactUs extends Component {
                     </div>
                     <div className="col-12">
                         <FormGroup
+                            helperText={!this.state.msgValid && "Message is required"}
                             intent={INTENT_PRIMARY}
-                            label={"WeChat ID (optional)"}
-                            labelFor="wechat-input"
+                            label={"Message"}
+                            labelFor="description-input"
                         >
-                            <InputGroup id="notes-input" value={this.state.wechat} onChange={this.onWeChatChange} placeholder="WeChat ID" intent={INTENT_PRIMARY} />
+                            <CKEditor
+                                editor={ ClassicEditor }
+                                data={this.state.message}
+                                config={{toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ]}}
+                                placeholder='Tell me what you want to know about us!'
+                                onChange={ this.onMessageChange }
+                            />
                         </FormGroup>
                     </div>
                     <div className="col-12">
-                        <FormGroup
-                            intent={INTENT_PRIMARY}
-                            label={"Facebook (optional)"}
-                            labelFor="facebook-input"
-                        >
-                            <InputGroup id="facebook-input" value={this.state.facebook} onChange={this.onFacebookChange} placeholder="Link to your facebook account" intent={INTENT_PRIMARY} />
-                        </FormGroup>
-                    </div>
-                    <div className="col-12">
-                        <FormGroup
-                            helperText={!this.state.destinationValid && "Destination is required"}
-                            intent={INTENT_PRIMARY}
-                            label={"Destination"}
-                            labelFor="destination-input"
-                        >
-                            <InputGroup id="destination-input" value={this.state.destination} onChange={this.onDestinationChange} placeholder="Where the item should be delivered?" intent={INTENT_PRIMARY} />
-                        </FormGroup>
-                    </div>
-                    <div className="col-12">
-                        {message}
+                        {submitMsg}
                         {spinner}
-                        <Button onClick={this.submitDelivery} disabled={this.state.loading} style={{ width: "100%" }}>Submit Delivery Request</Button>
+                        <Button onClick={this.submitTicket} disabled={this.state.loading || this.state.isSubmitted} style={{ width: "100%" }}>Submit Ticket</Button>
                     </div>
                 </div>
             </div>
         );
+    }
+    
+    onNameChange(e) {
+        this.setState({ name: e.target.value });
+    }
+
+    onEmailChange(e) {
+        this.setState({ email: e.target.value });
+    }
+
+    onMessageChange = ( event, editor ) => {
+        this.setState({ message: editor.getData() });
+    }
+
+
+    submitTicket() {
+        this.setState({ submitMsg: "", loading: true });
+
+        if(!this.state.name) {
+            this.setState({ nameValid: false, loading: false });
+            return;
+        }
+
+        if(!this.state.email) {
+            this.setState({ emailValid: false, loading: false });
+            return;
+        }
+
+        if(!this.state.message) {
+            this.setState({ msgValid: false, loading: false });
+            return;
+        }
+
+        var payload = {
+            "name": this.state.name,
+            "email": this.state.email,
+            "message": this.state.message
+        }
+        this.setState({ submitMsg: "", loading: true, nameValid: true, emailValid: true, msgValid: true});
+        
+        return axios.post(`https://go.2gaijin.com/send_ticket`, payload, {})
+        .then(response => {
+            if(response.data["status"] == "Success") {
+                this.setState({ isSubmitted: true, loading: false, submitMsg: "Your message has successfully been sent. Our admin will reach you through the email info you have provided" });
+            } else if(response.data["status"] == "Error") {
+                this.setState({ loading: false, submitMsg: "Whoops. Something went wrong. Try submitting again" });
+            }
+        });
     }
 
 }

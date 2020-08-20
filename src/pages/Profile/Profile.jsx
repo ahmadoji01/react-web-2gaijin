@@ -14,6 +14,7 @@ import EditProfile from "../../dialogs/EditProfile/EditProfile";
 import AuthService from "../../services/auth.service";
 import Footer from "../../components/Footer";
 import AppointmentContainer from "../../components/AppointmentContainer";
+import Moment from 'react-moment';
 
 class Profile extends Component {
 
@@ -28,6 +29,8 @@ class Profile extends Component {
             editProfile: [],
             isEmailConfirmed: false,
             isPhoneConfirmed: false,
+            subscription: "",
+            subsUntilDate: new Date(),
             emailLoading: false,
             emailConfirmSuccess: false,
             emailConfirmFail: false,
@@ -107,6 +110,7 @@ class Profile extends Component {
                     self.setState({ editProfile: response.data.data.profile });
                     self.setState({ isEmailConfirmed: response.data.data.profile.email_confirmed });
                     self.setState({ isPhoneConfirmed: response.data.data.profile.phone_confirmed });
+                    self.setState({ subsUntilDate: new Date(response.data.data.profile.subs_expiry_date) });
                     self.loadAppointments();
                 }
             }
@@ -202,6 +206,15 @@ class Profile extends Component {
 
     render() {
         
+        const calendarStrings = {
+            lastDay : '[Yesterday at ] LT',
+            sameDay : '[Today at ] LT',
+            nextDay : '[Tomorrow at ] LT',
+            lastWeek : '[last] dddd [at] LT',
+            nextWeek : 'dddd [at] LT',
+            sameElse : 'dddd, L [at] LT'
+        };
+
         if(this.state.profile.length == 0) {
             return "";
         }
@@ -257,6 +270,11 @@ class Profile extends Component {
                                             <Dialog isOpen={this.state.emailConfirmFail} onClose={() => this.setState({ emailConfirmFail: false })}><div className={Classes.DIALOG_BODY}><H5>Whoops. Something went wrong. Try again</H5></div></Dialog>
                                         </div>}
                                         
+                                    </div>
+                                    <div className="row" style={{ paddingLeft: 0, marginTop: 20, width: "100%" }}>
+                                        {(new Date() <= this.state.subsUntilDate) && <div className="col-6">
+                                            <p>Subscribed until <Moment calendar={calendarStrings}>{this.state.subsUntilDate}</Moment></p>
+                                        </div>}
                                     </div>
                                 </> }
                         </div>
