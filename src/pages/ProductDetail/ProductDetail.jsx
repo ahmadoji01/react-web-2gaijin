@@ -17,6 +17,7 @@ import CODIcon from "../../icons/codicon.png";
 import PaypalIcon from "../../icons/paypalicon.png";
 import WeChatIcon from "../../icons/wechaticon.png";
 import Footer from "../../components/Footer";
+import { Alert } from 'antd';
 
 const images = [
     {
@@ -44,6 +45,7 @@ class ProductDetail extends Component {
             windowWidth: 350,
             isLoading: false,
             activeIndex: 0,
+            isSold: false
         };
         this.populatePhotos = this.populatePhotos.bind(this);
     }
@@ -66,6 +68,9 @@ class ProductDetail extends Component {
             this.populatePhotos(jsonData.item.images);
             this.setState({ data: jsonData});
             this.setState({ paymentMethod: jsonData.payment_method });
+            if(jsonData.item.availability === "sold") {
+                this.setState({ isSold: true });
+            }
         })
         .catch((error) => {
             console.error(error);
@@ -115,7 +120,7 @@ class ProductDetail extends Component {
         return (
             <>
                 <NavigationBar />
-                <Toolbar price={this.state.data.item.price} sellerInfo={this.state.data.seller} productID={this.state.data.item._id} />
+                <Toolbar price={this.state.data.item.price} isSold={this.state.isSold} sellerInfo={this.state.data.seller} productID={this.state.data.item._id} />
                 <div className="row product-detail-container custom-container" style={{ marginTop: 80 }}>
                     <div className="col-6">
                         <ImageGallery showBullets={true} showPlayButton={false} items={this.state.images} />
@@ -128,6 +133,12 @@ class ProductDetail extends Component {
                             {yearsOwned}
                             {modelName}
                         </table>
+                        { this.state.isSold && <Alert
+                            message="This item is sold out"
+                            description="The seller of this item has sold it out!"
+                            type="warning"
+                            showIcon
+                            /> }
                         <div className="product-description" style={{ marginTop: 10 }}>
                             <h6>DESCRIPTION</h6>
                             <p className="desc-content">{parse(itemInfo.description)}</p> 
@@ -169,7 +180,7 @@ class ProductDetail extends Component {
                     <ProductSlider title="Other items from this seller" subtitle="Some items we'd love to share with fellow gaijins" items={this.state.data.selleritems} label="Featured" />
                 </div>
                 <div className="row" style={{ marginTop: 30, marginBottom: 90 }}>
-                    <ProductSlider title="Other items you might like" subtitle="Some items we'd love to share with fellow gaijins" items={this.state.data.relateditems} label="Featured" />
+                    <ProductSlider title="Other items you might like" subtitle="Items related to the one you are viewing now" items={this.state.data.relateditems} label="Featured" />
                 </div>
                 <Footer />
             </>

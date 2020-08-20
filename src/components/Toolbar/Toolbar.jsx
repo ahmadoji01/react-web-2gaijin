@@ -15,6 +15,7 @@ import AuthService from "../../services/auth.service";
 import MakeAppointment from "../../dialogs/MakeAppointment/MakeAppointment";
 import MakeAppointmentWithDelivery from "../../dialogs/MakeAppointment/MakeAppointmentWithDelivery";
 import SignIn from "../../dialogs/SignIn";
+import axios from "axios";
 
 class Toolbar extends Component {
 
@@ -26,8 +27,41 @@ class Toolbar extends Component {
             isAppointmentDialogOpen: false,
             isAppWithDeliveryDialogOpen: false,
             isSignInDialogOpen: false,
+            isSold: false,
+            isLoading: false
         }; 
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.onMarkAsSoldClick = this.onMarkAsSoldClick.bind(this);
+    }
+
+    onMarkAsSoldClick() {
+        var payload = {
+            "_id": this.props.productID
+        }
+        
+        this.setState({ isLoading: true });
+        axios.post(`https://go.2gaijin.com/mark_as_sold`, payload, {
+        headers: {
+            "Authorization": localStorage.getItem("access_token")
+        }
+        }).then(response => {
+            if(response.data["status"] == "Success") {
+                this.setState({ isLoading: false });
+                if(this.state.isSold) {
+                    this.setState({ isSold: false });
+                } else {
+                    this.setState({ isSold: true });
+                }
+            } else {
+                this.setState({ isLoading: false });
+            }
+        });
+    }
+
+    componentDidUpdate(previousProps, previousState) {
+        if (previousProps.isSold !== this.props.isSold) {
+            this.setState({isSold: this.props.isSold});
+        }
     }
 
     componentDidMount() {
@@ -78,7 +112,11 @@ class Toolbar extends Component {
         let actionBtn;
         if(this.state.isLoggedIn) {
             if(localStorage.getItem("user_id") === this.props.sellerInfo._id) {
-                actionBtn = <Button className="general-btn" text="Mark as Sold" />;
+                if(!this.state.isSold) {
+                    actionBtn = <Button className="general-btn" onClick={this.onMarkAsSoldClick} text="Mark as Sold" disabled={this.state.isLoading} />;
+                } else {
+                    actionBtn = <Button className="general-btn" onClick={this.onMarkAsSoldClick} text="Mark as Available" disabled={this.state.isLoading} />;
+                }
             } else {
                 actionBtn = <Popover content={requestMenu} position={Position.TOP} style={{ zIndex: 12039181 }}>
                     <Button className="request-buy-btn" text="Request to Buy" />
