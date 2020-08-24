@@ -55,6 +55,18 @@ class HalfNavbar extends Component {
         }
     }
 
+    componentDidMount() {
+        var url = window.location.href;
+        var lastPart = url.split("/").pop();
+        if(lastPart === "order_delivery") {
+            if(AuthService.getCurrentUser()) {
+                this.setState({ isDeliveryDialogOpen: true });
+            } else {
+                this.setState({ isSignInDialogOpen: true });
+            }
+        }
+    }
+
     onSignOutButtonClick() {
         AuthService.logout().then(() => {
             window.location = "/";

@@ -144,7 +144,7 @@ class SignUp extends Component {
                                 <Checkbox checked={this.state.isTermsAgreed} onChange={this.handleTermsAgreementChange}>
                                     I agree with the <a onClick={() => this.setState({ isTermsDialogOpen: true })}><strong>Terms and Condition</strong></a> in using 2Gaijin.com
                                 </Checkbox>
-                                <Dialog isOpen={this.state.isTermsDialogOpen} onClose={() => this.setState({ isTermsDialogOpen: false })} >
+                                <Dialog title="2Gaijin.com Usage Terms and Conditions" isOpen={this.state.isTermsDialogOpen} onClose={() => this.setState({ isTermsDialogOpen: false })} >
                                     <TermsAndConditions />
                                 </Dialog>
                             </div>
