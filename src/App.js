@@ -18,8 +18,13 @@ import Profile from './pages/Profile';
 import Messages from './pages/Messages';
 import ConfirmEmail from './pages/ConfirmEmail';
 import ConfirmPhone from './pages/ConfirmPhone';
+import { isMobile } from "react-device-detect";
 
 function App() {
+  if(isMobile) {
+    window.location.href = "https://beta06012020.2gaijin.com";
+  }
+
   return (
     <Router>
       <div className="App">
