@@ -27,6 +27,7 @@ import AddProduct from "../../dialogs/AddProduct";
 import { Modal } from 'antd';
 import SignIn from "../../dialogs/SignIn";
 import UpdatePassword from "../../dialogs/UpdatePassword";
+import ContactUs from "../../dialogs/ContactUs";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,6 +55,7 @@ class Home extends Component {
             isAddProductOpen: false,
             isLoggedIn: false,
             isUpdatePassOpen: false,
+            isContactDialogOpen: false,
             isEmailConfirmSuccessOpen: false, 
             isEmailConfirmFailOpen: false, 
             email: "",
@@ -256,7 +258,10 @@ class Home extends Component {
                                 <Chip link="/search?category=Electronics" title="Electronics" />
                             </div>
                             <div className="row" style={{ margin: 0, marginLeft: 15, marginTop: 20, width: "100%" }}>
-                                <h4 style={{ fontWeight: 600, textAlign: "left" }}>Have a question about 2Gaijin? <a href="/" style={{ color: "#E75B15" }}>Contact us!</a></h4>
+                                <h4 style={{ fontWeight: 600, textAlign: "left" }}>Have a question about 2Gaijin? <a onClick={() => this.setState({ isContactDialogOpen: true })} style={{ color: "#E75B15" }}>Contact us!</a></h4>
+                                <Dialog isOpen={this.state.isContactDialogOpen} onClose={() => this.setState({ isContactDialogOpen: false })}>
+                                    <ContactUs />
+                                </Dialog>
                             </div>
                         </div>
                         <div className="row" style={{ position:"absolute", bottom: 0, left: 30, width: "100%" }}>

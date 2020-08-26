@@ -6,7 +6,7 @@ import GoldCoin from "../../illustrations/GoldCoin.svg";
 import SilverCoin from "../../illustrations/SilverCoin.svg";
 import ProductCard from "../../components/ProductCard";
 import {
-    Button, Classes, Tabs, Tab, Dialog, FormGroup, Spinner, H5
+    Button, Card, H3, Classes, Tabs, Tab, Dialog, FormGroup, Spinner, H5
 } from "@blueprintjs/core";
 import shortid from "shortid";
 import axios from "axios";
@@ -16,6 +16,7 @@ import Footer from "../../components/Footer";
 import AppointmentContainer from "../../components/AppointmentContainer";
 import Moment from 'react-moment';
 import { geolocated } from 'react-geolocated';
+import EmptyIllustration from "../../illustrations/EmptyIllustration.png";
 
 class Profile extends Component {
 
@@ -301,7 +302,7 @@ class Profile extends Component {
                     style={{ borderBottom: "1px solid blue" }}
                     >
                         <Tab id="collections" title="Collections" panel={<CollectionPanel items={this.state.items} cardWidth={this.state.cardWidth} lat={currLat} lng={currLng} cardHeight={this.state.cardHeight} /> } />
-                        { this.state.allowEditProfile && <Tab id="appointments" title="Appointments" panel={<AppointmentPanel pendingSeller={this.state.pendingSeller} finishedSeller={this.state.finishedSeller} acceptedSeller={this.state.acceptedSeller} pendingBuyer={this.state.pendingBuyer} finishedBuyer={this.state.finishedBuyer} acceptedBuyer={this.state.acceptedBuyer} /> } />}
+                        { this.state.allowEditProfile && <Tab id="appointments" title="Transactions" panel={<AppointmentPanel pendingSeller={this.state.pendingSeller} finishedSeller={this.state.finishedSeller} acceptedSeller={this.state.acceptedSeller} pendingBuyer={this.state.pendingBuyer} finishedBuyer={this.state.finishedBuyer} acceptedBuyer={this.state.acceptedBuyer} /> } />}
                     </Tabs>
                 </div>
                 <Footer />
@@ -312,7 +313,9 @@ class Profile extends Component {
 
 const CollectionPanel = (props) => (
     <div className="row" style={{ margin: 0 }}>
-        { props.items.map(function (item, i) {
+        {props.items.length === 0 && <Card style={{ width: "97.5%", marginBottom: 20 }}><img src={EmptyIllustration} /><H3 style={{ marginTop: 10 }}>No items posted yet</H3></Card> }
+        {
+        props.items.map(function (item, i) {
             return (
                 <div className="col-2dot4">
                     <ProductCard key={shortid.generate()} item={item} lat={props.lat} lng={props.lng} cardWidth={props.cardWidth} cardHeight={props.cardHeight} />

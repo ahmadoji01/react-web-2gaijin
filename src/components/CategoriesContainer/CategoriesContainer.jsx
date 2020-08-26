@@ -35,7 +35,7 @@ class CategoriesContainer extends Component {
                 </div>
                 <div className="section-container" style={{ marginBottom: 12 }}>
                     <div className="category-subtitle">
-                        Lorem Ipsum
+                        See items based on the category
                     </div>
                 </div>
                 <div className="row category-row">
