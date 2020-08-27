@@ -43,7 +43,7 @@ class Subscription extends Component {
             months = 7;
         } else if(activeIndex == 4) {
             months = 9;
-        } else if(activeIndex == 4) {
+        } else if(activeIndex == 5) {
             months = 12;
         }
 
