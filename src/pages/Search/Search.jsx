@@ -282,9 +282,8 @@ class Search extends Component {
         let self = this;
         this.setState({ currentPage: 1 });
 
-        if(this.state.searchterm == "") {
-            this.setState({ searchTitle: name });
-        }
+        this.setState({ searchTitle: name });
+        this.setState({ searchterm: "" });
 
         this.setState({ category: name }, () => { self.getItems(); });
     }
@@ -357,7 +356,7 @@ class Search extends Component {
                         </div>
                     </div>
                     <div className="col-9">
-                        <div className="row" style={{ marginTop: 20, paddingBottom: 0, paddingLeft: 30 }}>
+                        <div className="row" style={{ marginTop: 20, paddingBottom: 0, paddingLeft: 30, paddingRight: 30 }}>
                             { this.state.noItemFound && 
                                 <Card style={{ width: "97.5%" }}>
                                     <img src={EmptyIllustration} />
@@ -412,7 +411,7 @@ class Search extends Component {
                             </>
                             }
                         </div>
-                        <div className="row" style={{ padding: 30, paddingTop: 0, marginTop: 0 }}>
+                        <div className="row" style={{ padding: 30, paddingTop: 0, marginTop: 0, marginLeft: 0, marginRight: 0 }}>
                             {items}
                         </div>
                         <div className={useStyles.root} style={{ marginBottom: 20 }} >

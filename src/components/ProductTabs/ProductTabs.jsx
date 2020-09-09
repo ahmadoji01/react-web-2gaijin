@@ -12,7 +12,8 @@ class ProductTabs extends Component {
         super(props);
         this.state = {
             recentItems: [],
-            freeItems: []
+            freeItems: [],
+            defaultTab: "recentitems"
         }
     }
 
@@ -53,6 +54,14 @@ class ProductTabs extends Component {
                 this.setState({ freeItems: response.data.data.items });
             }
         });
+
+        if(window.location.hash == "#freeitems") {
+            this.setState({ defaultTab: "freeitems" });
+        }
+    }
+
+    onTabsChange(e) {
+        window.location.hash = e;
     }
 
     render() {
@@ -65,6 +74,8 @@ class ProductTabs extends Component {
                 animate={true}
                 id="TabsExample"
                 key={"horizontal"}
+                defaultSelectedTabId={this.state.defaultTab}
+                onChange={this.onTabsChange}
                 renderActiveTabPanelOnly={true}
                 vertical={false}
                 style={{ borderBottom: "1px solid blue" }}

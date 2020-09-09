@@ -236,3 +236,6 @@
   z-index: 99999999999 !important;
 }
 
+.MuiInputLabel-outlined.MuiInputLabel-shrink {
+  background-color: white;
+}

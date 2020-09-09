@@ -40,7 +40,7 @@ class Footer extends Component {
                 <nav class="bp3-navbar">
                     <div style={{margin: "0 auto", width: this.state.windowWidth - 100}}>
                         <div class="bp3-navbar-group bp3-align-right">
-                            <button class="bp3-button bp3-minimal">Home</button>
+                            <a href="/"><button class="bp3-button bp3-minimal">Home</button></a>
                             <button class="bp3-button bp3-minimal" onClick={() => this.setState({ isAboutUsDialogOpen: true })}>About Us</button>
                             <button class="bp3-button bp3-minimal" onClick={() => this.setState({ isContactUsDialogOpen: true })}>Contact Us</button>
                         </div>
@@ -56,7 +56,7 @@ class Footer extends Component {
                     <div className="col-1"></div>
                     <div className="col-3">
                         <img src={GaijinLogo} style={{ width: 240, marginBottom: 20 }} />
-                        <p style={{ textAlign: "left" }}>2Gaijin.com is a service that helps you delivery stuffs in front of your door</p>
+                        <p style={{ textAlign: "left" }}>2Gaijin.com is operated by KitaLabs Co., Ltd.</p>
                     </div>
                     <div className="col-3">
                         <h3>Contact</h3>
