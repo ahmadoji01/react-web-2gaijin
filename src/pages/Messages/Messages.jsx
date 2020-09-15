@@ -10,8 +10,9 @@ import SendIcon from "../../icons/SendIcon.svg";
 import "./Messages.scss";
 import { getCroppedImg, resizeImg } from '../../services/imageprocessing';
 import { animateScroll } from "react-scroll";
-import { Button, Classes } from "@blueprintjs/core";
+import { Button, Classes, Card, H3 } from "@blueprintjs/core";
 import parse from 'html-react-parser';
+import EmptyIllustration from "../../illustrations/EmptyIllustration.png";
 
 class Messages extends Component {
 
@@ -100,6 +101,15 @@ class Messages extends Component {
                             </div>
                         </div>
                     </div>
+                    { this.state.messagesData.length < 1 && 
+                        <Card style={{ width: "97.5%" }}>
+                            <img src={EmptyIllustration} />
+                            <H3 style={{ marginTop: 10 }}>
+                                {this.state.lobbies.length > 1 && "You have no interaction with this person. Send message for them by typing your message on the message box below" }
+                                {this.state.lobbies.length < 1 && "You have no active interaction with anyone. Start interacting by requesting the items the seller put on our platform!" }
+                            </H3>
+                        </Card>
+                    }
                     {
                         this.state.messagesData.map( function(message, index) {
                             let position = "left";
