@@ -186,6 +186,11 @@ class Search extends Component {
             json = JSON.parse(JSON.stringify(json).split('"children":').join('"nodes":'));
             json = JSON.parse(JSON.stringify(json).split('"name":').join('"label":'));
             json = JSON.parse(JSON.stringify(json).split('"_id":').join('"key":'));
+            
+            for(var i = 0; i < json.length; i++) {
+                json[i]["key"] = json[i]["label"];
+            }
+
             this.setState({categories: json});
         });
     }
@@ -292,8 +297,13 @@ class Search extends Component {
         this.getItems();
     }
 
-    categoryChange(name) {
+    categoryChange(key, name) {
         let self = this;
+        
+        let url = new URL(window.location);
+        url.searchParams.set("category", name);
+        window.location = url;
+        
         this.setState({ currentPage: 1 });
 
         this.setState({ searchTitle: name });
@@ -358,7 +368,7 @@ class Search extends Component {
                 <div className="row search-container">
                     <div className="col-3" style={{ backgroundColor: "#F6FAFF", border: "1px solid #E0E5EE", paddingRight: 0 }}>
                         <h5 className="search-filter-text">Filter</h5>
-                        <TreeMenu data={this.state.categories} onClickItem={({ key, label, ...props }) => { this.categoryChange(label) }} />
+                        <TreeMenu data={this.state.categories} initialActiveKey={this.state.category} onClickItem={({ key, label, ...props }) => { this.categoryChange(key, label) }} />
                         <h5 className="search-filter-text">Price</h5>
                         <div class="bp3-input-group bp3-large price-input">
                             <span class="bp3-icon price-input">¥</span>
