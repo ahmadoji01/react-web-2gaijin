@@ -123,9 +123,13 @@ class Toolbar extends Component {
                     actionBtn = <Button className="general-btn" onClick={this.onMarkAsSoldClick} text="Mark as Available" disabled={this.state.isLoading} />;
                 }
             } else {
+                if(!this.state.isSold) { 
                 actionBtn = <Popover content={requestMenu} position={Position.TOP} style={{ zIndex: 12039181 }}>
-                    <Button className="request-buy-btn" text="Request to Buy" />
-                </Popover>;
+                        <Button className="request-buy-btn" text="Request to Buy" />
+                    </Popover>;
+                } else {
+                    actionBtn = <Button className="general-washout-btn" text="Item is Sold" disabled="true" />;
+                }
             }
         } else {
             actionBtn = <><Dialog isOpen={this.state.isSignInDialogOpen} onClose={() => this.setState({ isSignInDialogOpen: false })}><SignIn /></Dialog>

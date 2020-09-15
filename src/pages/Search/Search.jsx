@@ -117,6 +117,9 @@ class Search extends Component {
 
         let searchTerm = query;
         let sortby = urlParams.get('sortby');
+        if(!sortby) {
+            sortby = "relevance";
+        }
         this.setState({ sortby: sortby });
         if(!query) {
             searchTerm = "";
@@ -131,6 +134,9 @@ class Search extends Component {
         this.setState({ category: categorySearch });
 
         let status = urlParams.get('status');
+        if(!status) {
+            status = "available";
+        }
         this.setState({ status: status });
 
         let priceMax = pricemax;
