@@ -49,7 +49,7 @@ class Subscription extends Component {
 
         const { OmiseCard, Omise } = window;
 
-        var charge = 100;
+        var charge = 110;
         var monthsSubscribed = months;
         var total = monthsSubscribed * charge;
 
@@ -111,10 +111,10 @@ class Subscription extends Component {
                             <div className="col-5 align-self-center">
                                 <p>1 month</p>
                             </div>
-                            <div className="col-3">
-                                <p style={{ textAlign: "right" }}><b>¥100</b><br />total</p>
+                            <div className="col-4">
+                                <p style={{ textAlign: "right" }}><b>¥110 (inc. tax)</b><br />total</p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-1">
                             </div>
                         </div>
                     </div>
@@ -125,10 +125,10 @@ class Subscription extends Component {
                             <div className="col-5 align-self-center">
                                 <p>3 months</p>
                             </div>
-                            <div className="col-3">
-                                <p style={{ textAlign: "right" }}><b>¥300</b><br />total</p>
+                            <div className="col-4">
+                                <p style={{ textAlign: "right" }}><b>¥330 (inc. tax)</b><br />total</p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-1">
                             </div>
                         </div>
                     </div>
@@ -139,10 +139,10 @@ class Subscription extends Component {
                             <div className="col-5 align-self-center">
                                 <p>5 months</p>
                             </div>
-                            <div className="col-3">
-                                <p style={{ textAlign: "right" }}><b>¥500</b><br />total</p>
+                            <div className="col-4">
+                                <p style={{ textAlign: "right" }}><b>¥550 (inc. tax)</b><br />total</p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-1">
                             </div>
                         </div>
                     </div>
@@ -153,10 +153,10 @@ class Subscription extends Component {
                             <div className="col-5 align-self-center">
                                 <p>7 months</p>
                             </div>
-                            <div className="col-3">
-                                <p style={{ textAlign: "right" }}><b>¥700</b><br />total</p>
+                            <div className="col-4">
+                                <p style={{ textAlign: "right" }}><b>¥770 (inc. tax)</b><br />total</p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-1">
                             </div>
                         </div>
                     </div>
@@ -167,10 +167,10 @@ class Subscription extends Component {
                             <div className="col-5 align-self-center">
                                 <p>9 months</p>
                             </div>
-                            <div className="col-3">
-                                <p style={{ textAlign: "right" }}><b>¥900</b><br />total</p>
+                            <div className="col-4">
+                                <p style={{ textAlign: "right" }}><b>¥990 (inc. tax)</b><br />total</p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-1">
                             </div>
                         </div>
                     </div>
@@ -181,10 +181,10 @@ class Subscription extends Component {
                             <div className="col-5 align-self-center">
                                 <p>12 months</p>
                             </div>
-                            <div className="col-3">
-                                <p style={{ textAlign: "right" }}><b>¥1200</b><br />total</p>
+                            <div className="col-4">
+                                <p style={{ textAlign: "right" }}><b>¥1320 (inc. tax)</b><br />total</p>
                             </div>
-                            <div className="col-2">
+                            <div className="col-1">
                             </div>
                         </div>
                     </div>

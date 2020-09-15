@@ -116,10 +116,10 @@ class Search extends Component {
         const pricemax = urlParams.get('pricemax');
 
         let searchTerm = query;
-        let sortby = "relevance";
+        let sortby = urlParams.get('sortby');
+        this.setState({ sortby: sortby });
         if(!query) {
             searchTerm = "";
-            sortby = "newest";
         }
         this.setState({ searchterm: searchTerm });
         this.setState({ searchTitle: searchTerm });
@@ -130,8 +130,7 @@ class Search extends Component {
         }
         this.setState({ category: categorySearch });
 
-        let status = "";
-        status = "available";
+        let status = urlParams.get('status');
         this.setState({ status: status });
 
         let priceMax = pricemax;
@@ -147,7 +146,7 @@ class Search extends Component {
         } else {
             this.setState({ searchTitle: query });
         }
-
+        
         let self = this;
         axios
         .get(`https://go.2gaijin.com/search?q=` + 
@@ -235,12 +234,21 @@ class Search extends Component {
 
     onSortChange(e) {
         let self = this;
+
+        let url = new URL(window.location);
+        url.searchParams.set("sortby", e.target.value);
+        window.location = url;
+
         this.setState({ sortby: e.target.value }, () => { self.getItems()});
     }
     
     onStatusChange(e) {
-        console.log(e.target.value);
         let self = this;
+        
+        let url = new URL(window.location);
+        url.searchParams.set("status", e.target.value);
+        window.location = url;
+
         this.setState({ status: e.target.value }, () => { self.getItems()});
     }
 
@@ -395,6 +403,7 @@ class Search extends Component {
                                     <Select
                                     native
                                     onChange={this.onSortChange}
+                                    defaultValue={this.state.sortby}
                                     inputProps={{
                                         name: 'sort',
                                         id: 'outlined-sort-native-simple',

@@ -74,6 +74,7 @@ class Toolbar extends Component {
     }
 
     componentWillMount() {
+        console.log(this.props.sellerInfo);
         if(AuthService.getCurrentUser()) {
             this.setState({isLoggedIn: true});
         }
@@ -95,6 +96,10 @@ class Toolbar extends Component {
         }
 
         var price = this.props.price;
+        if(this.props.sellerInfo._id === "5da95727697d19f3f01f62b6") {
+            price = price + " + 10% Tax";
+        }
+
         var avatarURL = this.props.sellerInfo.avatar_url;
         var sellerName = this.props.sellerInfo.first_name + " " + this.props.sellerInfo.last_name;
         
