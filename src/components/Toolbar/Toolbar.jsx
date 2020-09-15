@@ -124,9 +124,7 @@ class Toolbar extends Component {
                 }
             } else {
                 if(!this.state.isSold) { 
-                actionBtn = <Popover content={requestMenu} position={Position.TOP} style={{ zIndex: 12039181 }}>
-                        <Button className="request-buy-btn" text="Request to Buy" />
-                    </Popover>;
+                    actionBtn = <Button className="request-buy-btn" onClick={ () => this.setState({ isAppointmentDialogOpen: true }) } text="Request to Buy" />
                 } else {
                     actionBtn = <Button className="general-washout-btn" text="Item is Sold" disabled="true" />;
                 }
