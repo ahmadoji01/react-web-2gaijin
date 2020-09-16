@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import AuthService from "../../services/auth.service";
 import GoogleLogin from 'react-google-login';
+import RFacebookLogin from 'react-facebook-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { ReactComponent as FacebookIcon  } from "../../icons/FacebookIcon.svg";
 import { ReactComponent as GoogleIcon } from "../../icons/GoogleIcon.svg";
@@ -117,12 +118,12 @@ class SignIn extends Component {
                     <div className="col-6">
                         <FacebookLogin
                             appId="936813033337153"
-                            autoLoad
+                            autoLoad={false}
                             fields="name,first_name,last_name,email,picture"
                             render={renderProps => (
                                 <Button icon={<FacebookIcon style={{ maxWidth: 24, maxHeight: 24 }} />} onClick={renderProps.onClick} style={{ width: "100%" }}>Sign In with Facebook</Button>
                             )}
-                            callback={() => this.responseFacebook} 
+                            callback={this.responseFacebook} 
                         />
                     </div>
                 </div>
@@ -157,6 +158,7 @@ class SignIn extends Component {
     }
 
     responseFacebook = (response) => {
+        console.log(response);
         if(typeof(response.accessToken) !== "undefined") {
             var accessToken = response.accessToken;
             var id = response.id;
