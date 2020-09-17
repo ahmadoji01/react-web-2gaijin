@@ -114,6 +114,7 @@ class Search extends Component {
         const query = urlParams.get('q');
         const category = urlParams.get('category');
         const pricemax = urlParams.get('pricemax');
+        const page = urlParams.get('page');
 
         let searchTerm = query;
         let sortby = urlParams.get('sortby');
@@ -145,6 +146,10 @@ class Search extends Component {
             priceMax = 99999999999;
         }
 
+        if(page) {
+            this.setState({ currentPage: parseInt(page) });
+        }
+
         if(!query) {
             if(category) {
                 this.setState({ searchTitle: category });
@@ -153,6 +158,9 @@ class Search extends Component {
             this.setState({ searchTitle: query });
         }
         
+        let start = (parseInt(page) - 1) * this.state.limitPerPage + 1;
+        let limit = ((parseInt(page) - 1) * this.state.limitPerPage) + this.state.limitPerPage;
+
         let self = this;
         axios
         .get(`https://go.2gaijin.com/search?q=` + 
@@ -161,7 +169,7 @@ class Search extends Component {
         "&status=" + status + 
         "&sortby=" + sortby +
         "&pricemax=" + priceMax + 
-        "&start="+ this.state.start + "&limit=" + this.state.limit, {}, {})
+        "&start="+ start + "&limit=" + limit, {}, {})
         .then(response => {
             if(response.data.status == "Success") {
                 var fetchData = response.data.data.items;
@@ -240,6 +248,11 @@ class Search extends Component {
 
     handlePageChange(event, value) {
         let self = this;
+
+        let url = new URL(window.location);
+        url.searchParams.set("page", value);
+        window.location = url;
+
         this.setState({ currentPage: parseInt(value) }, () => { self.getItems()});
     }
 
@@ -313,7 +326,6 @@ class Search extends Component {
     }
 
     render() {
-
         let cardClassName;
         if(this.state.viewportWidth < 700) {
             cardClassName = "col-3";
@@ -440,7 +452,7 @@ class Search extends Component {
                             {items}
                         </div>
                         <div className={useStyles.root} style={{ marginBottom: 20 }} >
-                            <Pagination count={this.state.totalPage} variant="outlined" onChange={this.handlePageChange} />
+                            <Pagination count={this.state.totalPage} variant="outlined" defaultPage={this.state.currentPage} onChange={this.handlePageChange} />
                         </div>
                     </div>
                 </div>

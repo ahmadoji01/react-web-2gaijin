@@ -29,6 +29,7 @@ class Delivery extends Component {
             message: "",
             email: "",
             phoneNumber: "",
+            origin: "",
             destination: "",
             wechat: "",
             facebook: "",
@@ -38,12 +39,14 @@ class Delivery extends Component {
             phoneValid: true,
             timeValid: true,
             destinationValid: true,
+            originValid: true,
             nameValid: true,
             notesValid: true,
             time: new Date(),
             isSubmitted: false,
         };
         this.submitDelivery = this.submitDelivery.bind(this);
+        this.onOriginChange = this.onOriginChange.bind(this);
         this.onDestinationChange = this.onDestinationChange.bind(this);
         this.onNotesChange = this.onNotesChange.bind(this);
         this.onEmailChange = this.onEmailChange.bind(this);
@@ -133,6 +136,16 @@ class Delivery extends Component {
                     </div>
                     <div className="col-12">
                         <FormGroup
+                            helperText={!this.state.originValid && "Origin is required"}
+                            intent={INTENT_PRIMARY}
+                            label={"Origin"}
+                            labelFor="origin-input"
+                        >
+                            <InputGroup id="origin-input" value={this.state.origin} onChange={this.onOriginChange} placeholder="Where should we pick the item up?" intent={INTENT_PRIMARY} />
+                        </FormGroup>
+                    </div>
+                    <div className="col-12">
+                        <FormGroup
                             helperText={!this.state.destinationValid && "Destination is required"}
                             intent={INTENT_PRIMARY}
                             label={"Destination"}
@@ -167,6 +180,11 @@ class Delivery extends Component {
             return;
         }
 
+        if(!this.state.origin) {
+            this.setState({ originValid: false });
+            return;
+        }
+
         if(!this.state.destination) {
             this.setState({ destinationValid: false });
             return;
@@ -194,6 +212,7 @@ class Delivery extends Component {
 
         var deliveryTime = new Date(this.state.time).getTime();
         var payload = {
+            "origin": this.state.origin,
             "destination": this.state.destination,
             "name": this.state.name,
             "email": this.state.email,
@@ -206,7 +225,7 @@ class Delivery extends Component {
         
         var self = this;
         AuthService.refreshToken().then(() => {
-            self.setState({ message: "", loading: true, emailValid: true, notesValid: true, phoneValid: true, nameValid: true, timeValid: true, destinationValid: true });
+            self.setState({ message: "", loading: true, originValid: true, emailValid: true, notesValid: true, phoneValid: true, nameValid: true, timeValid: true, destinationValid: true });
             return axios
             .post(`https://go.2gaijin.com/insert_delivery`, payload, { 
                 headers: {
@@ -263,6 +282,10 @@ class Delivery extends Component {
 
     onFacebookChange(e) {
         this.setState({ facebook: e.target.value });
+    }
+
+    onOriginChange(e) {
+        this.setState({ origin: e.target.value });
     }
 
     onDestinationChange(e) {
