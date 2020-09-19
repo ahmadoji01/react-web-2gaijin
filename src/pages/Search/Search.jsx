@@ -315,6 +315,7 @@ class Search extends Component {
         
         let url = new URL(window.location);
         url.searchParams.set("category", name);
+        url.searchParams.set("q", "");
         window.location = url;
         
         this.setState({ currentPage: 1 });
