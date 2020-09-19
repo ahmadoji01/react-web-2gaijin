@@ -215,7 +215,7 @@ class Home extends Component {
                     </Modal>
                 </div>}
                 { this.state.navbarShow && <NavigationBar /> }
-                <div className="row" style={{ height: this.state.windowHeight, width: this.state.windowWidth }}>
+                <div className="row" style={{ height: this.state.windowHeight, width: "100%" }}>
                     <div className="col-6" >
                         <div className="row" style={{ marginLeft: 15 }}>
                             <div className="col-6 banner-container">

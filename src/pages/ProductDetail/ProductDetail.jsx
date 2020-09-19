@@ -121,7 +121,7 @@ class ProductDetail extends Component {
             <>
                 <NavigationBar />
                 <Toolbar price={this.state.data.item.price} isSold={this.state.isSold} sellerInfo={this.state.data.seller} productID={this.state.data.item._id} />
-                <div className="row product-detail-container custom-container" style={{ marginTop: 80 }}>
+                <div className="row row-detail product-detail-container custom-container" style={{ marginTop: 80 }}>
                     <div className="col-6">
                         <ImageGallery showBullets={true} showPlayButton={false} items={this.state.images} />
                     </div>
@@ -151,7 +151,7 @@ class ProductDetail extends Component {
                         </iframe>
                         <div className="available-payment">
                             <h6>This seller accepts following payment method</h6>
-                            <div className="row">
+                            <div className="row row-detail">
                                 { this.state.paymentMethod.paypal && <><div className="col-3 payment-icon-container">
                                     <a href="#" onClick={() => this.setState({ isPaypalDialogOpen: true })}><img className="payment-icon" src={PaypalIcon} /></a>
                                 </div>
@@ -176,10 +176,10 @@ class ProductDetail extends Component {
                         </div>
                     </div>  
                 </div>
-                <div className="row" style={{ marginTop: 30 }}>
+                <div className="row row-detail" style={{ marginTop: 30 }}>
                     <ProductSlider title="Other items from this seller" subtitle="Some items we'd love to share with fellow gaijins" items={this.state.data.selleritems} label="Featured" />
                 </div>
-                <div className="row" style={{ marginTop: 30, marginBottom: 90 }}>
+                <div className="row row-detail" style={{ marginTop: 30, marginBottom: 90 }}>
                     <ProductSlider title="Other items you might like" subtitle="Items related to the one you are viewing now" items={this.state.data.relateditems} label="Featured" />
                 </div>
                 <Footer />
