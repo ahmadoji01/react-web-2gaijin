@@ -170,12 +170,11 @@ class SignUp extends Component {
                             <div className="col-6">
                                 <FacebookLogin
                                     appId="936813033337153"
-                                    autoLoad
                                     fields="name,first_name,last_name,email,picture"
                                     render={renderProps => (
                                         <Button icon={<FacebookIcon style={{ maxWidth: 24, maxHeight: 24 }} />} onClick={renderProps.onClick} style={{ width: "100%" }}>Sign Up with Facebook</Button>
                                     )}
-                                    callback={() => this.responseFacebook} 
+                                    callback={this.responseFacebook} 
                                 />
                             </div>
                         </div>
@@ -209,7 +208,6 @@ class SignUp extends Component {
     }
 
     responseFacebook = (response) => {
-        console.log(response);
         if(typeof(response.accessToken) !== "undefined") {
             var accessToken = response.accessToken;
             var id = response.id;

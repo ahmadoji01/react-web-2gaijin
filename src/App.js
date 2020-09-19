@@ -19,6 +19,7 @@ import Messages from './pages/Messages';
 import ConfirmEmail from './pages/ConfirmEmail';
 import ConfirmPhone from './pages/ConfirmPhone';
 import { isMobile } from "react-device-detect";
+import HowToUse from './pages/HowToUse';
 
 function App() {
   if(isMobile) {
@@ -36,6 +37,7 @@ function App() {
             <Users />
           </Route>
           <Route path="/search" component={Search} />
+          <Route path="/how-to-use" component={HowToUse} />
           <Route path="/sign-up" component={SignUp} />
           <Route path="/product/:productid" component={ProductDetail} />
           <Route path="/m/:roomID?" component={Messages} />
