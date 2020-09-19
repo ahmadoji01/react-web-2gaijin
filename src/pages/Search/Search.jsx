@@ -271,6 +271,7 @@ class Search extends Component {
         
         let url = new URL(window.location);
         url.searchParams.set("status", e.target.value);
+        url.searchParams.set("page", "1");
         window.location = url;
 
         this.setState({ status: e.target.value }, () => { self.getItems()});
@@ -316,6 +317,7 @@ class Search extends Component {
         let url = new URL(window.location);
         url.searchParams.set("category", name);
         url.searchParams.set("q", "");
+        url.searchParams.set("page", "1");
         window.location = url;
         
         this.setState({ currentPage: 1 });
