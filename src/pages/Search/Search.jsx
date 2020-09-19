@@ -380,7 +380,7 @@ class Search extends Component {
                     </Modal>
                 </div>}
                 <NavigationBar term={this.state.searchterm} />
-                <div className="row search-container">
+                <div className="row row-search search-container">
                     <div className="col-3" style={{ backgroundColor: "#F6FAFF", border: "1px solid #E0E5EE", paddingRight: 0 }}>
                         <h5 className="search-filter-text">Filter</h5>
                         <TreeMenu data={this.state.categories} initialActiveKey={this.state.category} onClickItem={({ key, label, ...props }) => { this.categoryChange(key, label) }} />
@@ -395,7 +395,7 @@ class Search extends Component {
                         </div>
                     </div>
                     <div className="col-9">
-                        <div className="row" style={{ marginTop: 20, paddingBottom: 0, paddingLeft: 30, paddingRight: 30 }}>
+                        <div className="row row-search" style={{ marginTop: 20, paddingBottom: 0, paddingLeft: 30, paddingRight: 30 }}>
                             { this.state.noItemFound && 
                                 <Card style={{ width: "97.5%" }}>
                                     <img src={EmptyIllustration} />
@@ -451,7 +451,7 @@ class Search extends Component {
                             </>
                             }
                         </div>
-                        <div className="row" style={{ padding: 30, paddingTop: 0, marginTop: 0, marginLeft: 0, marginRight: 0 }}>
+                        <div className="row row-search" style={{ padding: 30, paddingTop: 0, marginTop: 0, marginLeft: 0, marginRight: 0 }}>
                             {items}
                         </div>
                         <div className={useStyles.root} style={{ marginBottom: 20 }} >
