@@ -84,7 +84,7 @@ class Messages extends Component {
                                 subtitle={lobby.last_message}
                                 date={new Date(lobby.last_active)}
                                 unread={!lobby.is_read}
-                                onClick={() => self.navigateToRoom("/m/" + lobby._id)} />;
+                                onClick={() => self.navigateToRoom(lobby._id)} />;
                         })
                     }
                     </div>
@@ -187,6 +187,7 @@ class Messages extends Component {
 
     componentWillMount() {
         var user = AuthService.getCurrentUser();
+        var self = this;
         if(user) {
             AuthService.refreshToken().then(
             () => {
@@ -204,7 +205,7 @@ class Messages extends Component {
                         this.setState({lobbies: response.data.data.chat_lobby});
                         if(response.data.data.chat_lobby[0]) {
                             if(!this.props.match.params.roomID) {
-                                window.location = "/m/" + response.data.data.chat_lobby[0]._id;
+                                self.navigateToRoom(response.data.data.chat_lobby[0]._id);
                             }
                         }
                     }
@@ -220,11 +221,12 @@ class Messages extends Component {
         }
     }
 
-    navigateToRoom(room) {
-        this.props.history.push(room);
-        this.loadChatRoomInfo();
-        this.setState({ messagesData: [] });
-        this.setState({ isMessageLoading: true });
+    navigateToRoom(roomID) {
+        this.props.history.push("/m/" + roomID);
+        var self = this;
+        this.setState({ activeRoomID: roomID }, () => { self.loadChatRoomInfo(); self.setState({ messagesData: [] });
+        self.setState({ isMessageLoading: true }); });
+        
     }
 
     scrollToBottom() {
