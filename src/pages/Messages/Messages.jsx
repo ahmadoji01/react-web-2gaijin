@@ -14,6 +14,7 @@ import { Button, Classes, Card, H3, Spinner } from "@blueprintjs/core";
 import parse from 'html-react-parser';
 import EmptyIllustration from "../../illustrations/EmptyIllustration.png";
 import NavigationBar from "../../components/NavigationBar";
+import { Link } from 'react-router-dom';
 
 class Messages extends Component {
 
@@ -41,6 +42,7 @@ class Messages extends Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.onTextInputChange = this.onTextInputChange.bind(this);
         this.scrollToBottom = this.scrollToBottom.bind(this);
+        this.navigateToRoom = this.navigateToRoom.bind(this);
     }
 
 
@@ -82,7 +84,7 @@ class Messages extends Component {
                                 subtitle={lobby.last_message}
                                 date={new Date(lobby.last_active)}
                                 unread={!lobby.is_read}
-                                onClick={() => {window.location = "/m/" + lobby._id} } />;
+                                onClick={() => self.navigateToRoom("/m/" + lobby._id)} />;
                         })
                     }
                     </div>
@@ -109,7 +111,7 @@ class Messages extends Component {
                                 { this.state.isMessageLoading && <Spinner intent="warning" size={64} style={{ marginBottom: 10 }} /> }
                                 {!this.state.isMessageLoading && <img src={EmptyIllustration} /> }
                                 <H3 style={{ marginTop: 10 }}>
-                                    {(this.state.lobbies.length > 1 && !this.state.isMessageLoading ) && "You have no interaction with this person. Send message for them by typing your message on the message box below" }
+                                    {(this.state.messagesData.length < 1 && this.state.activeRoomID === "" && !this.state.isMessageLoading ) && "You have no interaction with this person. Send message for them by typing your message on the message box below" }
                                     {(this.state.lobbies.length < 1 && !this.state.isMessageLoading ) && "You have no active interaction with anyone. Start interacting by requesting the items the seller put on our platform!" }
                                 </H3>
                             </Card>
@@ -216,6 +218,13 @@ class Messages extends Component {
         
             });
         }
+    }
+
+    navigateToRoom(room) {
+        this.props.history.push(room);
+        this.loadChatRoomInfo();
+        this.setState({ messagesData: [] });
+        this.setState({ isMessageLoading: true });
     }
 
     scrollToBottom() {
