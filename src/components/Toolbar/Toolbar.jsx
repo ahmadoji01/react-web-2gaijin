@@ -32,6 +32,7 @@ class Toolbar extends Component {
         }; 
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.onMarkAsSoldClick = this.onMarkAsSoldClick.bind(this);
+        this.closeAppointmentDialog = this.closeAppointmentDialog.bind(this);
     }
 
     onMarkAsSoldClick() {
@@ -56,6 +57,10 @@ class Toolbar extends Component {
                 this.setState({ isLoading: false });
             }
         });
+    }
+
+    closeAppointmentDialog() {
+        this.setState({ isAppointmentDialogOpen: false });
     }
 
     componentDidUpdate(previousProps, previousState) {
@@ -91,7 +96,7 @@ class Toolbar extends Component {
 
         let appointmentDialog, appWithDeliveryDialog;
         if(this.state.isLoggedIn) {
-            appointmentDialog = <Dialog title={"Pick a time to meet with this item's seller"} isOpen={this.state.isAppointmentDialogOpen} onClose={() => {this.setState({ isAppWithDeliveryDialogOpen: false, isAppointmentDialogOpen: false })}}><MakeAppointment productID={this.props.productID} /></Dialog>;
+            appointmentDialog = <Dialog title={"Item purchase request confirmation"} isOpen={this.state.isAppointmentDialogOpen} onClose={() => {this.setState({ isAppWithDeliveryDialogOpen: false, isAppointmentDialogOpen: false })}}><MakeAppointment productID={this.props.productID} closeDialog={this.closeAppointmentDialog} /></Dialog>;
             appWithDeliveryDialog = <Dialog title={"Pick a time when you would like this item to be delivered"} isOpen={this.state.isAppWithDeliveryDialogOpen} onClose={() => {this.setState({ isAppWithDeliveryDialogOpen: false, isAppointmentDialogOpen: false })}}><MakeAppointmentWithDelivery productID={this.props.productID} /></Dialog>;
         }
 

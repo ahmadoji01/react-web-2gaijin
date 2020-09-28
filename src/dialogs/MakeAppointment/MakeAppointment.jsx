@@ -15,7 +15,6 @@ import { DatePicker } from "@blueprintjs/datetime";
 
 class MakeAppointment extends Component {
     
-    
     constructor(props) {
         super(props);
         this.state = {
@@ -55,25 +54,19 @@ class MakeAppointment extends Component {
             <div className={Classes.DIALOG_BODY}>
                 <div className="row" style={{ marginBottom: 20 }}>
                     <div className="col-12">
-                        <FormGroup
-                            helperText={!this.state.timeValid && "You have to pick the requested time"}
-                            intent={INTENT_PRIMARY}
-                            label={"Requested Time"}
-                            labelFor="time-input"
-                        >
-                            <DatePicker
-                                onChange={(newDate) => this.onTimeChange(newDate)}
-                                minDate={new Date()}
-                                value={this.state.time}
-                                shortcuts={true}
-                                timePrecision={"minute"}
-                            />
-                        </FormGroup>
+                        <H3>Would you like to request the purchase of this item to the seller?</H3>
                     </div>
                     <div className="col-12">
                         {message}
                         {spinner}
-                        <Button onClick={this.submitAppointment} disabled={this.state.loading || this.state.isSubmitted} style={{ width: "100%" }}>Submit Request</Button>
+                        <div className="row">
+                            <div className="col-6">
+                                <Button className="general-btn" onClick={this.submitAppointment} disabled={this.state.loading || this.state.isSubmitted} style={{ width: "100%" }}>Yes</Button>
+                            </div>
+                            <div className="col-6">
+                                <Button className="general-reject-btn" style={{ width: "100%" }} disabled={this.state.loading || this.state.isSubmitted} onClick={this.props.closeDialog}>No</Button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -81,12 +74,13 @@ class MakeAppointment extends Component {
     }
 
     submitAppointment() {
-        if(!this.state.time) {
+        /*if(!this.state.time) {
             this.setState({ timeValid: false });
             return;
-        }
+        }*/
 
-        var meetingTime = new Date(this.state.time).getTime();
+        //var meetingTime = new Date(this.state.time).getTime();
+        var meetingTime = new Date().getTime(); //Get Current Time
         var status = "pending";
         if(this.state.itemID != "") {
             var payload = {

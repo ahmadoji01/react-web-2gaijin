@@ -10,9 +10,10 @@ import SendIcon from "../../icons/SendIcon.svg";
 import "./Messages.scss";
 import { getCroppedImg, resizeImg } from '../../services/imageprocessing';
 import { animateScroll } from "react-scroll";
-import { Button, Classes, Card, H3 } from "@blueprintjs/core";
+import { Button, Classes, Card, H3, Spinner } from "@blueprintjs/core";
 import parse from 'html-react-parser';
 import EmptyIllustration from "../../illustrations/EmptyIllustration.png";
+import NavigationBar from "../../components/NavigationBar";
 
 class Messages extends Component {
 
@@ -29,6 +30,7 @@ class Messages extends Component {
             maxWidth: 600, maxHeight: 400,
             ws: null,
             isLoading: false,
+            isMessageLoading: true
         };
         this.inputRef = React.createRef();
         this.picInput = React.createRef();
@@ -47,120 +49,123 @@ class Messages extends Component {
         let activeIcon;
         let activeName;
         return(
-            <div className="row">
-                <div className="col-3 lobby-container" style={{ height: window.innerHeight - 30 }}>
-                <div className="lobby-header-container">
-                    <Button className={`${Classes.MINIMAL} back-arrow`} onClick={() => {window.location = "/"}}><img src={ArrowIcon} style={{ width: 30 }} /></Button>
-                    <h3 className="lobby-title">Chats</h3>
-                </div>
-                {
-                    this.state.lobbies.map(function(lobby, index) {
-                        let iconUrl = lobby.icon_url;
-                        if(lobby.icon_url === "") {
-                            iconUrl = AvatarPlaceholder;
-                        }
-
-                        let activeRoom = "";
-                        if(lobby._id === self.props.match.params.roomID) {
-                            activeRoom = "active-room";
-                            activeName = lobby.name;
-                            if(lobby.icon_url === "") {
-                                activeIcon = AvatarPlaceholder
-                            } else {
-                                activeIcon = lobby.icon_url;
-                            }
-                        }
-
-                        return <ChatItem
-                            className={activeRoom}
-                            avatar={iconUrl}
-                            alt={'Avatar'}
-                            title={lobby.name}
-                            subtitle={lobby.last_message}
-                            date={new Date(lobby.last_active)}
-                            unread={!lobby.is_read}
-                            onClick={() => {window.location = "/m/" + lobby._id} } />;
-                    })
-                }
-                </div>
-                <div id="msg-container" className="col-9 chat-container" style={{ height: window.innerHeight - 30 }}>
-                    <div className="chat-header-container">
-                        <div className="row">
-                            <div className="col-6" style={{ textAlign: "left" }}>
-                                <div className="row">
-                                    <div className="col-2">
-                                        <img src={activeIcon} className="avatar" style={{ maxHeight: 50 }} />
-                                    </div>
-                                    <div className="col-10 active-chat-name" style={{ textAlign: "left" }}>
-                                        {activeName}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-6 active-chat-name">
-                                
-                            </div>
-                        </div>
+            <>
+                <NavigationBar />
+                <div className="row chat-page-container" style={{ marginLeft: 0, marginRight: 0 }}>
+                    <div className="col-3 lobby-container" style={{ height: window.innerHeight - 60, zIndex: 1 }}>
+                    <div className="lobby-header-container">
+                        <h3 className="lobby-title">Chats</h3>
                     </div>
-                    { this.state.messagesData.length < 1 && 
-                        <Card style={{ width: "97.5%" }}>
-                            <img src={EmptyIllustration} />
-                            <H3 style={{ marginTop: 10 }}>
-                                {this.state.lobbies.length > 1 && "You have no interaction with this person. Send message for them by typing your message on the message box below" }
-                                {this.state.lobbies.length < 1 && "You have no active interaction with anyone. Start interacting by requesting the items the seller put on our platform!" }
-                            </H3>
-                        </Card>
-                    }
                     {
-                        this.state.messagesData.map( function(message, index) {
-                            let position = "left";
-                            if(message.user_id === localStorage.getItem("user_id")) {
-                                position = "right";
+                        this.state.lobbies.map(function(lobby, index) {
+                            let iconUrl = lobby.icon_url;
+                            if(lobby.icon_url === "") {
+                                iconUrl = AvatarPlaceholder;
                             }
-                            if(message.message) {
-                                return <MessageBox
-                                    position={position}
-                                    type={'text'}
-                                    text={parse(message.message)}
-                                    date={new Date(message.created_at)}
-                                    />;
-                            } else if(message.image) {
-                                return <MessageBox
-                                    position={position}
-                                    type={'photo'}
-                                    text={message.message}
-                                    date={new Date(message.created_at)}
-                                    data={{
-                                        uri: message.image,
-                                        status: {
-                                            click: false,
-                                            loading: 0,
-                                        }
-                                    }} />;
+
+                            let activeRoom = "";
+                            if(lobby._id === self.props.match.params.roomID) {
+                                activeRoom = "active-room";
+                                activeName = lobby.name;
+                                if(lobby.icon_url === "") {
+                                    activeIcon = AvatarPlaceholder
+                                } else {
+                                    activeIcon = lobby.icon_url;
+                                }
                             }
+
+                            return <ChatItem
+                                className={activeRoom}
+                                avatar={iconUrl}
+                                alt={'Avatar'}
+                                title={lobby.name}
+                                subtitle={lobby.last_message}
+                                date={new Date(lobby.last_active)}
+                                unread={!lobby.is_read}
+                                onClick={() => {window.location = "/m/" + lobby._id} } />;
                         })
                     }
-                    { this.scrollToBottom() }
-                    <div className="chat-input-container">
-                        <Input
-                            inputStyle={{ backgroundColor: "#F2F7FF", borderRadius: 20, paddingLeft: 20, marginLeft: 30, maxWidth: "85%" }}
-                            placeholder="Type here..."
-                            multiline={true}
-                            onChange={this.onTextInputChange}
-                            ref={this.textInput}
-                            leftButtons={
-                                <div class="image-upload">
-                                    <label for="file-input">
-                                        <img src={CameraIcon} style={{ maxHeight: 37 }} />
-                                    </label>
-                                    <input id="file-input" type="file" ref={ this.picInput } className="chat-img-input" onChange={this.onFileChange()}  />
+                    </div>
+                    <div id="msg-container" className="col-9 chat-container" style={{ height: window.innerHeight - 60, marginLeft: 0, marginRight: 0, zIndex: 1 }}>
+                        <div className="chat-header-container">
+                            <div className="row">
+                                <div className="col-6" style={{ textAlign: "left" }}>
+                                    <div className="row">
+                                        <div className="col-2">
+                                            <img src={activeIcon} className="avatar" style={{ maxHeight: 50 }} />
+                                        </div>
+                                        <div className="col-10 active-chat-name" style={{ textAlign: "left" }}>
+                                            {activeName}
+                                        </div>
+                                    </div>
                                 </div>
-                            }
-                            rightButtons={
-                                <img src={SendIcon} style={{ maxHeight: 37 }} onClick={this.sendMessage} />
-                            }/>
+                                <div className="col-6 active-chat-name">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        { this.state.messagesData.length < 1 && 
+                            <Card style={{ width: "97.5%" }}>
+                                { this.state.isMessageLoading && <Spinner intent="warning" size={64} style={{ marginBottom: 10 }} /> }
+                                {!this.state.isMessageLoading && <img src={EmptyIllustration} /> }
+                                <H3 style={{ marginTop: 10 }}>
+                                    {(this.state.lobbies.length > 1 && !this.state.isMessageLoading ) && "You have no interaction with this person. Send message for them by typing your message on the message box below" }
+                                    {(this.state.lobbies.length < 1 && !this.state.isMessageLoading ) && "You have no active interaction with anyone. Start interacting by requesting the items the seller put on our platform!" }
+                                </H3>
+                            </Card>
+                        }
+                        {
+                            this.state.messagesData.map( function(message, index) {
+                                let position = "left";
+                                if(message.user_id === localStorage.getItem("user_id")) {
+                                    position = "right";
+                                }
+                                if(message.message) {
+                                    return <MessageBox
+                                        position={position}
+                                        type={'text'}
+                                        text={parse(message.message)}
+                                        date={new Date(message.created_at)}
+                                        />;
+                                } else if(message.image) {
+                                    return <MessageBox
+                                        position={position}
+                                        type={'photo'}
+                                        text={message.message}
+                                        date={new Date(message.created_at)}
+                                        data={{
+                                            uri: message.image,
+                                            status: {
+                                                click: false,
+                                                loading: 0,
+                                            }
+                                        }} />;
+                                }
+                            })
+                        }
+                        { this.scrollToBottom() }
+                        <div className="chat-input-container">
+                                <Input
+                                    inputStyle={{ backgroundColor: "#F2F7FF", borderRadius: 20, paddingLeft: 20, marginLeft: 30, maxWidth: "85%" }}
+                                    placeholder="Type here..."
+                                    multiline={true}
+                                    onChange={this.onTextInputChange}
+                                    ref={this.textInput}
+                                    leftButtons={
+                                        <div class="image-upload">
+                                            <label for="file-input">
+                                                <img src={CameraIcon} style={{ maxHeight: 37 }} />
+                                            </label>
+                                            <input id="file-input" type="file" ref={ this.picInput } className="chat-img-input" onChange={this.onFileChange()}  />
+                                        </div>
+                                    }
+                                    rightButtons={
+                                        <img src={SendIcon} style={{ maxHeight: 37 }} onClick={this.sendMessage} />
+                                    }/>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </>
         );
     }
     
@@ -168,7 +173,7 @@ class Messages extends Component {
         this.connect();
         var self = this;
         this.textInput.current.input.addEventListener("keyup", function(event) {
-            if (event.key === "Enter") {
+            if (event.key === "Enter" && self.state.activeRoomID !== "") {
                 self.sendMessage();
             }
         });
@@ -292,6 +297,7 @@ class Messages extends Component {
 
     loadChatRoomInfo() {
         this.setState({ activeRoomID: this.props.match.params.roomID });
+        this.setState({ isMessageLoading: true });
 
         let config = {
             headers: {'Authorization': localStorage.getItem("access_token") },
@@ -320,6 +326,7 @@ class Messages extends Component {
                     axios
                     .get(`https://go.2gaijin.com/chat_messages`, config)
                     .then(response => {
+                        this.setState({ isMessageLoading: false });
                         var msgsData = response.data.data.messages;
                         var msgsTmp = [];
                         var currUserID = localStorage.getItem("user_id");

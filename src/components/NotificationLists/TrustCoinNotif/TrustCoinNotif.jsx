@@ -81,12 +81,12 @@ class TrustCoinNotif extends Component {
             let trustCoinButton;
             if(this.state.status == "finished") {
                 trustCoinButton = <div className="row notif-row">
-                    <Button className="general-disabled-btn" style={{color: "#EF7132", marginTop: 5}} raised fill round>Tip has been sent</Button>
+                    <Button className="general-disabled-btn" style={{color: "#EF7132", marginTop: 5}} raised fill round>Trust coin has been sent</Button>
                 </div>
             } else if(this.state.status == "pending") {
                 trustCoinButton = <div className="row notif-row">
                     <div className="col-6">
-                        <Button onClick={ () => this.setState({ isTrustCoinDialogOpen: true }) } className="general-btn" style={{color: "#fff", marginTop: 5}} raised fill round>Send Tip</Button>
+                        <Button onClick={ () => this.setState({ isTrustCoinDialogOpen: true }) } className="general-btn" style={{color: "#fff", marginTop: 5}} raised fill round>Send Trust Coin</Button>
                     </div>
                 </div>
             }
