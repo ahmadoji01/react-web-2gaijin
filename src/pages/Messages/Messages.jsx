@@ -83,7 +83,7 @@ class Messages extends Component {
                                 title={lobby.name}
                                 subtitle={lobby.last_message}
                                 date={new Date(lobby.last_active)}
-                                unread={!lobby.is_read}
+                                unread={(!lobby.is_read && !(lobby._id == self.props.match.params.roomID))}
                                 onClick={() => self.navigateToRoom(lobby._id)} />;
                         })
                     }
@@ -111,7 +111,7 @@ class Messages extends Component {
                                 { this.state.isMessageLoading && <Spinner intent="warning" size={64} style={{ marginBottom: 10 }} /> }
                                 {!this.state.isMessageLoading && <img src={EmptyIllustration} /> }
                                 <H3 style={{ marginTop: 10 }}>
-                                    {(this.state.messagesData.length < 1 && this.state.activeRoomID === "" && !this.state.isMessageLoading ) && "You have no interaction with this person. Send message for them by typing your message on the message box below" }
+                                    {(this.state.lobbies.length > 1 && this.state.messagesData.length < 1 && this.state.activeRoomID === "" && !this.state.isMessageLoading ) && "You have no interaction with this person. Send message for them by typing your message on the message box below" }
                                     {(this.state.lobbies.length < 1 && !this.state.isMessageLoading ) && "You have no active interaction with anyone. Start interacting by requesting the items the seller put on our platform!" }
                                 </H3>
                             </Card>
@@ -201,6 +201,7 @@ class Messages extends Component {
                 })
                 .then(response => {
                     this.setState({ isLoading: false });
+                    this.setState({ isMessageLoading: false });
                     if(response.data.data){
                         this.setState({lobbies: response.data.data.chat_lobby});
                         if(response.data.data.chat_lobby[0]) {

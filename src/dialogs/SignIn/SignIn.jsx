@@ -158,7 +158,6 @@ class SignIn extends Component {
     }
 
     responseFacebook = (response) => {
-        console.log(response);
         if(typeof(response.accessToken) !== "undefined") {
             var accessToken = response.accessToken;
             var id = response.id;

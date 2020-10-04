@@ -80,9 +80,9 @@ class TrustCoinNotif extends Component {
             var sheetClassName = "demo-sheet-swipe-to-close-" + this.props.notifNum;
             let trustCoinButton;
             if(this.state.status == "finished") {
-                trustCoinButton = <div className="row notif-row">
+                /*trustCoinButton = <div className="row notif-row">
                     <Button className="general-disabled-btn" style={{color: "#EF7132", marginTop: 5}} raised fill round>Trust coin has been sent</Button>
-                </div>
+                </div>*/
             } else if(this.state.status == "pending") {
                 trustCoinButton = <div className="row notif-row">
                     <div className="col-6">
@@ -126,7 +126,7 @@ class TrustCoinNotif extends Component {
                         isOpen={this.state.isTrustCoinDialogOpen} 
                         onClose={() => this.setState({ isTrustCoinDialogOpen: false })} 
                         icon="info-sign" 
-                        title="Give Seller the Trust Coin">
+                        title="Give the Trust Coin">
                             <div>
                                 <p style={{textAlign: "center", padding: 10}}><h4>How was the transaction experience with {notifItem.notification_user.first_name}?</h4></p>
                                 <div style={{width: "100%"}}>

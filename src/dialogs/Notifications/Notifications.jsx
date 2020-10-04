@@ -20,7 +20,7 @@ class Notifications extends Component {
             notifications: [],
             isNotificationOpen: false,
             isLoading: true,
-            isNotifRead: this.props.isNotifRead,
+            isNotifRead: true,
         };
     }
 
@@ -46,6 +46,12 @@ class Notifications extends Component {
         });
     }
 
+    componentDidUpdate(previousProps, previousState) {
+        if (previousProps.isNotifRead !== this.props.isNotifRead) {
+            this.setState({isNotifRead: this.props.isNotifRead});
+        }
+    }
+
     render() {
         if(!AuthService.getCurrentUser()) {
             return "";
@@ -64,15 +70,23 @@ class Notifications extends Component {
         var comparedTime = moment();
         if(this.state.notifications.length >= 1) {
             notifItems = this.state.notifications.map(function(notifItem, i) {
+                let notifDate = new Date(notifItem.created_at).getTime();
+                let today = new Date().getTime();
+                let timeDiff = today - notifDate;
+                let timeDiffInHours = timeDiff / (1000 * 3600);
                 let notifType;
                 if(notifItem.type == "order_incoming") {
                     notifType = <div key={i+1}><AppointmentConfirmationNotif item={notifItem} confirmation={false} /></div>;
                 } else if(notifItem.type == "appointment_confirmation") {
                     notifType = <div key={i+1}><AppointmentConfirmationNotif item={notifItem} confirmation={true} /></div>;
                 } else if(notifItem.type == "give_trust_coin") {
-                    notifType = <div key={i+1}><TrustCoinNotif notifNum={i+1} item={notifItem} /></div>
+                    if(notifItem.status === "finished" && timeDiffInHours <= 24.0) {
+                        notifType = <div key={i+1}><TrustCoinNotif notifNum={i+1} item={notifItem} /></div>
+                    }
                 } else if(notifItem.type == "trust_coin_sent") {
-                    notifType = <div key={i+1}><TrustCoinSentNotif notifNum={i+1} item={notifItem} /></div>
+                    if(timeDiffInHours <= 24.0) {
+                        notifType = <div key={i+1}><TrustCoinSentNotif notifNum={i+1} item={notifItem} /></div>
+                    }
                 }
                 
                 if( i == 0 || !comparedTime.isSame(notifItem.created_at, 'day') ) {
@@ -103,7 +117,6 @@ class Notifications extends Component {
             </>
         );
     }
-
 }
 
 export default Notifications;

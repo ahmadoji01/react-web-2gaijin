@@ -47,6 +47,7 @@ class HalfNavbar extends Component {
             axios
             .get(`https://go.2gaijin.com/check_notif_read`, config)
             .then(res => {
+                console.log(res.data);
                 if(res.data){
                     this.setState({ notifRead: res.data.data.notif_read });
                     this.setState({ messageRead: res.data.data.message_read });
