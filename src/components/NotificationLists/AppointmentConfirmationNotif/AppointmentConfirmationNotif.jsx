@@ -16,10 +16,26 @@ class AppointmentConfirmationNotif extends Component {
     constructor(props) {
         super(props);
         this.acceptAppointment = this.acceptAppointment.bind(this);
+        this.onRequestRescheduleClick = this.onRequestRescheduleClick.bind(this);
     }
 
     onGoToAppointmentClick(userID) {
         window.location = "/profile/" + userID + "?appointment=1";
+    }
+
+    onRequestRescheduleClick(id) {
+        let config = {
+            headers: {'Authorization': localStorage.getItem("access_token") },
+            params: {
+                receiverid: id
+            }
+        }
+
+        return axios
+        .get(`https://go.2gaijin.com/initiate_chat`, config)
+        .then(response => {
+            window.location.href = "/m/" + response.data.data.room._id;
+        });
     }
 
     acceptAppointment(appointmentID) {
@@ -72,7 +88,7 @@ class AppointmentConfirmationNotif extends Component {
         if(typeof(this.props.item) !== "undefined"){
             var notifItem = this.props.item;
             var meetingTime = notifItem.appointment.meeting_time;
-            var avatarURL = "image"
+            var avatarURL = "image";
 
             avatarURL = notifItem.notification_user.avatar_url;
             if(avatarURL == "") {
@@ -83,15 +99,20 @@ class AppointmentConfirmationNotif extends Component {
             if(this.state.status == "accepted") {
                 notifButton = <div className="row notif-btn" style={{padding: 0, margin: 0}}>
                     <div className="col-6">
-                        <Button className="general-btn" style={{color: "#fff", marginTop: 5}} onClick={() => this.onGoToAppointmentClick(localStorage.getItem("user_id"))} color="orange" raised fill round>Go To Transactions</Button>
+                        { notifItem.product.user_id == localStorage.getItem("user_id") && 
+                            <Button className="general-washout-btn" style={{color: "#000", marginTop: 5}} onClick={() => this.onRequestRescheduleClick(notifItem.notification_user._id)} raised fill round>Chat with Buyer</Button>
+                        } 
+                        { notifItem.product.user_id != localStorage.getItem("user_id") && 
+                            <Button className="general-btn" style={{color: "#fff", marginTop: 5}} onClick={() => this.onRequestRescheduleClick(notifItem.notification_user._id)} color="orange" raised fill round>Request Reschedule</Button>
+                        } 
                     </div>
                     <div className="col-6">
-                        <Button className="general-disabled-btn" style={{color: "#EF7132", marginTop: 5}} color="orange" raised fill round>Accepted</Button>
+                        <h5>Accepted</h5>
                     </div>
                 </div>
             } else if(this.state.status == "rejected") {
                 notifButton = <div className="row" style={{paddingBottom: 0, margin: 0}}>
-                   <Button className="general-disabled-btn" style={{color: "#EF7132", marginTop: 5}} color="orange" raised fill round>This Appointment is Rejected</Button>
+                   <h5 style={{ marginLeft: 20 }}>Sorry, this item is taken</h5>
                 </div>
             } else if(this.state.status == "pending") {
                 notifButton = <div className="row" style={{paddingBottom: 0, margin: 0}}>
