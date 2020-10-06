@@ -29,6 +29,13 @@ import SignIn from "../../dialogs/SignIn";
 import UpdatePassword from "../../dialogs/UpdatePassword";
 import ContactUs from "../../dialogs/ContactUs";
 
+import AdsBanner1 from "../../illustrations/ad_2gaijin_01.jpg";
+import AdsBanner2 from "../../illustrations/ad_2gaijin_02.jpg";
+import AdsBanner3 from "../../illustrations/ad_2gaijin_03.jpg";
+import AdsBanner4 from "../../illustrations/ad_2gaijin_04.jpg";
+import AdsBanner5 from "../../illustrations/ad_2gaijin_05.jpg";
+import AdsBanner6 from "../../illustrations/ad_2gaijin_06.jpg";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -220,18 +227,18 @@ class Home extends Component {
                         <div className="row" style={{ marginLeft: 15 }}>
                             <div className="col-6 banner-container">
                                 <ScrollContainer vertical className="scroll-container" style={{ height: this.state.windowHeight }}>
-                                    <Banner imgURL="https://marketplace.canva.com/EAD7RZBpky0/1/0/400w/canva-blue-and-white-gaming-logo-N-0-xW64Gwc.jpg" bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner imgURL="https://media.gettyimages.com/vectors/happy-thanksgiving-day-square-banner-vector-illustration-vector-id860471696" bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner imgURL="https://en.pimg.jp/048/726/450/1/48726450.jpg" bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner imgURL="https://static.vecteezy.com/system/resources/previews/000/663/703/non_2x/students-learning-together-square-banner-vector.jpg" bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL={AdsBanner1} bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL={AdsBanner2} bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL={AdsBanner3} bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL={AdsBanner4} bannerSize={(this.state.windowWidth/4) - 50} />
                                 </ScrollContainer>
                             </div>
                             <div className="col-6 banner-container">
                                 <ScrollContainer vertical className="scroll-container" style={{ height: this.state.windowHeight }}>
-                                    <Banner imgURL="https://media.gettyimages.com/vectors/happy-thanksgiving-day-square-banner-vector-illustration-vector-id860471696" bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner imgURL="https://en.pimg.jp/048/726/450/1/48726450.jpg" bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner imgURL="https://static.vecteezy.com/system/resources/previews/000/663/703/non_2x/students-learning-together-square-banner-vector.jpg" bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner imgURL="https://marketplace.canva.com/EAD7RZBpky0/1/0/400w/canva-blue-and-white-gaming-logo-N-0-xW64Gwc.jpg" bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL={AdsBanner3} bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL={AdsBanner4} bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL={AdsBanner5} bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner imgURL={AdsBanner6} bannerSize={(this.state.windowWidth/4) - 50} />
                                 </ScrollContainer>
                             </div>
                         </div>
