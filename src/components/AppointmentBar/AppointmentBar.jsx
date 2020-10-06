@@ -213,7 +213,7 @@ class AppointmentBar extends Component {
                         </div>
                     } else if(this.state.status == "finished") {
                         notifButton = <div className="row" style={{paddingBottom: 0, marginBottom: 0}}>
-                            <Button className="general-disabled-btn" style={{color: "#EF7132", marginTop: 5}} raised fill round>Appointment has finished</Button>
+                            <h5>Transaction has finished</h5>
                         </div>
                     }
                 } else if(this.props.type == "buyer") {
