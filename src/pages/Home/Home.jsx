@@ -29,8 +29,6 @@ import SignIn from "../../dialogs/SignIn";
 import UpdatePassword from "../../dialogs/UpdatePassword";
 import ContactUs from "../../dialogs/ContactUs";
 
-import AutoScroll from '@brianmcallister/react-auto-scroll';
-
 import AdsBanner1 from "../../illustrations/ad_2gaijin_01.jpg";
 import AdsBanner2 from "../../illustrations/ad_2gaijin_02.jpg";
 import AdsBanner3 from "../../illustrations/ad_2gaijin_03.jpg";
