@@ -29,6 +29,8 @@ import SignIn from "../../dialogs/SignIn";
 import UpdatePassword from "../../dialogs/UpdatePassword";
 import ContactUs from "../../dialogs/ContactUs";
 
+import AutoScroll from '@brianmcallister/react-auto-scroll';
+
 import AdsBanner1 from "../../illustrations/ad_2gaijin_01.jpg";
 import AdsBanner2 from "../../illustrations/ad_2gaijin_02.jpg";
 import AdsBanner3 from "../../illustrations/ad_2gaijin_03.jpg";
@@ -73,6 +75,7 @@ class Home extends Component {
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.onWindowScroll = this.onWindowScroll.bind(this);
         this.showUpdatePassword = this.showUpdatePassword.bind(this);
+        this.bannerAutoScroll = this.bannerAutoScroll.bind(this);
     }
 
     showUpdatePassword() {
@@ -103,6 +106,9 @@ class Home extends Component {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
         window.addEventListener('scroll', this.onWindowScroll);
+
+        let el = document.getElementById("banner-container-1");
+        this.bannerAutoScroll();
     }
     
     componentWillUnmount() {
@@ -169,6 +175,38 @@ class Home extends Component {
         window.location = "/search?q=" + this.state.searchTerm;
     }
 
+    bannerAutoScroll() {
+        let direction = 1;
+        let delay = 25;
+        let speed = 10;
+        
+        let direction2 = 1;
+        let speed2 = 20;
+
+        let el1 = document.getElementById("banner-container-1");    
+        let el2 = document.getElementById("banner-container-2");
+        el2.scrollTop = 50;
+        function loop() {
+            el1.scrollTop = el1.scrollTop + (direction * speed);
+            if(el1.scrollTop >= 265) {
+                direction = -1;
+            } else if(el1.scrollTop <= 0) {
+                direction = 1;
+            }
+
+            el2.scrollTop = el2.scrollTop + (direction2 * speed2);
+            if(el2.scrollTop >= 265) {
+                direction2 = -1;
+            } else if(el2.scrollTop <= 0) {
+                direction2 = 1;
+            }
+
+            setTimeout( loop, delay );
+        }
+        
+        loop();
+    }
+
     render() {
         const classes = useStyles;
 
@@ -226,20 +264,18 @@ class Home extends Component {
                     <div className="col-6" >
                         <div className="row" style={{ marginLeft: 15 }}>
                             <div className="col-6 banner-container">
-                                <ScrollContainer vertical className="scroll-container" style={{ height: this.state.windowHeight }}>
-                                    <Banner imgURL={AdsBanner1} bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner imgURL={AdsBanner2} bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner imgURL={AdsBanner3} bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner imgURL={AdsBanner4} bannerSize={(this.state.windowWidth/4) - 50} />
-                                </ScrollContainer>
+                                <div id="banner-container-1" className="banner-scroll-container" style={{height: this.state.windowHeight, overflow: "auto", scrollBehavior: "smooth", pointerEvents: "auto"}}>
+                                    <Banner url="https://jobkita.jp" imgURL={AdsBanner1} bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner url="/order_delivery" imgURL={AdsBanner2} bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner url="https://jobkita.jp" imgURL={AdsBanner3} bannerSize={(this.state.windowWidth/4) - 50} />
+                                    </div>
                             </div>
                             <div className="col-6 banner-container">
-                                <ScrollContainer vertical className="scroll-container" style={{ height: this.state.windowHeight }}>
-                                    <Banner imgURL={AdsBanner3} bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner imgURL={AdsBanner4} bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner imgURL={AdsBanner5} bannerSize={(this.state.windowWidth/4) - 50} />
-                                    <Banner imgURL={AdsBanner6} bannerSize={(this.state.windowWidth/4) - 50} />
-                                </ScrollContainer>
+                                <div id="banner-container-2" className="banner-scroll-container" style={{height: this.state.windowHeight, overflow: "auto", scrollBehavior: "smooth", pointerEvents: "auto"}}>
+                                    <Banner url="https://kitalabs.com" imgURL={AdsBanner4} bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner url="/order_delivery" imgURL={AdsBanner5} bannerSize={(this.state.windowWidth/4) - 50} />
+                                    <Banner url="https://jobkita.jp" imgURL={AdsBanner6} bannerSize={(this.state.windowWidth/4) - 50} />
+                                </div>
                             </div>
                         </div>
                     </div>

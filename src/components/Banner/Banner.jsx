@@ -15,7 +15,7 @@ class Banner extends Component {
 
         return(
             <div className="banner" style={{ width: this.props.bannerSize, height: this.props.bannerSize }}>
-                <img className="banner-img" src={this.props.imgURL} />
+                <a href={this.props.url} target="_blank"><img className="banner-img" src={this.props.imgURL} /></a>
             </div>
         );
     }
