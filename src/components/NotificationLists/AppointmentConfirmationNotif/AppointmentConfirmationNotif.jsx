@@ -5,18 +5,19 @@ import ProductCardHorizontal from '../../ProductCardHorizontal';
 import { Button, Dialog } from "@blueprintjs/core";
 import axios from 'axios';
 import AvatarPlaceholder from "../../../illustrations/avatar-placeholder.png";
-
+import AcceptAppointment from "../../../dialogs/AcceptAppointment";
 
 class AppointmentConfirmationNotif extends Component {
-    
-    state = {
-        status: this.props.item.status,
-    }
 
     constructor(props) {
         super(props);
+        this.state = {
+            status: this.props.item.status,
+            isAcceptDialogOpen: false
+        }
         this.acceptAppointment = this.acceptAppointment.bind(this);
         this.onRequestRescheduleClick = this.onRequestRescheduleClick.bind(this);
+        this.closeAcceptDialog = this.closeAcceptDialog.bind(this);
     }
 
     onGoToAppointmentClick(userID) {
@@ -39,6 +40,9 @@ class AppointmentConfirmationNotif extends Component {
     }
 
     acceptAppointment(appointmentID) {
+        this.setState({ isAcceptDialogOpen: true });
+        
+        /*
         var payload = {
             "_id": appointmentID,
             "status": "accepted",
@@ -53,7 +57,7 @@ class AppointmentConfirmationNotif extends Component {
                 var jsonData = response.data.data;
                 this.setState({ status: "accepted" });
             }
-        });
+        });*/
     }
 
     rejectAppointment(appointmentID) {
@@ -72,6 +76,10 @@ class AppointmentConfirmationNotif extends Component {
                 this.setState({ status: "rejected" });
             }
         });
+    }
+
+    closeAcceptDialog() {
+        this.setState({ isAcceptDialogOpen: false });
     }
 
     render() {
@@ -154,6 +162,7 @@ class AppointmentConfirmationNotif extends Component {
                         <div className="row" style={{padding: "0 20px 0 20px", margin: 0}}>
                             <ProductCardHorizontal item={notifItem.product} meeting_time={meetingTime} />
                         </div>
+                        <Dialog title={"Request Confirmation"} isOpen={this.state.isAcceptDialogOpen} onClose={() => {this.setState({ isAcceptDialogOpen: false })}}><AcceptAppointment productID={notifItem.product._id} appointmentID={notifItem.appointment_id} closeDialog={this.closeAcceptDialog} /></Dialog>;
                         {notifButton}
                     </div>
                     <div className="divider-space-content"></div>

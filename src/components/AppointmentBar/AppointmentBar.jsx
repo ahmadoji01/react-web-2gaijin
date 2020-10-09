@@ -117,7 +117,6 @@ class AppointmentBar extends Component {
             "_id": id,
             "meeting_time": new Date(this.state.time).getTime()
         }
-        console.log(payload);
 
         return axios.post(`https://go.2gaijin.com/reschedule_appointment`, payload, {
             headers: {

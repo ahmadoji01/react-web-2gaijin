@@ -329,26 +329,22 @@ const AppointmentPanel = (props) => (
     <div className="row" style={{ width: "100%" }}>
         <div className="col-6" style={{ textAlign: "left", align: "left" }}>
             <h5>Transaction as Seller</h5>
-            <h6>Accepted Transaction</h6>
-            { props.acceptedSeller.length == 0 && <p>You have no accepted transactions as seller</p> }
+            { (props.acceptedSeller.length == 0 && props.pendingSeller.length == 0 && props.finishedSeller.length == 0) && <h6>You have no active transaction as seller</h6> }
+            { props.acceptedSeller.length > 0 && <h6>Accepted Transaction</h6> }
             <AppointmentContainer type="seller" items={props.acceptedSeller} />
-            <h6>Pending Approval</h6>
-            { props.pendingSeller.length == 0 && <p>You have no pending transactions as seller</p> }
+            { props.pendingSeller.length > 0 && <h6>Pending Approval</h6> }
             <AppointmentContainer type="seller" items={props.pendingSeller} />
-            <h6>Finished Transaction</h6>
-            { props.finishedSeller.length == 0 && <p>You have no finished transactions as seller</p> }
+            { props.finishedSeller.length > 0 && <h6>Finished Transaction</h6> }
             <AppointmentContainer type="seller" items={props.finishedSeller} />
         </div>
         <div className="col-6"  style={{ textAlign: "left", align: "left" }}>
             <h5>Transaction as Buyer</h5>
-            <h6>Accepted Transaction</h6>
-            { props.acceptedBuyer.length == 0 && <p>You have no accepted transactions as buyer</p> }
+            { (props.acceptedBuyer.length == 0 && props.pendingBuyer.length == 0 && props.finishedBuyer.length == 0) && <h6>You have no active transaction as buyer</h6> }
+            { props.acceptedBuyer.length > 0 && <h6>Accepted Transaction</h6> }
             <AppointmentContainer type="buyer" items={props.acceptedBuyer} />
-            <h6>Pending Approval</h6>
-            { props.pendingBuyer.length == 0 && <p>You have no pending transactions as buyer</p> }
+            { props.pendingBuyer.length > 0 && <h6>Pending Approval</h6> }
             <AppointmentContainer type="buyer" items={props.pendingBuyer} />
-            <h6>Finished Transaction</h6>
-            { props.finishedBuyer.length == 0 && <p>You have no finished transactions as buyer</p> }
+            { props.finishedBuyer.length > 0 && <h6>Finished Transaction</h6> }
             <AppointmentContainer type="buyer" items={props.finishedBuyer} />
         </div>
     </div>
